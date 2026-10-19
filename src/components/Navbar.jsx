@@ -25,7 +25,7 @@ const Navbar = () => {
         {/* Logo / Título */}
         <div className="navbar-brand">
           <span className="navbar-brand-icon">🍖</span>
-          <span className="navbar-brand-text">Parrilla Milver</span>
+          <span className="navbar-brand-text">Administracion Parrilla</span>
         </div>
 
         {/* Botón cerrar sesión */}
