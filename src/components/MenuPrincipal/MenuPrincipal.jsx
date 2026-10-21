@@ -2,7 +2,7 @@
 import React from 'react';
 import './MenuPrincipal.css';
 
-const MenuPrincipal = ({ onSeleccionarModulo }) => {
+const MenuPrincipal = ({ onSeleccionarModulo, alertaStock = 0 }) => {
   const modulos = [
     {
       id: 'mesas',
@@ -21,6 +21,7 @@ const MenuPrincipal = ({ onSeleccionarModulo }) => {
       icono: '📊',
       titulo: 'Ver Stock',
       descripcion: 'Consultá el inventario actual y alertas de bajo stock.',
+      badge: alertaStock,  // ← nuevo: badge dinámico
     },
     {
       id: 'mozos',
@@ -40,6 +41,13 @@ const MenuPrincipal = ({ onSeleccionarModulo }) => {
       <div className="contenedor-modulos">
         {modulos.map(modulo => (
           <div key={modulo.id} className="tarjeta-modulo">
+            {/* Badge de alerta */}
+            {modulo.badge > 0 && (
+              <span className="badge-alerta" title={`${modulo.badge} productos con bajo stock o agotados`}>
+                {modulo.badge}
+              </span>
+            )}
+
             <div className="icono">{modulo.icono}</div>
             <h2>{modulo.titulo}</h2>
             <p>{modulo.descripcion}</p>

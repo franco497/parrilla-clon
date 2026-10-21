@@ -289,6 +289,20 @@ export const RestauranteProvider = ({ children }) => {
     try {
       console.log("📝 Agregando item:", { mesaId, productoId, cantidad });
 
+      // 1. Buscar el producto
+      const producto = productos.find((p) => p.id_producto === productoId);
+      if (!producto) {
+        throw new Error("Producto no encontrado");
+      }
+
+      // 2. Validar stock disponible
+      const stockActual = producto.stock || 0;
+      if (stockActual < cantidad) {
+        throw new Error(
+          `Stock insuficiente. Disponible: ${stockActual}, solicitado: ${cantidad}`,
+        );
+      }
+
       let pedidoId = pedidosActivos[mesaId];
       console.log("🔍 pedidoId actual:", pedidoId);
 
@@ -303,23 +317,14 @@ export const RestauranteProvider = ({ children }) => {
         console.log("✅ Nuevo pedido creado con ID:", pedidoId);
       }
 
-      // ✅ BUSCAR SI EL PRODUCTO YA EXISTE EN EL PEDIDO
+      // 3. Buscar si el producto ya existe en el pedido
       const { data: itemsExistentes, error: findError } = await supabase
         .from("detalle_pedido")
         .select("*")
         .eq("id_pedido", pedidoId)
         .eq("id_producto", productoId);
 
-      if (findError) {
-        console.error("❌ Error buscando item existente:", findError);
-        throw findError;
-      }
-
-      // Buscar producto para obtener precio
-      const producto = productos.find((p) => p.id_producto === productoId);
-      if (!producto) {
-        throw new Error("Producto no encontrado");
-      }
+      if (findError) throw findError;
 
       const precioUnitario = producto.precio;
 
@@ -329,53 +334,53 @@ export const RestauranteProvider = ({ children }) => {
         const nuevaCantidad = itemExistente.cantidad + cantidad;
         const nuevoSubtotal = precioUnitario * nuevaCantidad;
 
-        console.log(
-          `📦 Producto ya existe. Cantidad actual: ${itemExistente.cantidad}, Nueva: ${nuevaCantidad}`,
-        );
-
-        const { data, error } = await supabase
+        const { error } = await supabase
           .from("detalle_pedido")
           .update({
             cantidad: nuevaCantidad,
             subtotal: nuevoSubtotal,
           })
-          .eq("id_detalle", itemExistente.id_detalle)
-          .select();
+          .eq("id_detalle", itemExistente.id_detalle);
 
-        if (error) {
-          console.error("❌ Error actualizando item:", error);
-          throw error;
-        }
-
-        console.log("✅ Item actualizado:", data[0]);
+        if (error) throw error;
+        console.log("✅ Item actualizado:", { nuevaCantidad });
       } else {
         // ✅ PRODUCTO NUEVO → CREAR NUEVO REGISTRO
         const subtotal = precioUnitario * cantidad;
 
-        console.log("📦 Producto nuevo, creando registro...");
+        const { error } = await supabase.from("detalle_pedido").insert([
+          {
+            id_pedido: pedidoId,
+            id_producto: productoId,
+            cantidad: cantidad,
+            precio_unitario: precioUnitario,
+            subtotal: subtotal,
+          },
+        ]);
 
-        const { data, error } = await supabase
-          .from("detalle_pedido")
-          .insert([
-            {
-              id_pedido: pedidoId,
-              id_producto: productoId,
-              cantidad: cantidad,
-              precio_unitario: precioUnitario,
-              subtotal: subtotal,
-            },
-          ])
-          .select();
-
-        if (error) {
-          console.error("❌ Error en Supabase al agregar item:", error);
-          throw error;
-        }
-
-        console.log("✅ Item agregado:", data[0]);
+        if (error) throw error;
+        console.log("✅ Item agregado");
       }
 
-      // Actualizar total del pedido
+      // 4. ✅ DESCONTAR STOCK
+      const nuevoStock = stockActual - cantidad;
+      const { error: stockError } = await supabase
+        .from("productos")
+        .update({ stock: nuevoStock })
+        .eq("id_producto", productoId);
+
+      if (stockError) throw stockError;
+
+      // 5. ✅ Actualizar el estado local de productos
+      setProductos((prev) =>
+        prev.map((p) =>
+          p.id_producto === productoId ? { ...p, stock: nuevoStock } : p,
+        ),
+      );
+
+      console.log(`📦 Stock actualizado: ${producto.nombre} → ${nuevoStock}`);
+
+      // 6. Actualizar total del pedido
       await actualizarTotalPedido(pedidoId);
 
       return { success: true };
@@ -1116,6 +1121,82 @@ export const RestauranteProvider = ({ children }) => {
     }
   };
 
+  // ==========================================
+  // STOCK DE PRODUCTOS
+  // ==========================================
+
+  // --- Ajustar stock manualmente (nuevo valor absoluto) ---
+  const ajustarStock = async (productoId, nuevoStock) => {
+    try {
+      const stockNum = parseInt(nuevoStock);
+
+      if (isNaN(stockNum) || stockNum < 0) {
+        throw new Error("El stock debe ser un número mayor o igual a 0");
+      }
+
+      const { data, error } = await supabase
+        .from("productos")
+        .update({ stock: stockNum })
+        .eq("id_producto", productoId)
+        .select();
+
+      if (error) throw error;
+
+      setProductos((prev) =>
+        prev.map((p) =>
+          p.id_producto === productoId ? { ...p, stock: stockNum } : p,
+        ),
+      );
+
+      console.log(
+        `✅ Stock ajustado a ${stockNum} para producto ${productoId}`,
+      );
+      return { success: true, data: data[0] };
+    } catch (error) {
+      console.error("❌ Error ajustando stock:", error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  // --- Ingresar mercadería (sumar cantidad) ---
+  const ingresarMercaderia = async (productoId, cantidad) => {
+    try {
+      const cantNum = parseInt(cantidad);
+
+      if (isNaN(cantNum) || cantNum <= 0) {
+        throw new Error("La cantidad debe ser mayor a 0");
+      }
+
+      const producto = productos.find((p) => p.id_producto === productoId);
+      if (!producto) throw new Error("Producto no encontrado");
+
+      const stockActual = producto.stock || 0;
+      const nuevoStock = stockActual + cantNum;
+
+      const { data, error } = await supabase
+        .from("productos")
+        .update({ stock: nuevoStock })
+        .eq("id_producto", productoId)
+        .select();
+
+      if (error) throw error;
+
+      setProductos((prev) =>
+        prev.map((p) =>
+          p.id_producto === productoId ? { ...p, stock: nuevoStock } : p,
+        ),
+      );
+
+      console.log(
+        `✅ Mercadería ingresada: ${producto.nombre} → ${nuevoStock}`,
+      );
+      return { success: true, data: data[0] };
+    } catch (error) {
+      console.error("❌ Error ingresando mercadería:", error);
+      return { success: false, error: error.message };
+    }
+  };
+
   const value = {
     mesas,
     reservas,
@@ -1149,6 +1230,9 @@ export const RestauranteProvider = ({ children }) => {
     eliminarMozo,
     restaurarMozo,
     recargarMozos,
+    // Stock
+    ajustarStock,
+    ingresarMercaderia,
   };
 
   return (

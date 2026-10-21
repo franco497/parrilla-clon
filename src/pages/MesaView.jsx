@@ -425,6 +425,11 @@ const MesaView = () => {
                             <span className="producto-precio">
                               ${producto.precio.toLocaleString()}
                             </span>
+                            <span
+                              className={`producto-stock ${(producto.stock || 0) === 0 ? "agotado" : ""}`}
+                            >
+                              Stock: {producto.stock || 0}
+                            </span>
                           </div>
                           <div className="producto-accion">
                             <div className="cantidad-control">
@@ -455,7 +460,7 @@ const MesaView = () => {
                                 onClick={() => {
                                   const actual =
                                     cantidades[producto.id_producto] || 0;
-                                  if (actual < 99) {
+                                  if (actual < (producto.stock || 0)) {
                                     handleCantidadChange(
                                       producto.id_producto,
                                       actual + 1,
@@ -464,7 +469,8 @@ const MesaView = () => {
                                 }}
                                 disabled={
                                   loading ||
-                                  (cantidades[producto.id_producto] || 0) >= 99
+                                  (cantidades[producto.id_producto] || 0) >=
+                                    (producto.stock || 0)
                                 }
                               >
                                 +
@@ -477,7 +483,9 @@ const MesaView = () => {
                               }
                               disabled={
                                 loading ||
-                                !(cantidades[producto.id_producto] > 0)
+                                !(cantidades[producto.id_producto] > 0) ||
+                                (producto.stock || 0) <
+                                  (cantidades[producto.id_producto] || 0)
                               }
                             >
                               Agregar al pedido
