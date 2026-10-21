@@ -4,13 +4,14 @@ import { useLocation } from "react-router-dom";
 import { useRestaurante } from "../context/RestauranteContext";
 import MenuPrincipal from "../components/MenuPrincipal/MenuPrincipal";
 import GrillaMesas from "../components/Mesas/GrillaMesas";
-import Navbar from "../components/Navbar"; // ← CAMBIAR
+import Navbar from "../components/Navbar";
 import "./Dashboard.css";
 import GestionProductos from "../components/Productos/GestionProductos";
 import GestionMozos from "../components/Mozos/GestionMozos";
+import GestionStock from "../components/Stock/GestionStock";
 
 const Dashboard = () => {
-  const { loading } = useRestaurante();
+  const { loading, productos } = useRestaurante();
   const location = useLocation();
   const [vistaActual, setVistaActual] = useState("principal");
 
@@ -36,12 +37,19 @@ const Dashboard = () => {
     );
   }
 
+  const productosBajoStock = productos.filter(
+    (p) => p.activo !== false && (p.stock || 0) <= (p.stock_minimo || 5),
+  ).length;
+
   return (
     <>
       <Navbar /> {/* ← CAMBIAR */}
       <div className="dashboard-container">
         {vistaActual === "principal" && (
-          <MenuPrincipal onSeleccionarModulo={handleSeleccionarModulo} />
+          <MenuPrincipal
+            onSeleccionarModulo={handleSeleccionarModulo}
+            alertaStock={productosBajoStock}
+          />
         )}
 
         {vistaActual === "mesas" && <GrillaMesas onVolver={handleVolverMenu} />}
@@ -51,13 +59,7 @@ const Dashboard = () => {
         )}
 
         {vistaActual === "stock" && (
-          <div className="seccion-en-construccion">
-            <button className="btn-volver" onClick={handleVolverMenu}>
-              ⬅ Volver al Menú
-            </button>
-            <h2>📊 Ver Stock</h2>
-            <p>Próximamente: Tabla de inventario con alertas</p>
-          </div>
+          <GestionStock onVolver={handleVolverMenu} />
         )}
         {vistaActual === "mozos" && (
           <GestionMozos onVolver={handleVolverMenu} />

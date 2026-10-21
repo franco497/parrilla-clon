@@ -229,3 +229,13 @@ CREATE INDEX IF NOT EXISTS idx_productos_activo ON productos(activo);
 -- ============================================
 ALTER TABLE mozos ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMP WITH TIME ZONE;
 CREATE INDEX IF NOT EXISTS idx_mozos_activo ON mozos(activo);
+
+-- ============================================
+-- STOCK DE PRODUCTOS
+-- ============================================
+ALTER TABLE productos ADD COLUMN IF NOT EXISTS stock INTEGER DEFAULT 0;
+ALTER TABLE productos ADD COLUMN IF NOT EXISTS stock_minimo INTEGER DEFAULT 5;
+CREATE INDEX IF NOT EXISTS idx_productos_stock ON productos(stock);
+
+-- Inicializar stock de los productos existentes
+UPDATE productos SET stock = 20 WHERE stock = 0;

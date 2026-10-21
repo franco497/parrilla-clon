@@ -682,6 +682,18 @@
   border: 1px solid rgba(76, 175, 80, 0.3);
 }
 
+.producto-stock {
+  font-size: 0.75rem;
+  color: #4caf50;
+  font-weight: 600;
+  margin-left: auto;
+  padding-left: 8px;
+}
+
+.producto-stock.agotado {
+  color: #ef5350;
+}
+
 /* ==========================================
    MEDIA QUERIES
    ========================================== */
