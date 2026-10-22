@@ -3,6 +3,7 @@ import React, { useState, useMemo } from "react";
 import { useRestaurante } from "../../context/RestauranteContext";
 import FormularioStock from "./FormularioStock";
 import "./GestionStock.css";
+import SelectCustom from "./SelectCustom";
 
 const GestionStock = ({ onVolver }) => {
   const { productos, categorias, ajustarStock } = useRestaurante();
@@ -139,6 +140,7 @@ const GestionStock = ({ onVolver }) => {
       )}
 
       {/* Filtros */}
+      {/* Filtros */}
       <div className="gestion-filtros">
         <input
           type="text"
@@ -148,29 +150,30 @@ const GestionStock = ({ onVolver }) => {
           className="input-busqueda"
         />
 
-        <select
+        <SelectCustom
           value={filtroCategoria}
-          onChange={(e) => setFiltroCategoria(e.target.value)}
-          className="select-filtro"
-        >
-          <option value="">Todas las categorías</option>
-          {categorias.map((cat) => (
-            <option key={cat.id_categoria} value={cat.id_categoria}>
-              {cat.nombre}
-            </option>
-          ))}
-        </select>
+          onChange={setFiltroCategoria}
+          placeholder="Todas las categorías"
+          options={[
+            { value: "", label: "Todas las categorías" },
+            ...categorias.map((cat) => ({
+              value: String(cat.id_categoria),
+              label: cat.nombre,
+            })),
+          ]}
+        />
 
-        <select
+        <SelectCustom
           value={filtroEstado}
-          onChange={(e) => setFiltroEstado(e.target.value)}
-          className="select-filtro"
-        >
-          <option value="todos">📋 Todos</option>
-          <option value="con-stock">✅ Con stock</option>
-          <option value="bajo-stock">⚠️ Bajo stock</option>
-          <option value="agotados">❌ Agotados</option>
-        </select>
+          onChange={setFiltroEstado}
+          placeholder="Todos"
+          options={[
+            { value: "todos", label: "📋 Todos" },
+            { value: "con-stock", label: "✅ Con stock" },
+            { value: "bajo-stock", label: "⚠️ Bajo stock" },
+            { value: "agotados", label: "❌ Agotados" },
+          ]}
+        />
       </div>
 
       {/* Contador */}
