@@ -365,6 +365,8 @@
     margin-bottom: 12px;
     padding: 14px 16px;
     transition: background 0.2s;
+    box-sizing: border-box; 
+    width: 100%; 
   }
 
   .gestion-tabla tbody tr:hover {
@@ -484,6 +486,11 @@
     overflow-x: visible;
     background: transparent;
     border: none;
-    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
+
+  .gestion-stock {
+  padding: 5px;
+}
 }
