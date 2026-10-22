@@ -415,22 +415,60 @@
     justify-content: space-between;
   }
 
-  /* Los botones de acción, alineados a la derecha */
+  /* Contenedor de acciones: columna, ancho completo */
   .gestion-tabla td.col-acciones {
-    padding-top: 10px;
-    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    margin-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    justify-content: flex-end;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: stretch;
+    align-items: stretch;
   }
 
   .gestion-tabla td.col-acciones::before {
     display: none;
   }
 
+  /* Botón Ajustar: ocupa todo el ancho */
   .gestion-tabla td.col-acciones .btn-editar {
     width: 100%;
-    height: 40px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
     font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin-left: 0;
+    background: #f59e0b;
+    color: white;
+  }
+
+  .gestion-tabla td.col-acciones .btn-editar:hover:not(:disabled) {
+    background: #d97706;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    border-color: #f59e0b;
+  }
+
+  .gestion-tabla td.col-acciones .btn-editar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
   }
 
   /* Quitar el ancho mínimo de las columnas en móvil */
