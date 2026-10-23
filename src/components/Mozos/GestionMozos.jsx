@@ -3,15 +3,11 @@ import React, { useState, useMemo } from "react";
 import { useRestaurante } from "../../context/RestauranteContext";
 import FormularioMozo from "./FormularioMozo";
 import "./GestionMozos.css";
+import SelectCustom from "../Stock/SelectCustom";
 
 const GestionMozos = ({ onVolver }) => {
-  const {
-    mozos,
-    crearMozo,
-    actualizarMozo,
-    eliminarMozo,
-    restaurarMozo,
-  } = useRestaurante();
+  const { mozos, crearMozo, actualizarMozo, eliminarMozo, restaurarMozo } =
+    useRestaurante();
 
   const [busqueda, setBusqueda] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("activos");
@@ -35,7 +31,7 @@ const GestionMozos = ({ onVolver }) => {
     if (busqueda.trim()) {
       const term = busqueda.toLowerCase().trim();
       filtrados = filtrados.filter((m) =>
-        m.nombre.toLowerCase().includes(term)
+        m.nombre.toLowerCase().includes(term),
       );
     }
 
@@ -55,7 +51,7 @@ const GestionMozos = ({ onVolver }) => {
   const handleEliminarMozo = async (mozo) => {
     const confirmar = window.confirm(
       `¿Eliminar al mozo "${mozo.nombre}"?\n\n` +
-        `Se marcará como inactivo y podrá restaurarse después.`
+        `Se marcará como inactivo y podrá restaurarse después.`,
     );
     if (!confirmar) return;
 
@@ -93,9 +89,7 @@ const GestionMozos = ({ onVolver }) => {
     }
 
     if (result.success) {
-      setMensaje(
-        mozoEditando ? "✅ Mozo actualizado" : "✅ Mozo creado"
-      );
+      setMensaje(mozoEditando ? "✅ Mozo actualizado" : "✅ Mozo creado");
       setTimeout(() => setMensaje(""), 2500);
       setMostrarFormulario(false);
       setMozoEditando(null);
@@ -146,15 +140,16 @@ const GestionMozos = ({ onVolver }) => {
           className="input-busqueda"
         />
 
-        <select
+        <SelectCustom
           value={filtroEstado}
-          onChange={(e) => setFiltroEstado(e.target.value)}
-          className="select-filtro"
-        >
-          <option value="activos">✅ Activos</option>
-          <option value="inactivos">❌ Inactivos</option>
-          <option value="todos">📋 Todos</option>
-        </select>
+          onChange={setFiltroEstado}
+          placeholder="Activos"
+          options={[
+            { value: "activos", label: "✅ Activos" },
+            { value: "inactivos", label: "❌ Inactivos" },
+            { value: "todos", label: "📋 Todos" },
+          ]}
+        />
       </div>
 
       {/* Contador */}
@@ -185,15 +180,17 @@ const GestionMozos = ({ onVolver }) => {
                   key={mozo.id_mozo}
                   className={mozo.activo === false ? "fila-inactiva" : ""}
                 >
-                  <td className="col-nombre">{mozo.nombre}</td>
-                  <td className="col-estado">
+                  <td className="col-nombre" data-label="Nombre">
+                    {mozo.nombre}
+                  </td>
+                  <td className="col-estado" data-label="Estado">
                     {mozo.activo === false ? (
                       <span className="badge-inactivo">❌ Inactivo</span>
                     ) : (
                       <span className="badge-activo">✅ Activo</span>
                     )}
                   </td>
-                  <td className="col-acciones">
+                  <td className="col-acciones" data-label="Acciones">
                     <button
                       className="btn-editar"
                       onClick={() => handleEditarMozo(mozo)}
