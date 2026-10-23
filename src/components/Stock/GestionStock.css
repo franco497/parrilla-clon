@@ -337,3 +337,160 @@
     font-size: 0.85rem;
   }
 }
+
+/* ==========================================
+   VISTA DE TARJETAS EN MÓVIL (≤ 768px)
+   ========================================== */
+
+@media (max-width: 768px) {
+  /* Ocultar el thead de la tabla */
+  .gestion-tabla thead {
+    display: none;
+  }
+
+  /* Convertir tabla, tbody, tr y td en bloques */
+  .gestion-tabla,
+  .gestion-tabla tbody,
+  .gestion-tabla tr,
+  .gestion-tabla td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Cada fila se convierte en una tarjeta */
+  .gestion-tabla tbody tr {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    transition: background 0.2s;
+    box-sizing: border-box; 
+    width: 100%; 
+  }
+
+  .gestion-tabla tbody tr:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Cada celda se convierte en una fila con etiqueta + valor */
+  .gestion-tabla td {
+    padding: 6px 0;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    text-align: right;
+  }
+
+  /* Mostrar la etiqueta a la izquierda */
+  .gestion-tabla td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #ff4500;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  /* El nombre del producto, más destacado */
+  .gestion-tabla td.col-nombre {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    padding-bottom: 10px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    justify-content: flex-start;
+  }
+
+  .gestion-tabla td.col-nombre::before {
+    display: none;
+  }
+
+  /* La fila del estado: alinear badge a la derecha */
+  .gestion-tabla td.col-estado {
+    justify-content: space-between;
+  }
+
+  /* Contenedor de acciones: columna, ancho completo */
+  .gestion-tabla td.col-acciones {
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: stretch;
+    align-items: stretch;
+  }
+
+  .gestion-tabla td.col-acciones::before {
+    display: none;
+  }
+
+  /* Botón Ajustar: ocupa todo el ancho */
+  .gestion-tabla td.col-acciones .btn-editar {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin-left: 0;
+    background: #f59e0b;
+    color: white;
+  }
+
+  .gestion-tabla td.col-acciones .btn-editar:hover:not(:disabled) {
+    background: #d97706;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    border-color: #f59e0b;
+  }
+
+  .gestion-tabla td.col-acciones .btn-editar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Quitar el ancho mínimo de las columnas en móvil */
+  .gestion-tabla th.col-stock,
+  .gestion-tabla td.col-stock,
+  .gestion-tabla th.col-stock-min,
+  .gestion-tabla td.col-stock-min {
+    text-align: right;
+  }
+
+  /* El wrapper de la tabla ya no necesita scroll horizontal */
+  .gestion-tabla-wrapper {
+    overflow-x: visible;
+    background: transparent;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .gestion-stock {
+  padding: 5px;
+}
+}

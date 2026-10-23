@@ -13,6 +13,7 @@
   align-items: center;
   z-index: 1000;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .formulario-modal {
@@ -171,4 +172,38 @@
 .btn-guardar:hover:not(:disabled) {
   background: #1b5e20;
   transform: translateY(-2px);
+}
+
+/* ==========================================
+   RESPONSIVE - MODAL EN MÓVIL
+   ========================================== */
+
+@media (max-width: 600px) {
+  .formulario-overlay {
+    padding: 12px;
+    align-items: flex-start; /* el modal se pega arriba, no se centra */
+    padding-top: 40px; /* espacio arriba para que no quede pegado al borde */
+    overflow-y: auto; /* permite scroll si el modal es más alto que la pantalla */
+  }
+
+  .formulario-modal {
+    padding: 20px 16px;
+    max-width: 100%;
+    border-radius: 12px;
+    margin: auto; /* centra verticalmente si hay espacio */
+  }
+
+  .formulario-modal h3 {
+    font-size: 1.15rem;
+  }
+
+  .form-acciones {
+    flex-direction: column; /* botones apilados en móvil */
+    gap: 8px;
+  }
+
+  .form-acciones button {
+    width: 100%;
+    min-height: 48px; /* tamaño táctil recomendado */
+  }
 }

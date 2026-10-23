@@ -3,6 +3,7 @@ import React, { useState, useMemo } from "react";
 import { useRestaurante } from "../../context/RestauranteContext";
 import FormularioStock from "./FormularioStock";
 import "./GestionStock.css";
+import SelectCustom from "./SelectCustom";
 
 const GestionStock = ({ onVolver }) => {
   const { productos, categorias, ajustarStock } = useRestaurante();
@@ -22,17 +23,18 @@ const GestionStock = ({ onVolver }) => {
     // Filtro por categoría
     if (filtroCategoria) {
       filtrados = filtrados.filter(
-        (p) => p.id_categoria === parseInt(filtroCategoria)
+        (p) => p.id_categoria === parseInt(filtroCategoria),
       );
     }
 
     // Filtro por estado de stock
     if (filtroEstado === "con-stock") {
-      filtrados = filtrados.filter((p) => (p.stock || 0) > (p.stock_minimo || 5));
+      filtrados = filtrados.filter(
+        (p) => (p.stock || 0) > (p.stock_minimo || 5),
+      );
     } else if (filtroEstado === "bajo-stock") {
       filtrados = filtrados.filter(
-        (p) =>
-          (p.stock || 0) > 0 && (p.stock || 0) <= (p.stock_minimo || 5)
+        (p) => (p.stock || 0) > 0 && (p.stock || 0) <= (p.stock_minimo || 5),
       );
     } else if (filtroEstado === "agotados") {
       filtrados = filtrados.filter((p) => (p.stock || 0) === 0);
@@ -42,7 +44,7 @@ const GestionStock = ({ onVolver }) => {
     if (busqueda.trim()) {
       const term = busqueda.toLowerCase().trim();
       filtrados = filtrados.filter((p) =>
-        p.nombre.toLowerCase().includes(term)
+        p.nombre.toLowerCase().includes(term),
       );
     }
 
@@ -70,10 +72,15 @@ const GestionStock = ({ onVolver }) => {
 
   const handleGuardar = async (datos) => {
     setLoading(true);
-    const result = await ajustarStock(productoEditando.id_producto, datos.stock);
+    const result = await ajustarStock(
+      productoEditando.id_producto,
+      datos.stock,
+    );
 
     if (result.success) {
-      setMensaje(`✅ Stock de "${productoEditando.nombre}" ajustado a ${datos.stock}`);
+      setMensaje(
+        `✅ Stock de "${productoEditando.nombre}" ajustado a ${datos.stock}`,
+      );
       setTimeout(() => setMensaje(""), 2500);
       setMostrarFormulario(false);
       setProductoEditando(null);
@@ -95,8 +102,7 @@ const GestionStock = ({ onVolver }) => {
       total: activos.length,
       agotados: activos.filter((p) => (p.stock || 0) === 0).length,
       bajoStock: activos.filter(
-        (p) =>
-          (p.stock || 0) > 0 && (p.stock || 0) <= (p.stock_minimo || 5)
+        (p) => (p.stock || 0) > 0 && (p.stock || 0) <= (p.stock_minimo || 5),
       ).length,
     };
   }, [productos]);
@@ -120,9 +126,7 @@ const GestionStock = ({ onVolver }) => {
               {contadores.bajoStock} bajo stock
             </span>
           )}
-          <span className="badge-resumen ok">
-            {contadores.total} productos
-          </span>
+          <span className="badge-resumen ok">{contadores.total} productos</span>
         </div>
       </div>
 
@@ -136,6 +140,7 @@ const GestionStock = ({ onVolver }) => {
       )}
 
       {/* Filtros */}
+      {/* Filtros */}
       <div className="gestion-filtros">
         <input
           type="text"
@@ -145,29 +150,30 @@ const GestionStock = ({ onVolver }) => {
           className="input-busqueda"
         />
 
-        <select
+        <SelectCustom
           value={filtroCategoria}
-          onChange={(e) => setFiltroCategoria(e.target.value)}
-          className="select-filtro"
-        >
-          <option value="">Todas las categorías</option>
-          {categorias.map((cat) => (
-            <option key={cat.id_categoria} value={cat.id_categoria}>
-              {cat.nombre}
-            </option>
-          ))}
-        </select>
+          onChange={setFiltroCategoria}
+          placeholder="Todas las categorías"
+          options={[
+            { value: "", label: "Todas las categorías" },
+            ...categorias.map((cat) => ({
+              value: String(cat.id_categoria),
+              label: cat.nombre,
+            })),
+          ]}
+        />
 
-        <select
+        <SelectCustom
           value={filtroEstado}
-          onChange={(e) => setFiltroEstado(e.target.value)}
-          className="select-filtro"
-        >
-          <option value="todos">📋 Todos</option>
-          <option value="con-stock">✅ Con stock</option>
-          <option value="bajo-stock">⚠️ Bajo stock</option>
-          <option value="agotados">❌ Agotados</option>
-        </select>
+          onChange={setFiltroEstado}
+          placeholder="Todos"
+          options={[
+            { value: "todos", label: "📋 Todos" },
+            { value: "con-stock", label: "✅ Con stock" },
+            { value: "bajo-stock", label: "⚠️ Bajo stock" },
+            { value: "agotados", label: "❌ Agotados" },
+          ]}
+        />
       </div>
 
       {/* Contador */}
@@ -200,18 +206,27 @@ const GestionStock = ({ onVolver }) => {
                 const estado = getEstadoStock(producto);
                 return (
                   <tr key={producto.id_producto}>
-                    <td className="col-nombre">{producto.nombre}</td>
-                    <td>{getNombreCategoria(producto.id_categoria)}</td>
-                    <td className={`col-stock stock-${estado.clase}`}>
+                    <td className="col-nombre" data-label="Producto">
+                      {producto.nombre}
+                    </td>
+                    <td data-label="Categoría">
+                      {getNombreCategoria(producto.id_categoria)}
+                    </td>
+                    <td
+                      className={`col-stock stock-${estado.clase}`}
+                      data-label="Stock"
+                    >
                       {producto.stock || 0}
                     </td>
-                    <td className="col-stock-min">{producto.stock_minimo || 5}</td>
-                    <td className="col-estado">
+                    <td className="col-stock-min" data-label="Mínimo">
+                      {producto.stock_minimo || 5}
+                    </td>
+                    <td className="col-estado" data-label="Estado">
                       <span className={`badge-${estado.clase}`}>
                         {estado.texto}
                       </span>
                     </td>
-                    <td className="col-acciones">
+                    <td className="col-acciones" data-label="Acciones">
                       <button
                         className="btn-editar"
                         onClick={() => handleAjustar(producto)}
