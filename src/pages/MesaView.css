@@ -114,7 +114,6 @@
   gap: 20px;
 }
 
-/* COLUMNA MENÚ */
 .columna-menu {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
@@ -282,7 +281,6 @@
   transform: none;
 }
 
-/* COLUMNA PEDIDO */
 .columna-pedido {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
@@ -392,9 +390,9 @@
 }
 
 /* Items pedido */
-.items-pedido-container {
+/* .items-pedido-container {
   flex: 1;
-}
+} */
 
 .items-pedido-container h4 {
   margin: 0 0 8px 0;
@@ -731,11 +729,13 @@
   }
 
   .columna-menu {
-    max-height: 400px;
+    max-height: none;
+    overflow-y: visible;
   }
 
   .columna-pedido {
     max-height: none;
+    overflow-y: visible;
   }
 }
 
@@ -807,5 +807,87 @@
 
   .btn-agregar {
     min-width: 100%;
+  }
+}
+
+/* ==========================================
+   BOTÓN FLOTANTE "IR AL PEDIDO" (SOLO MÓVIL)
+   ========================================== */
+
+.btn-ir-al-pedido {
+  display: none; /* Oculto en desktop */
+}
+
+@media (max-width: 992px) {
+  .btn-ir-al-pedido {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 100;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #ff4500 0%, #e03e00 100%);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(255, 69, 0, 0.4);
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: slideUpBoton 0.4s ease;
+  }
+
+  .btn-ir-al-pedido:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(255, 69, 0, 0.5);
+  }
+
+  .btn-ir-al-pedido:active {
+    transform: scale(0.98);
+  }
+
+  .btn-ir-al-pedido-icono {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .btn-ir-al-pedido-texto {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn-ir-al-pedido-total {
+    background: rgba(0, 0, 0, 0.25);
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* Animación de entrada */
+  @keyframes slideUpBoton {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Espacio al final de la página para que el botón no tape el último producto */
+  .mesa-view-container {
+    padding-bottom: 100px;
   }
 }
