@@ -3,6 +3,7 @@ import React, { useState, useMemo } from "react";
 import { useRestaurante } from "../../context/RestauranteContext";
 import FormularioProducto from "./FormularioProducto";
 import "./GestionProductos.css";
+import SelectCustom from "../Stock/SelectCustom";
 
 const GestionProductos = ({ onVolver }) => {
   const {
@@ -16,7 +17,7 @@ const GestionProductos = ({ onVolver }) => {
 
   const [busqueda, setBusqueda] = useState("");
   const [filtroCategoria, setFiltroCategoria] = useState("");
-  const [filtroEstado, setFiltroEstado] = useState("activos"); // activos | inactivos | todos
+  const [filtroEstado, setFiltroEstado] = useState("activos");
   const [productoEditando, setProductoEditando] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [mensaje, setMensaje] = useState("");
@@ -160,30 +161,29 @@ const GestionProductos = ({ onVolver }) => {
           className="input-busqueda"
         />
 
-        <select
+        <SelectCustom
           value={filtroCategoria}
-          onChange={(e) => setFiltroCategoria(e.target.value)}
-          className="select-filtro"
-        >
-          <option value="">Todas las categorías</option>
-          {categorias.map((cat) => {
-            return (
-              <option key={cat.id_categoria} value={cat.id_categoria}>
-                {cat.nombre}
-              </option>
-            );
-          })}
-        </select>
+          onChange={setFiltroCategoria}
+          placeholder="Todas las categorías"
+          options={[
+            { value: "", label: "Todas las categorías" },
+            ...categorias.map((cat) => ({
+              value: String(cat.id_categoria),
+              label: cat.nombre,
+            })),
+          ]}
+        />
 
-        <select
+        <SelectCustom
           value={filtroEstado}
-          onChange={(e) => setFiltroEstado(e.target.value)}
-          className="select-filtro"
-        >
-          <option value="activos">✅ Activos</option>
-          <option value="inactivos">❌ Inactivos</option>
-          <option value="todos">📋 Todos</option>
-        </select>
+          onChange={setFiltroEstado}
+          placeholder="Activos"
+          options={[
+            { value: "activos", label: "✅ Activos" },
+            { value: "inactivos", label: "❌ Inactivos" },
+            { value: "todos", label: "📋 Todos" },
+          ]}
+        />
       </div>
 
       {/* Contador */}
@@ -216,19 +216,23 @@ const GestionProductos = ({ onVolver }) => {
                   key={producto.id_producto}
                   className={producto.activo === false ? "fila-inactiva" : ""}
                 >
-                  <td className="col-nombre">{producto.nombre}</td>
-                  <td>{getNombreCategoria(producto.id_categoria)}</td>
-                  <td className="col-precio">
+                  <td className="col-nombre" data-label="Producto">
+                    {producto.nombre}
+                  </td>
+                  <td data-label="Categoría">
+                    {getNombreCategoria(producto.id_categoria)}
+                  </td>
+                  <td className="col-precio" data-label="Precio">
                     ${parseFloat(producto.precio).toLocaleString("es-AR")}
                   </td>
-                  <td className="col-estado">
+                  <td className="col-estado" data-label="Estado">
                     {producto.activo === false ? (
                       <span className="badge-inactivo">❌ Inactivo</span>
                     ) : (
                       <span className="badge-activo">✅ Activo</span>
                     )}
                   </td>
-                  <td className="col-acciones">
+                  <td className="col-acciones" data-label="Acciones">
                     <button
                       className="btn-editar"
                       onClick={() => handleEditarProducto(producto)}
