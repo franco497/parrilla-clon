@@ -181,16 +181,16 @@
 @media (max-width: 600px) {
   .formulario-overlay {
     padding: 12px;
-    align-items: flex-start; /* el modal se pega arriba, no se centra */
-    padding-top: 40px; /* espacio arriba para que no quede pegado al borde */
-    overflow-y: auto; /* permite scroll si el modal es más alto que la pantalla */
+    align-items: flex-start; 
+    padding-top: 40px; 
+    overflow-y: auto; 
   }
 
   .formulario-modal {
     padding: 20px 16px;
     max-width: 100%;
     border-radius: 12px;
-    margin: auto; /* centra verticalmente si hay espacio */
+    margin: auto; 
   }
 
   .formulario-modal h3 {
@@ -198,12 +198,12 @@
   }
 
   .form-acciones {
-    flex-direction: column; /* botones apilados en móvil */
+    flex-direction: column; 
     gap: 8px;
   }
 
   .form-acciones button {
     width: 100%;
-    min-height: 48px; /* tamaño táctil recomendado */
+    min-height: 48px; 
   }
 }
