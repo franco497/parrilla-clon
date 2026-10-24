@@ -501,7 +501,7 @@ const MesaView = () => {
         </div>
 
         {/* Columna derecha: Pedido actual */}
-        <div className="columna-pedido">
+        <div className="columna-pedido" id="columna-pedido">
           {/* Sección de reserva */}
           <div className="reserva-section">
             {nombreReservaLocal ? (
@@ -706,6 +706,30 @@ const MesaView = () => {
           </div>
         </div>
       </div>
+      {/* Botón flotante para ir al pedido (solo en móvil) */}
+      {itemsPedido.length > 0 && (
+        <button
+          className="btn-ir-al-pedido"
+          onClick={() => {
+            const columnaPedido = document.getElementById("columna-pedido");
+            if (columnaPedido) {
+              columnaPedido.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          }}
+        >
+          <span className="btn-ir-al-pedido-icono">🛒</span>
+          <span className="btn-ir-al-pedido-texto">
+            Ver pedido ({itemsPedido.length}{" "}
+            {itemsPedido.length === 1 ? "item" : "items"})
+          </span>
+          <span className="btn-ir-al-pedido-total">
+            ${total.toLocaleString()}
+          </span>
+        </button>
+      )}
     </div>
   );
 };
