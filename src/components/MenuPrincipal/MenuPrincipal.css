@@ -21,10 +21,10 @@
   font-size: 1rem;
 }
 
-/* Grid con tarjetas más chicas */
+/* Base: 4 columnas en desktop grande */
 .contenedor-modulos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 18px;
 }
 
@@ -123,15 +123,24 @@
   }
 }
 
+/* Tablet grande: 2 columnas (2x2) */
+@media (max-width: 1010px) {
+  .contenedor-modulos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Móvil: 1 columna */
+@media (max-width: 775px) {
+  .contenedor-modulos {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Responsive: pantallas chicas */
 @media (max-width: 600px) {
   .menu-header h1 {
     font-size: 1.6rem;
-  }
-
-  .contenedor-modulos {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
   }
 
   .tarjeta-modulo {
