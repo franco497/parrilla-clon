@@ -161,11 +161,12 @@
   }
 
   .lista-mozos {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 90%;
+    /* Mantener position absolute para que herede el ancho del padre */
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
     max-height: 60vh;
+    /* Sin transform, sin max-width: 90% */
   }
 }
