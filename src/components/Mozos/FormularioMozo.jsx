@@ -50,6 +50,7 @@ const FormularioMozo = ({ mozo, onGuardar, onCancelar, loading }) => {
               autoFocus
               maxLength="100"
               disabled={loading}
+              autoComplete="off"
             />
           </div>
 
@@ -62,11 +63,7 @@ const FormularioMozo = ({ mozo, onGuardar, onCancelar, loading }) => {
             >
               ❌ Cancelar
             </button>
-            <button
-              type="submit"
-              className="btn-guardar"
-              disabled={loading}
-            >
+            <button type="submit" className="btn-guardar" disabled={loading}>
               {loading
                 ? "⏳ Guardando..."
                 : mozo

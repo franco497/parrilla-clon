@@ -77,6 +77,7 @@ const FormularioProducto = ({
               autoFocus
               maxLength="100"
               disabled={loading}
+              autoComplete="off"
             />
           </div>
 
@@ -92,6 +93,7 @@ const FormularioProducto = ({
                 min="0"
                 step="100"
                 disabled={loading}
+                autoComplete="off"
               />
             </div>
 

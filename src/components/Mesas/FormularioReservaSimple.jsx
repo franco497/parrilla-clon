@@ -1,56 +1,58 @@
 // src/components/Mesas/FormularioReservaSimple.jsx
-import React, { useState } from 'react';
-import './FormularioReservaSimple.css';
+import React, { useState } from "react";
+import "./FormularioReservaSimple.css";
 
 const FormularioReservaSimple = ({ mesaId, onGuardar, onCancelar }) => {
-  const [nombreCliente, setNombreCliente] = useState('');
+  const [nombreCliente, setNombreCliente] = useState("");
   const [enviando, setEnviando] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // Obtener fecha y hora actual para mostrar
   const ahora = new Date();
-  const fechaFormateada = ahora.toLocaleDateString('es-AR', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  const fechaFormateada = ahora.toLocaleDateString("es-AR", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
-  const horaFormateada = ahora.toLocaleTimeString('es-AR', {
-    hour: '2-digit',
-    minute: '2-digit'
+  const horaFormateada = ahora.toLocaleTimeString("es-AR", {
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // VALIDACIÓN: Asegurarnos que el nombre no esté vacío
     const nombreTrimmed = nombreCliente.trim();
     if (!nombreTrimmed) {
-      setError('⚠️ El nombre del cliente es obligatorio');
+      setError("⚠️ El nombre del cliente es obligatorio");
       return;
     }
 
     setEnviando(true);
-    setError('');
+    setError("");
 
     try {
       // CORRECCIÓN: Pasar el nombre como string, no como objeto
       const result = await onGuardar(mesaId, nombreTrimmed);
-      
+
       // Verificar si la función retornó un resultado
       if (result && result.success) {
-        setNombreCliente('');
+        setNombreCliente("");
         onCancelar(); // Cerrar modal
       } else if (result && result.error) {
         setError(`❌ Error: ${result.error}`);
       } else {
         // Si la función no retornó nada, asumimos que funcionó
-        setNombreCliente('');
+        setNombreCliente("");
         onCancelar();
       }
     } catch (error) {
-      console.error('Error al guardar reserva:', error);
-      setError(`❌ Error al guardar la reserva: ${error.message || 'Error desconocido'}`);
+      console.error("Error al guardar reserva:", error);
+      setError(
+        `❌ Error al guardar la reserva: ${error.message || "Error desconocido"}`,
+      );
     } finally {
       setEnviando(false);
     }
@@ -61,7 +63,7 @@ const FormularioReservaSimple = ({ mesaId, onGuardar, onCancelar }) => {
       <div className="reserva-header">
         <h3>📅 Reservar Mesa {mesaId}</h3>
       </div>
-      
+
       <div className="campo-form">
         <label htmlFor="nombreCliente">
           👤 Nombre del Cliente <span className="obligatorio">*</span>
@@ -73,12 +75,13 @@ const FormularioReservaSimple = ({ mesaId, onGuardar, onCancelar }) => {
           value={nombreCliente}
           onChange={(e) => {
             setNombreCliente(e.target.value);
-            if (error) setError('');
+            if (error) setError("");
           }}
           disabled={enviando}
           autoFocus
-          className={error ? 'error' : ''}
+          className={error ? "error" : ""}
           maxLength="100"
+          autoComplete="off"
         />
         {error && <span className="mensaje-error">{error}</span>}
       </div>
@@ -97,20 +100,22 @@ const FormularioReservaSimple = ({ mesaId, onGuardar, onCancelar }) => {
           <strong>1 (por defecto)</strong>
         </div>
         <div className="info-nota">
-          <small>💡 La fecha y hora se cargan automáticamente con la hora actual</small>
+          <small>
+            💡 La fecha y hora se cargan automáticamente con la hora actual
+          </small>
         </div>
       </div>
 
       <div className="acciones-formulario">
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className="btn-guardar-reserva"
           disabled={enviando}
         >
-          {enviando ? '⏳ Guardando...' : '✅ Reservar Ahora'}
+          {enviando ? "⏳ Guardando..." : "✅ Reservar Ahora"}
         </button>
-        <button 
-          type="button" 
+        <button
+          type="button"
           className="btn-cancelar-reserva"
           onClick={onCancelar}
           disabled={enviando}

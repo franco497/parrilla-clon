@@ -56,6 +56,7 @@ const FormularioStock = ({ producto, onGuardar, onCancelar, loading }) => {
               step="1"
               autoFocus
               disabled={loading}
+              autoComplete="off"
             />
             <small className="form-help">
               Ingresá el stock físico contado. Reemplaza el valor actual.
