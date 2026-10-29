@@ -2,7 +2,6 @@
 import React, { useState, useMemo } from "react";
 import { useRestaurante } from "../../context/RestauranteContext";
 import FormularioMozo from "./FormularioMozo";
-import "./GestionMozos.css";
 import SelectCustom from "../Stock/SelectCustom";
 
 const GestionMozos = ({ onVolver }) => {

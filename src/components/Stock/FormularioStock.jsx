@@ -1,6 +1,5 @@
 // src/components/Stock/FormularioStock.jsx
 import React, { useState, useEffect } from "react";
-import "./FormularioStock.css";
 
 const FormularioStock = ({ producto, onGuardar, onCancelar, loading }) => {
   const [nuevoStock, setNuevoStock] = useState("");

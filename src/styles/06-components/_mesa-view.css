@@ -1,28 +1,45 @@
-/* src/pages/MesaView.css */
+/* ==========================================================================
+   COMPONENT: MesaView
+   ========================================================================== */
 
+/* Contenedor principal */
 .mesa-view-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  padding: 20px;
+  padding: 15px;
+  padding-bottom: 100px; /* espacio para botón flotante en móvil */
   color: #fff;
 }
 
-/* HEADER */
+.mesa-view-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff;
+}
+
+/* HEADER - base móvil: columna */
 .mesa-view-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 15px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
+  text-align: center;
+}
+
+.mesa-view-header h1 {
+  margin: 0;
+  font-size: 1.4rem; /* mobile-first */
 }
 
 .btn-volver-mesa {
   background: #444;
-  color: white;
+  color: #fff;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
@@ -36,45 +53,39 @@
   transform: translateY(-2px);
 }
 
-.mesa-view-header h1 {
-  margin: 0;
-  font-size: 1.8rem;
-}
-
 .header-badges {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+.badge-pedido,
+.badge-ocupada,
+.badge-reservada,
+.badge-mozo {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
 }
 
 .badge-pedido {
-  background: #2d6a4f;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
+  background: var(--success-color);
 }
-
 .badge-ocupada {
   background: #c62828;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
 }
-
 .badge-reservada {
   background: #f59e0b;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
+}
+.badge-mozo {
+  background: var(--success-color);
+  border: 1px solid rgba(76, 175, 80, 0.3);
 }
 
-/* MENSAJE */
+/* MENSAJE DE ESTADO */
 .mensaje-estado {
   padding: 12px 15px;
   border-radius: 8px;
@@ -107,25 +118,37 @@
   color: #ef5350;
 }
 
-/* CONTENIDO - 2 columnas */
+/* CONTENIDO - base móvil: 1 columna */
 .mesa-view-content {
   display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 20px;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.columna-menu,
+.columna-pedido {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px;
 }
 
 .columna-menu {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 20px;
-  max-height: calc(100vh - 180px);
-  overflow-y: auto;
+  max-height: none;
+  overflow-y: visible;
+}
+
+.columna-pedido {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: none;
+  overflow-y: visible;
 }
 
 .columna-menu h2 {
   margin-top: 0;
-  color: #ff4500;
-  font-size: 1.2rem;
+  color: var(--primary-color);
+  font-size: 1.1rem;
 }
 
 .menu-productos {
@@ -135,7 +158,7 @@
 }
 
 .categoria-menu h5 {
-  color: #ff4500;
+  color: var(--primary-color);
   margin: 0 0 8px 0;
   font-size: 0.9rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -148,16 +171,16 @@
   gap: 4px;
 }
 
+/* Producto item - base móvil: columna */
 .producto-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
   padding: 8px 10px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 6px;
   transition: background 0.2s;
-  gap: 8px;
-  flex-wrap: wrap;
 }
 
 .producto-item:hover {
@@ -168,7 +191,8 @@
   display: flex;
   gap: 12px;
   align-items: center;
-  flex: 1;
+  justify-content: space-between;
+  width: 100%;
   min-width: 100px;
 }
 
@@ -183,15 +207,28 @@
   font-size: 0.85rem;
 }
 
-/* ✅ CONTENEDOR DE ACCIONES DEL PRODUCTO */
+.producto-stock {
+  font-size: 0.75rem;
+  color: #4caf50;
+  font-weight: 600;
+  margin-left: auto;
+  padding-left: 8px;
+}
+
+.producto-stock.agotado {
+  color: #ef5350;
+}
+
 .producto-accion {
   display: flex;
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 100%;
 }
 
-/* Control de cantidad con botones + y - */
+/* Control de cantidad */
 .cantidad-control {
   display: flex;
   align-items: center;
@@ -200,16 +237,18 @@
   border-radius: 6px;
   border: 1px solid #444;
   overflow: hidden;
+  flex: 1;
+  max-width: 120px;
 }
 
 .btn-cantidad {
   background: transparent;
-  color: white;
+  color: #fff;
   border: none;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: bold;
   transition: all 0.2s;
   display: flex;
@@ -221,11 +260,9 @@
 .btn-cantidad:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.1);
 }
-
 .btn-cantidad:active:not(:disabled) {
   transform: scale(0.9);
 }
-
 .btn-cantidad:disabled {
   opacity: 0.3;
   cursor: not-allowed;
@@ -234,15 +271,12 @@
 .btn-cantidad-menos {
   color: #ff6b6b;
 }
-
 .btn-cantidad-menos:hover:not(:disabled) {
   background: rgba(255, 107, 107, 0.15);
 }
-
 .btn-cantidad-mas {
   color: #4caf50;
 }
-
 .btn-cantidad-mas:hover:not(:disabled) {
   background: rgba(76, 175, 80, 0.15);
 }
@@ -252,13 +286,13 @@
   text-align: center;
   font-size: 0.95rem;
   font-weight: bold;
-  color: white;
+  color: #fff;
   padding: 0 4px;
 }
 
 .btn-agregar {
-  background: #ff4500;
-  color: white;
+  background: var(--primary-color);
+  color: #fff;
   border: none;
   border-radius: 4px;
   padding: 6px 12px;
@@ -268,28 +302,19 @@
   transition: all 0.2s;
   white-space: nowrap;
   min-height: 30px;
+  flex: 1;
+  min-width: 80px;
+  text-align: center;
 }
 
 .btn-agregar:hover:not(:disabled) {
   background: #e03e00;
   transform: scale(1.02);
 }
-
 .btn-agregar:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
-}
-
-.columna-pedido {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: calc(100vh - 180px);
-  overflow-y: auto;
 }
 
 /* Reserva */
@@ -309,16 +334,13 @@
 .reserva-icono {
   font-size: 1.5rem;
 }
-
 .reserva-info {
   flex: 1;
 }
-
 .reserva-cliente {
   margin: 0;
   font-size: 0.95rem;
 }
-
 .reserva-cliente strong {
   color: #f59e0b;
 }
@@ -333,7 +355,7 @@
 
 .btn-cancelar-reserva {
   background: #c62828;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 6px;
   padding: 6px 12px;
@@ -354,7 +376,7 @@
 
 .btn-reservar {
   background: #f59e0b;
-  color: white;
+  color: #fff;
   border: none;
   padding: 6px 16px;
   border-radius: 6px;
@@ -365,7 +387,8 @@
 /* Personas */
 .personas-grupo {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 8px;
   background: rgba(255, 255, 255, 0.05);
   padding: 12px;
   border-radius: 8px;
@@ -385,18 +408,78 @@
   border-radius: 4px;
   border: 1px solid #444;
   background: #1a1a1a;
-  color: white;
+  color: #fff;
   text-align: center;
 }
 
-/* Items pedido */
-/* .items-pedido-container {
-  flex: 1;
-} */
+/* Items del pedido */
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
 
-.items-pedido-container h4 {
-  margin: 0 0 8px 0;
-  color: #ff4500;
+.items-header h4 {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.btn-editar-pedido {
+  background: #f59e0b;
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-editar-pedido:hover {
+  background: #d97706;
+  transform: scale(1.02);
+}
+
+.acciones-edicion {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-guardar-edicion {
+  background: var(--success-color);
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-guardar-edicion:hover {
+  background: #1b5e20;
+}
+
+.btn-cancelar-edicion {
+  background: #c62828;
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-cancelar-edicion:hover {
+  background: #b71c1c;
 }
 
 .sin-items {
@@ -405,7 +488,8 @@
   padding: 20px 0;
 }
 
-.items-pedido {
+.items-pedido,
+.items-pedido-edicion {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   padding: 8px;
@@ -426,7 +510,7 @@
 }
 
 .item-cantidad {
-  color: #ff4500;
+  color: var(--primary-color);
   font-weight: bold;
   min-width: 30px;
 }
@@ -441,9 +525,86 @@
   font-weight: bold;
 }
 
+/* Modo edición - base móvil: columna */
+.item-pedido-edit {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
+}
+
+.item-pedido-edit:last-child {
+  border-bottom: none;
+}
+
+.item-pedido-edit .item-nombre {
+  width: 100%;
+  flex: none;
+  color: #e0e0e0;
+}
+
+.item-edit-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.btn-edit-cantidad {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-edit-cantidad:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+}
+.btn-edit-cantidad:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.cantidad-edit-valor {
+  min-width: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+}
+
+.item-subtotal-edit {
+  min-width: 70px;
+  text-align: right;
+  color: #4caf50;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Mozo */
+.mozo-section {
+  background: rgba(76, 175, 80, 0.05);
+  border: 1px solid rgba(76, 175, 80, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
 /* Total */
 .total-display {
-  background: #2d6a4f;
+  background: var(--success-color);
   padding: 15px 20px;
   border-radius: 8px;
   display: flex;
@@ -482,7 +643,7 @@
 
 .btn-calcular {
   background: #444;
-  color: white;
+  color: #fff;
 }
 
 .btn-calcular:hover:not(:disabled) {
@@ -491,7 +652,7 @@
 
 .btn-guardar {
   background: #2e7d32;
-  color: white;
+  color: #fff;
 }
 
 .btn-guardar:hover:not(:disabled) {
@@ -500,8 +661,8 @@
 }
 
 .btn-cobrar {
-  background: #ff4500;
-  color: white;
+  background: var(--primary-color);
+  color: #fff;
 }
 
 .btn-cobrar:hover:not(:disabled) {
@@ -511,7 +672,7 @@
 
 .btn-cancelar-pedido {
   background: #c62828;
-  color: white;
+  color: #fff;
 }
 
 .btn-cancelar-pedido:hover:not(:disabled) {
@@ -519,374 +680,182 @@
   transform: translateY(-2px);
 }
 
-/*edicion*/
-
-/* Header de items del pedido */
-.items-header {
+/* Botón flotante "ir al pedido" */
+.btn-ir-al-pedido {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.items-header h4 {
-  margin: 0;
-  color: #ff4500;
-}
-
-.btn-editar-pedido {
-  background: #f59e0b;
-  color: white;
+  gap: 10px;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 100;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #e03e00 100%);
+  color: #fff;
   border: none;
-  padding: 4px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: bold;
-  transition: all 0.2s;
-}
-
-.btn-editar-pedido:hover {
-  background: #d97706;
-  transform: scale(1.02);
-}
-
-/* Acciones de edición */
-.acciones-edicion {
-  display: flex;
-  gap: 6px;
-}
-
-.btn-guardar-edicion {
-  background: #2d6a4f;
-  color: white;
-  border: none;
-  padding: 4px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: bold;
-  transition: all 0.2s;
-}
-
-.btn-guardar-edicion:hover {
-  background: #1b5e20;
-}
-
-.btn-cancelar-edicion {
-  background: #c62828;
-  color: white;
-  border: none;
-  padding: 4px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: bold;
-  transition: all 0.2s;
-}
-
-.btn-cancelar-edicion:hover {
-  background: #b71c1c;
-}
-
-/* Items en modo edición */
-.items-pedido-edicion {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  padding: 8px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.item-pedido-edit {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 0.85rem;
-}
-
-.item-pedido-edit:last-child {
-  border-bottom: none;
-}
-
-.item-pedido-edit .item-nombre {
-  flex: 1;
-  color: #e0e0e0;
-}
-
-.item-edit-control {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-edit-cantidad {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
-  border: 1px solid #444;
-  border-radius: 4px;
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(255, 69, 0, 0.4);
   font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: slideUpBoton 0.4s ease;
 }
 
-.btn-edit-cantidad:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.15);
+.btn-ir-al-pedido:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(255, 69, 0, 0.5);
 }
 
-.btn-edit-cantidad:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+.btn-ir-al-pedido:active {
+  transform: scale(0.98);
 }
 
-.cantidad-edit-valor {
-  min-width: 20px;
-  text-align: center;
-  font-weight: bold;
-  color: white;
+.btn-ir-al-pedido-icono {
+  font-size: 1.3rem;
+  flex-shrink: 0;
 }
 
-.item-subtotal-edit {
-  min-width: 70px;
-  text-align: right;
-  color: #4caf50;
-  font-weight: bold;
-  font-size: 0.8rem;
+.btn-ir-al-pedido-texto {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.mozo-section {
-  background: rgba(76, 175, 80, 0.05);
-  border: 1px solid rgba(76, 175, 80, 0.1);
-  padding: 8px 12px;
-  border-radius: 8px;
-  margin-bottom: 8px;
+.btn-ir-al-pedido-total {
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  flex-shrink: 0;
 }
 
-.badge-mozo {
-  background: #2d6a4f;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  border: 1px solid rgba(76, 175, 80, 0.3);
-}
-
-.producto-stock {
-  font-size: 0.75rem;
-  color: #4caf50;
-  font-weight: 600;
-  margin-left: auto;
-  padding-left: 8px;
-}
-
-.producto-stock.agotado {
-  color: #ef5350;
-}
-
-/* ==========================================
-   MEDIA QUERIES
-   ========================================== */
-
-@media (max-width: 600px) {
-  .item-pedido-edit {
-    flex-wrap: wrap;
-    gap: 4px;
+@keyframes slideUpBoton {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
   }
-
-  .item-pedido-edit .item-nombre {
-    width: 100%;
-    flex: none;
-  }
-
-  .item-edit-control {
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .items-header {
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .acciones-edicion {
-    flex-wrap: wrap;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* RESPONSIVE - TABLET */
-@media (max-width: 992px) {
-  .mesa-view-content {
-    grid-template-columns: 1fr;
-  }
+/* ==========================================================================
+   RESPONSIVE (mobile-first → desktop)
+   ========================================================================== */
 
-  .columna-menu {
-    max-height: none;
-    overflow-y: visible;
-  }
-
-  .columna-pedido {
-    max-height: none;
-    overflow-y: visible;
-  }
-}
-
-/* RESPONSIVE - MÓVIL GRANDE */
-@media (max-width: 600px) {
+/* Tablet: 2 columnas (menú + pedido) */
+@media (min-width: 601px) {
   .mesa-view-header {
-    flex-direction: column;
-    align-items: stretch;
-    text-align: center;
-  }
-
-  .mesa-view-header h1 {
-    font-size: 1.4rem;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    padding: 15px 20px;
   }
 
   .header-badges {
-    justify-content: center;
-  }
-
-  .personas-grupo {
-    flex-direction: column;
-    gap: 8px;
+    justify-content: flex-start;
   }
 
   .producto-item {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+    flex-direction: row;
+    align-items: center;
   }
 
   .producto-info {
-    justify-content: space-between;
-    width: 100%;
+    justify-content: flex-start;
+    width: auto;
   }
 
   .producto-accion {
-    justify-content: flex-end;
-    width: 100%;
+    justify-content: flex-start;
+    width: auto;
   }
 
   .cantidad-control {
-    flex: 1;
-    max-width: 120px;
-  }
-
-  .btn-cantidad {
-    width: 36px;
-    height: 36px;
-    font-size: 1.4rem;
-  }
-
-  .btn-agregar {
-    flex: 1;
-    min-width: 80px;
-    text-align: center;
-  }
-}
-
-/* RESPONSIVE - MÓVIL PEQUEÑO */
-@media (max-width: 400px) {
-  .producto-accion {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .cantidad-control {
+    flex: none;
     max-width: none;
   }
 
   .btn-agregar {
-    min-width: 100%;
+    flex: none;
+    min-width: auto;
+  }
+
+  .items-header {
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+
+  .acciones-edicion {
+    flex-wrap: nowrap;
   }
 }
 
-/* ==========================================
-   BOTÓN FLOTANTE "IR AL PEDIDO" (SOLO MÓVIL)
-   ========================================== */
+/* Desktop: layout de 2 columnas (menú | pedido) */
+@media (min-width: 993px) {
+  .mesa-view-container {
+    padding: 20px;
+    padding-bottom: 20px; /* sin botón flotante en desktop */
+  }
 
-.btn-ir-al-pedido {
-  display: none; /* Oculto en desktop */
-}
+  .mesa-view-content {
+    grid-template-columns: 1fr 400px;
+    gap: 20px;
+  }
 
-@media (max-width: 992px) {
+  .columna-menu {
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+  }
+
+  .columna-pedido {
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+  }
+
+  .mesa-view-header h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Ocultar botón flotante en desktop */
   .btn-ir-al-pedido {
-    display: flex;
+    display: none;
+  }
+
+  /* Modo edición vuelve a fila en desktop */
+  .item-pedido-edit {
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    z-index: 100;
-    padding: 14px 20px;
-    background: linear-gradient(135deg, #ff4500 0%, #e03e00 100%);
-    color: white;
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(255, 69, 0, 0.4);
-    font-size: 1rem;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    animation: slideUpBoton 0.4s ease;
   }
 
-  .btn-ir-al-pedido:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(255, 69, 0, 0.5);
-  }
-
-  .btn-ir-al-pedido:active {
-    transform: scale(0.98);
-  }
-
-  .btn-ir-al-pedido-icono {
-    font-size: 1.3rem;
-    flex-shrink: 0;
-  }
-
-  .btn-ir-al-pedido-texto {
+  .item-pedido-edit .item-nombre {
     flex: 1;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    width: auto;
   }
 
-  .btn-ir-al-pedido-total {
-    background: rgba(0, 0, 0, 0.25);
-    padding: 6px 12px;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    font-weight: 800;
-    flex-shrink: 0;
+  .item-edit-control {
+    width: auto;
+    justify-content: flex-start;
   }
 
-  /* Animación de entrada */
-  @keyframes slideUpBoton {
-    from {
-      opacity: 0;
-      transform: translateY(100%);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Personas en fila */
+  .personas-grupo {
+    flex-direction: row;
+    gap: 20px;
   }
+}
 
-  /* Espacio al final de la página para que el botón no tape el último producto */
+/* Desktop chico (600-992): ajustes finos */
+@media (min-width: 601px) and (max-width: 992px) {
+  /* El botón flotante se mantiene visible (es tablet) */
   .mesa-view-container {
     padding-bottom: 100px;
   }

@@ -1,0 +1,32 @@
+/* ============================================
+   ITCSS - MAIN
+   Importa todos los archivos en orden
+   ============================================ */
+
+/* 01 - SETTINGS: variables */
+@import './01-settings/_colors.css';
+@import './01-settings/_typography.css';
+@import './01-settings/_breakpoints.css';
+
+/* 02 - TOOLS: mixins, animaciones */
+@import './02-tools/_animations.css';
+
+/* 03 - GENERIC: reset */
+@import './03-generic/_reset.css';
+
+/* 04 - ELEMENTS: HTML elements */
+@import './04-elements/_headings.css';
+
+/* 05 - OBJECTS: objetos (containers, grids) */
+@import './05-objects/_container.css';
+
+/* 06 - COMPONENTS: componentes */
+@import './06-components/_buttons.css';
+@import './06-components/_badges.css';
+@import './06-components/_modal.css';
+@import './06-components/_table.css';
+@import './06-components/_card.css';
+@import './06-components/_gestion.css';
+
+/* 07 - UTILITIES: helpers */
+@import './07-utilities/_spacing.css';

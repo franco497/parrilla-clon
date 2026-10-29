@@ -1,0 +1,55 @@
+/* ==========================================================================
+   COMPONENT: Dashboard
+   ========================================================================== */
+
+.dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 20px;
+  padding-top: 90px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff;
+}
+
+.seccion-en-construccion {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.seccion-en-construccion h2 {
+  color: #fff;
+  margin-top: 20px;
+}
+
+.seccion-en-construccion p {
+  color: #a0a0a0;
+  font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   COMPONENT: NotFound
+   ========================================================================== */
+
+.not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--white);
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 20px;
+}
+
+@media (min-width: 601px) {
+  .not-found {
+    font-size: 2rem;
+  }
+}

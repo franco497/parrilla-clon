@@ -2,7 +2,6 @@
 import React, { useState, useMemo } from "react";
 import { useRestaurante } from "../../context/RestauranteContext";
 import FormularioProducto from "./FormularioProducto";
-import "./GestionProductos.css";
 import SelectCustom from "../Stock/SelectCustom";
 
 const GestionProductos = ({ onVolver }) => {

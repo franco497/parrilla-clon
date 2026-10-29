@@ -1,33 +1,33 @@
 // src/components/MenuPrincipal/MenuPrincipal.jsx
-import React from 'react';
-import './MenuPrincipal.css';
+import React from "react";
 
 const MenuPrincipal = ({ onSeleccionarModulo, alertaStock = 0 }) => {
   const modulos = [
     {
-      id: 'mesas',
-      icono: '🪑',
-      titulo: 'Elegir Mesas',
-      descripcion: 'Controlá el estado del salón, abrí mesas y cargá los pedidos de los comensales.',
+      id: "mesas",
+      icono: "🪑",
+      titulo: "Elegir Mesas",
+      descripcion:
+        "Controlá el estado del salón, abrí mesas y cargá los pedidos de los comensales.",
     },
     {
-      id: 'cargar',
-      icono: '📦',
-      titulo: 'Cargar Mercadería',
-      descripcion: 'Gestioná el menú y los productos del restaurante.',
+      id: "cargar",
+      icono: "📦",
+      titulo: "Cargar Mercadería",
+      descripcion: "Gestioná el menú y los productos del restaurante.",
     },
     {
-      id: 'stock',
-      icono: '📊',
-      titulo: 'Ver Stock',
-      descripcion: 'Consultá el inventario actual y alertas de bajo stock.',
-      badge: alertaStock,  // ← nuevo: badge dinámico
+      id: "stock",
+      icono: "📊",
+      titulo: "Ver Stock",
+      descripcion: "Consultá el inventario actual y alertas de bajo stock.",
+      badge: alertaStock, // ← nuevo: badge dinámico
     },
     {
-      id: 'mozos',
-      icono: '👨‍🍳',
-      titulo: 'Gestionar Mozos',
-      descripcion: 'Administrá el personal del salón.',
+      id: "mozos",
+      icono: "👨‍🍳",
+      titulo: "Gestionar Mozos",
+      descripcion: "Administrá el personal del salón.",
     },
   ];
 
@@ -39,11 +39,14 @@ const MenuPrincipal = ({ onSeleccionarModulo, alertaStock = 0 }) => {
       </header>
 
       <div className="contenedor-modulos">
-        {modulos.map(modulo => (
+        {modulos.map((modulo) => (
           <div key={modulo.id} className="tarjeta-modulo">
             {/* Badge de alerta */}
             {modulo.badge > 0 && (
-              <span className="badge-alerta" title={`${modulo.badge} productos con bajo stock o agotados`}>
+              <span
+                className="badge-alerta"
+                title={`${modulo.badge} productos con bajo stock o agotados`}
+              >
                 {modulo.badge}
               </span>
             )}

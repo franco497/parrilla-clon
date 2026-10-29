@@ -5,7 +5,6 @@ import { useRestaurante } from "../context/RestauranteContext";
 import MenuPrincipal from "../components/MenuPrincipal/MenuPrincipal";
 import GrillaMesas from "../components/Mesas/GrillaMesas";
 import Navbar from "../components/Navbar";
-import "./Dashboard.css";
 import GestionProductos from "../components/Productos/GestionProductos";
 import GestionMozos from "../components/Mozos/GestionMozos";
 import GestionStock from "../components/Stock/GestionStock";

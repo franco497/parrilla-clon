@@ -1,4 +1,7 @@
-/* src/components/Mesas/MesaCard.css */
+/* ==========================================================================
+   COMPONENT: MesaCard
+   ========================================================================== */
+
 .mesa {
   background-color: #262626;
   border-radius: 8px;
@@ -38,14 +41,6 @@
 }
 
 /* Estados */
-.mesa.disponible {
-  border-color: #2e7d32;
-}
-
-.mesa.ocupada {
-  border-color: #c62828;
-}
-
-.mesa.reservada {
-  border-color: #f59e0b;
-}
+.mesa.disponible { border-color: #2e7d32; }
+.mesa.ocupada    { border-color: #c62828; }
+.mesa.reservada  { border-color: #f59e0b; }

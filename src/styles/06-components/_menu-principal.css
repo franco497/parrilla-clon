@@ -1,4 +1,7 @@
-/* src/components/MenuPrincipal/MenuPrincipal.css */
+/* ==========================================================================
+   COMPONENT: MenuPrincipal
+   ========================================================================== */
+
 .menu-principal {
   max-width: 1200px;
   margin: 0 auto;
@@ -11,29 +14,29 @@
 }
 
 .menu-header h1 {
-  color: #ff4500;
-  font-size: 2.2rem;
+  color: var(--primary-color);
+  font-size: 1.6rem; /* mobile-first */
   margin-bottom: 8px;
 }
 
 .menu-header p {
   color: #a0a0a0;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
-/* Base: 4 columnas en desktop grande */
+/* Grid: mobile-first, 1 columna */
 .contenedor-modulos {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  grid-template-columns: 1fr;
+  gap: 15px;
 }
 
-/* Tarjetas más compactas */
+/* Tarjetas */
 .tarjeta-modulo {
   background-color: #262626;
   border: 1px solid #333;
   border-radius: 12px;
-  padding: 20px 16px;
+  padding: 15px 12px; /* mobile-first */
   text-align: center;
   transition:
     transform 0.3s ease,
@@ -41,39 +44,40 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 240px;
+  min-height: 200px; /* mobile-first */
+  position: relative; /* necesario para el badge */
 }
 
 .tarjeta-modulo:hover {
   transform: translateY(-5px);
-  border-color: #ff4500;
+  border-color: var(--primary-color);
 }
 
 .tarjeta-modulo .icono {
-  font-size: 2.5rem;
+  font-size: 2rem; /* mobile-first */
   margin-bottom: 10px;
 }
 
 .tarjeta-modulo h2 {
   color: #fff;
   margin: 0 0 8px 0;
-  font-size: 1.15rem;
+  font-size: 1rem; /* mobile-first */
 }
 
 .tarjeta-modulo p {
   color: #b0b0b0;
-  font-size: 0.85rem;
+  font-size: 0.78rem; /* mobile-first */
   margin-bottom: 15px;
-  min-height: 50px;
+  min-height: 40px; /* mobile-first */
   line-height: 1.4;
 }
 
 .tarjeta-modulo button {
-  background-color: #ff4500;
-  color: white;
+  background-color: var(--primary-color);
+  color: #fff;
   border: none;
-  padding: 10px 18px;
-  font-size: 0.9rem;
+  padding: 8px 12px; /* mobile-first */
+  font-size: 0.8rem; /* mobile-first */
   font-weight: bold;
   border-radius: 6px;
   cursor: pointer;
@@ -87,16 +91,12 @@
 }
 
 /* Badge de alerta en las tarjetas */
-.tarjeta-modulo {
-  position: relative; /* ← necesario para que el badge se posicione */
-}
-
 .badge-alerta {
   position: absolute;
   top: 10px;
   right: 10px;
   background: #ef5350;
-  color: white;
+  color: #fff;
   border-radius: 50%;
   min-width: 26px;
   height: 26px;
@@ -123,46 +123,52 @@
   }
 }
 
-/* Tablet grande: 2 columnas (2x2) */
-@media (max-width: 1010px) {
+/* ==========================================================================
+   RESPONSIVE (mobile-first → desktop)
+   ========================================================================== */
+
+/* Tablet: 2 columnas (2x2) */
+@media (min-width: 776px) {
   .contenedor-modulos {
     grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
   }
-}
 
-/* Móvil: 1 columna */
-@media (max-width: 775px) {
-  .contenedor-modulos {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Responsive: pantallas chicas */
-@media (max-width: 600px) {
   .menu-header h1 {
-    font-size: 1.6rem;
-  }
-
-  .tarjeta-modulo {
-    padding: 15px 12px;
-    min-height: 200px;
-  }
-
-  .tarjeta-modulo .icono {
     font-size: 2rem;
   }
 
+  .tarjeta-modulo {
+    padding: 20px 16px;
+    min-height: 240px;
+  }
+
+  .tarjeta-modulo .icono {
+    font-size: 2.5rem;
+  }
+
   .tarjeta-modulo h2 {
-    font-size: 1rem;
+    font-size: 1.15rem;
   }
 
   .tarjeta-modulo p {
-    font-size: 0.78rem;
-    min-height: 40px;
+    font-size: 0.85rem;
+    min-height: 50px;
   }
 
   .tarjeta-modulo button {
-    font-size: 0.8rem;
-    padding: 8px 12px;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Desktop grande: 4 columnas */
+@media (min-width: 1011px) {
+  .contenedor-modulos {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .menu-header h1 {
+    font-size: 2.2rem;
   }
 }

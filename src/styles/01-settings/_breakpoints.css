@@ -1,0 +1,16 @@
+/* ============================================
+   SETTINGS - BREAKPOINTS (documentación)
+   ============================================ */
+
+/*
+   Móvil:      < 481px
+   Tablet:     481px - 768px
+   Desktop:    769px - 1010px
+   Desktop XL: > 1010px
+
+   Breakpoints principales:
+   - 481px:  tablet pequeña
+   - 601px:  tablet/desktop chico (modales)
+   - 769px:  desktop (tablas, layouts)
+   - 1010px: desktop grande
+*/

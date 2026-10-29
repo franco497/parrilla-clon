@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRestaurante } from "../context/RestauranteContext";
 import FormularioReservaSimple from "../components/Mesas/FormularioReservaSimple";
 import { generarFacturaPDF, generarTicketPDF } from "../services/pdfService";
-import "./MesaView.css";
 import { supabase } from "../lib/supabase";
 import SelectorMozo from "../components/Mesas/SelectorMozo";
 
