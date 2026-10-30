@@ -26,6 +26,7 @@ import "./styles/06-components/_formulario-reserva-simple.css";
 import "./styles/06-components/_selector-mozo.css";
 import "./styles/06-components/_login.css";
 import "./styles/06-components/_auth-callback.css";
+import "./styles/06-components/_navbar.css";
 
 import App from "./App.jsx";
 
