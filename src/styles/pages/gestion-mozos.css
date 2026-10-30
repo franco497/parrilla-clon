@@ -1,5 +1,6 @@
 /* ==========================================================================
-   PAGE: GestionMozos
+   PAGE: GestionMozos (mobile-first)
+   Base: cards (mobile) | Desktop (≥ 769px): tabla
    Clases específicas de la página. Prefijo: .gestion-mozos__
    Las compartidas (.gestion-header, .gestion-filtros, .mensaje, etc.)
    están en gestion-comun.css.
@@ -8,7 +9,7 @@
 .gestion-mozos {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 5px;
   color: var(--white);
 }
 
@@ -34,78 +35,7 @@
   cursor: not-allowed;
 }
 
-/* Wrapper de la tabla */
-.gestion-mozos__tabla-wrapper {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  overflow-x: auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Tabla */
-.gestion-mozos__tabla {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.gestion-mozos__tabla thead {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.gestion-mozos__tabla th {
-  padding: 14px 16px;
-  text-align: left;
-  color: var(--primary-color);
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid rgba(255, 69, 0, 0.3);
-}
-
-.gestion-mozos__tabla td {
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 0.92rem;
-}
-
-.gestion-mozos__tabla tbody tr {
-  transition: background 0.2s;
-}
-
-.gestion-mozos__tabla tbody tr:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-/* Fila inactiva */
-.gestion-mozos__fila-inactiva {
-  opacity: 0.55;
-}
-
-.gestion-mozos__fila-inactiva .gestion-mozos__col-nombre {
-  text-decoration: line-through;
-  color: #888;
-}
-
-/* Columnas */
-.gestion-mozos__col-nombre {
-  font-weight: 600;
-  color: #e0e0e0;
-}
-
-.gestion-mozos__tabla th.gestion-mozos__col-estado,
-.gestion-mozos__tabla td.gestion-mozos__col-estado {
-  text-align: center;
-}
-
-.gestion-mozos__tabla th.gestion-mozos__col-acciones,
-.gestion-mozos__tabla td.gestion-mozos__col-acciones {
-  text-align: left;
-  white-space: nowrap;
-  width: 1%;
-}
-
-/* Badges */
+/* ----- BADGES (base) ----- */
 .gestion-mozos__badge-activo,
 .gestion-mozos__badge-inactivo {
   display: inline-block;
@@ -127,19 +57,15 @@
   border: 1px solid rgba(198, 40, 40, 0.4);
 }
 
-/* Botones de acción (tabla desktop) */
+/* ----- BOTONES DE ACCIÓN (base) ----- */
 .gestion-mozos__btn-editar,
 .gestion-mozos__btn-eliminar,
 .gestion-mozos__btn-restaurar {
   border: none;
   color: #fff;
-  padding: 6px 14px;
-  height: 32px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.85rem;
   font-weight: 700;
-  margin-left: 6px;
   transition: all 0.2s;
   display: inline-flex;
   align-items: center;
@@ -184,217 +110,312 @@
   box-shadow: none;
 }
 
-/* ==========================================================================
-   VISTA DE TARJETAS EN MÓVIL (≤ 768px)
-   La tabla se "desarma" y cada fila se convierte en una card.
-   ========================================================================== */
+/* ----- FILA INACTIVA ----- */
+.gestion-mozos__fila-inactiva {
+  opacity: 0.55;
+}
 
-@media (max-width: 768px) {
-  .gestion-mozos__btn-nuevo {
-    margin-left: auto;
-  }
+.gestion-mozos__fila-inactiva .gestion-mozos__col-nombre {
+  text-decoration: line-through;
+  color: #888;
+}
 
-  .gestion-mozos {
-    padding: 5px;
-  }
-
-  .gestion-mozos__tabla thead {
-    display: none;
-  }
-
-  .gestion-mozos__tabla,
-  .gestion-mozos__tabla tbody,
-  .gestion-mozos__tabla tr,
-  .gestion-mozos__tabla td {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    max-width: 100%;
-  }
-
-  .gestion-mozos__tabla tbody tr {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    margin-bottom: 12px;
-    padding: 14px 16px;
-    transition: background 0.2s;
-    box-sizing: border-box;
-  }
-
-  .gestion-mozos__tabla tbody tr:hover {
-    background: rgba(255, 255, 255, 0.06);
-  }
-
-  .gestion-mozos__tabla td {
-    padding: 6px 0;
-    border-bottom: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.9rem;
-    text-align: right;
-    white-space: normal;
-    word-break: break-word;
-    overflow-wrap: break-word;
-  }
-
-  .gestion-mozos__tabla td::before {
-    content: attr(data-label);
-    font-weight: 700;
-    color: var(--primary-color);
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    text-align: left;
-    flex-shrink: 0;
-  }
-
-  .gestion-mozos__tabla td.gestion-mozos__col-nombre {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #fff;
-    padding-bottom: 10px;
-    margin-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    justify-content: flex-start;
-  }
-
-  .gestion-mozos__tabla td.gestion-mozos__col-nombre::before {
-    display: none;
-  }
-
-  .gestion-mozos__tabla td.gestion-mozos__col-estado {
-    justify-content: space-between;
-  }
-
-  .gestion-mozos__tabla td.gestion-mozos__col-acciones {
-    display: flex;
-    flex-direction: column;
-    padding-top: 12px;
-    margin-top: 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    width: 100%;
-    box-sizing: border-box;
-    justify-content: stretch;
-    align-items: stretch;
-    white-space: normal;
-  }
-
-  .gestion-mozos__tabla td.gestion-mozos__col-acciones::before {
-    display: none;
-  }
-
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-editar,
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-eliminar,
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-restaurar {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    min-height: 44px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    margin-left: 0;
-    margin-top: 6px;
-  }
-
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-editar {
-    background: #f59e0b;
-  }
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-editar:hover:not(:disabled) {
-    background: #d97706;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-  }
-
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-eliminar {
-    background: #c62828;
-  }
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-eliminar:hover:not(:disabled) {
-    background: #b71c1c;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(198, 40, 40, 0.3);
-  }
-
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-restaurar {
-    background: var(--success-color);
-  }
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-restaurar:hover:not(:disabled) {
-    background: #1b5e20;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
-  }
-
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-editar:disabled,
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-eliminar:disabled,
-  .gestion-mozos__tabla
-    td.gestion-mozos__col-acciones
-    .gestion-mozos__btn-restaurar:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-
-  .gestion-mozos__tabla-wrapper {
-    overflow-x: hidden;
-    background: transparent;
-    border: none;
-    padding: 0 12px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .gestion-mozos__fila-inactiva {
-    opacity: 0.55;
-  }
-  .gestion-mozos__fila-inactiva .gestion-mozos__col-nombre {
-    text-decoration: line-through;
-    color: #888;
-  }
+/* ----- COLUMNA NOMBRE ----- */
+.gestion-mozos__col-nombre {
+  font-weight: 600;
+  color: #e0e0e0;
 }
 
 /* ==========================================================================
-   RESPONSIVE (desktop ≥ 769px)
+   BASE MÓVIL: TABLA → CARDS
+   La tabla se "desarma" y cada fila se convierte en una card.
    ========================================================================== */
 
+.gestion-mozos__tabla-wrapper {
+  overflow-x: hidden;
+  background: transparent;
+  border: none;
+  padding: 0 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gestion-mozos__tabla,
+.gestion-mozos__tabla tbody,
+.gestion-mozos__tabla tr,
+.gestion-mozos__tabla td {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.gestion-mozos__tabla thead {
+  display: none;
+}
+
+.gestion-mozos__tabla tbody tr {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  transition: background 0.2s;
+  box-sizing: border-box;
+}
+
+.gestion-mozos__tabla tbody tr:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.gestion-mozos__tabla td {
+  padding: 6px 0;
+  border-bottom: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  text-align: right;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.gestion-mozos__tabla td::before {
+  content: attr(data-label);
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.gestion-mozos__tabla td.gestion-mozos__col-nombre {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: flex-start;
+}
+
+.gestion-mozos__tabla td.gestion-mozos__col-nombre::before {
+  display: none;
+}
+
+.gestion-mozos__tabla td.gestion-mozos__col-estado {
+  justify-content: space-between;
+}
+
+.gestion-mozos__tabla td.gestion-mozos__col-acciones {
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: stretch;
+  align-items: stretch;
+  white-space: normal;
+}
+
+.gestion-mozos__tabla td.gestion-mozos__col-acciones::before {
+  display: none;
+}
+
+.gestion-mozos__tabla td.gestion-mozos__col-acciones .gestion-mozos__btn-editar,
+.gestion-mozos__tabla
+  td.gestion-mozos__col-acciones
+  .gestion-mozos__btn-eliminar,
+.gestion-mozos__tabla
+  td.gestion-mozos__col-acciones
+  .gestion-mozos__btn-restaurar {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  margin-left: 0;
+  margin-top: 6px;
+}
+
 @media (min-width: 769px) {
+  /* --- FIX: box-sizing en toda la tabla --- */
+  .gestion-mozos__tabla,
+  .gestion-mozos__tabla *,
+  .gestion-mozos__tabla *::before,
+  .gestion-mozos__tabla *::after {
+    box-sizing: border-box;
+  }
+
+  .gestion-mozos {
+    padding: 20px;
+  }
+
   .gestion-mozos__btn-nuevo {
     margin-left: auto;
+  }
+
+  .gestion-mozos__tabla-wrapper {
+    overflow-x: auto;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0;
+  }
+
+  .gestion-mozos__tabla {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    /* table-layout: auto (por defecto) → min-width funciona */
+  }
+
+  .gestion-mozos__tabla thead {
+    display: table-header-group;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .gestion-mozos__tabla tbody {
+    display: table-row-group;
+  }
+
+  .gestion-mozos__tabla tbody tr {
+    display: table-row;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 0;
+  }
+
+  .gestion-mozos__tabla th {
+    display: table-cell;
+    padding: 14px 16px;
+    text-align: left;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(255, 69, 0, 0.3);
+    background: transparent;
+  }
+
+  .gestion-mozos__tabla td {
+    display: table-cell;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.92rem;
+    text-align: left;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    gap: 0;
+    justify-content: initial;
+    align-items: initial;
+    background: transparent;
+  }
+
+  .gestion-mozos__tabla td::before {
+    display: none;
+    content: none;
+  }
+
+  /* ----- ANCHOS DE COLUMNA ----- */
+  /* Nombre: 50% */
+  .gestion-mozos__tabla th.gestion-mozos__col-nombre,
+  .gestion-mozos__tabla td.gestion-mozos__col-nombre {
+    width: 50%;
+    text-align: left;
+  }
+
+  /* Estado: 20% */
+  .gestion-mozos__tabla th.gestion-mozos__col-estado,
+  .gestion-mozos__tabla td.gestion-mozos__col-estado {
+    width: 20%;
+    text-align: center;
+  }
+
+  /* Acciones: 30% - header a la izquierda, botones a la derecha */
+  .gestion-mozos__tabla th.gestion-mozos__col-acciones {
+    width: 30%;
+    min-width: 140px;      /* ← AHORA SÍ funciona (sin table-layout: fixed) */
+    text-align: left;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .gestion-mozos__tabla td.gestion-mozos__col-acciones {
+    width: 30%;
+    min-width: 140px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* Columna nombre: resetear estilos mobile */
+  .gestion-mozos__tabla td.gestion-mozos__col-nombre {
+    display: table-cell;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 12px 16px;
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    justify-content: initial;
+    text-decoration: none;
+    color: #e0e0e0;
+  }
+
+  /* Columna acciones: resetear flex mobile */
+  .gestion-mozos__tabla td.gestion-mozos__col-acciones {
+    display: table-cell;
+    flex-direction: initial;
+    padding: 12px 16px;
+    margin-top: 0;
+    border-top: none;
+    justify-content: initial;
+    align-items: initial;
+  }
+
+  /* Botones: resetear width/padding mobile */
+  .gestion-mozos__tabla td.gestion-mozos__col-acciones .gestion-mozos__btn-editar,
+  .gestion-mozos__tabla td.gestion-mozos__col-acciones .gestion-mozos__btn-eliminar,
+  .gestion-mozos__tabla td.gestion-mozos__col-acciones .gestion-mozos__btn-restaurar {
+    width: auto;
+    max-width: none;
+    min-height: auto;
+    height: 32px;
+    padding: 6px 14px;
+    margin-left: 6px;
+    margin-top: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-flex;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    text-shadow: none;
+    border: none;
+  }
+
+  .gestion-mozos__tabla tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
   }
 }
