@@ -15,18 +15,15 @@ const GestionMozos = ({ onVolver }) => {
   const [mensaje, setMensaje] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Mozos filtrados
   const mozosFiltrados = useMemo(() => {
     let filtrados = [...mozos];
 
-    // Filtro por estado
     if (filtroEstado === "activos") {
       filtrados = filtrados.filter((m) => m.activo !== false);
     } else if (filtroEstado === "inactivos") {
       filtrados = filtrados.filter((m) => m.activo === false);
     }
 
-    // Búsqueda por nombre
     if (busqueda.trim()) {
       const term = busqueda.toLowerCase().trim();
       filtrados = filtrados.filter((m) =>
@@ -105,14 +102,14 @@ const GestionMozos = ({ onVolver }) => {
 
   return (
     <div className="gestion-mozos">
-      {/* Header */}
+      {/* Header (compartido con gestion-comun.css) */}
       <div className="gestion-header">
         <button className="btn-volver" onClick={onVolver}>
           ⬅ Volver al Menú
         </button>
         <h2>👨‍🍳 Gestión de Mozos</h2>
         <button
-          className="btn-nuevo"
+          className="gestion-mozos__btn-nuevo"
           onClick={handleNuevoMozo}
           disabled={loading}
         >
@@ -120,7 +117,7 @@ const GestionMozos = ({ onVolver }) => {
         </button>
       </div>
 
-      {/* Mensaje */}
+      {/* Mensaje (compartido) */}
       {mensaje && (
         <div
           className={`mensaje ${mensaje.includes("❌") ? "error" : "success"}`}
@@ -129,7 +126,7 @@ const GestionMozos = ({ onVolver }) => {
         </div>
       )}
 
-      {/* Filtros */}
+      {/* Filtros (compartido) */}
       <div className="gestion-filtros">
         <input
           type="text"
@@ -151,13 +148,13 @@ const GestionMozos = ({ onVolver }) => {
         />
       </div>
 
-      {/* Contador */}
+      {/* Contador (compartido) */}
       <div className="gestion-contador">
         Mostrando {mozosFiltrados.length} de {mozos.length} mozos
       </div>
 
-      {/* Tabla */}
-      <div className="gestion-tabla-wrapper">
+      {/* Tabla (específica) */}
+      <div className="gestion-mozos__tabla-wrapper">
         {mozosFiltrados.length === 0 ? (
           <p className="sin-mozos">
             {busqueda
@@ -165,33 +162,42 @@ const GestionMozos = ({ onVolver }) => {
               : "No hay mozos para mostrar"}
           </p>
         ) : (
-          <table className="gestion-tabla">
+          <table className="gestion-mozos__tabla">
             <thead>
               <tr>
                 <th>Nombre</th>
-                <th className="col-estado">Estado</th>
-                <th className="col-acciones">Acciones</th>
+                <th className="gestion-mozos__col-estado">Estado</th>
+                <th className="gestion-mozos__col-acciones">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {mozosFiltrados.map((mozo) => (
                 <tr
                   key={mozo.id_mozo}
-                  className={mozo.activo === false ? "fila-inactiva" : ""}
+                  className={
+                    mozo.activo === false ? "gestion-mozos__fila-inactiva" : ""
+                  }
                 >
-                  <td className="col-nombre" data-label="Nombre">
+                  <td className="gestion-mozos__col-nombre" data-label="Nombre">
                     {mozo.nombre}
                   </td>
-                  <td className="col-estado" data-label="Estado">
+                  <td className="gestion-mozos__col-estado" data-label="Estado">
                     {mozo.activo === false ? (
-                      <span className="badge-inactivo">❌ Inactivo</span>
+                      <span className="gestion-mozos__badge-inactivo">
+                        ❌ Inactivo
+                      </span>
                     ) : (
-                      <span className="badge-activo">✅ Activo</span>
+                      <span className="gestion-mozos__badge-activo">
+                        ✅ Activo
+                      </span>
                     )}
                   </td>
-                  <td className="col-acciones" data-label="Acciones">
+                  <td
+                    className="gestion-mozos__col-acciones"
+                    data-label="Acciones"
+                  >
                     <button
-                      className="btn-editar"
+                      className="gestion-mozos__btn-editar"
                       onClick={() => handleEditarMozo(mozo)}
                       disabled={loading || mozo.activo === false}
                       title="Editar"
@@ -200,7 +206,7 @@ const GestionMozos = ({ onVolver }) => {
                     </button>
                     {mozo.activo === false ? (
                       <button
-                        className="btn-restaurar"
+                        className="gestion-mozos__btn-restaurar"
                         onClick={() => handleRestaurarMozo(mozo)}
                         disabled={loading}
                         title="Restaurar"
@@ -209,7 +215,7 @@ const GestionMozos = ({ onVolver }) => {
                       </button>
                     ) : (
                       <button
-                        className="btn-eliminar"
+                        className="gestion-mozos__btn-eliminar"
                         onClick={() => handleEliminarMozo(mozo)}
                         disabled={loading}
                         title="Eliminar"
@@ -225,7 +231,6 @@ const GestionMozos = ({ onVolver }) => {
         )}
       </div>
 
-      {/* Formulario modal */}
       {mostrarFormulario && (
         <FormularioMozo
           mozo={mozoEditando}
