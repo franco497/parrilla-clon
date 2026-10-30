@@ -1,0 +1,51 @@
+/* ==========================================================================
+   COMPONENT: FormularioStock
+   Solo las clases propias. El resto (overlay, modal, campos, botones)
+   ya está en modal.css y buttons.css.
+   ========================================================================== */
+
+.stock-producto-info {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.stock-producto-nombre {
+  margin: 0 0 4px 0;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.stock-producto-actual {
+  margin: 0;
+  color: #b0b0b0;
+  font-size: 0.85rem;
+}
+
+.stock-producto-actual strong {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   RESPONSIVE (mobile-first → desktop)
+   ========================================================================== */
+
+@media (min-width: 601px) {
+  .stock-producto-info {
+    padding: 14px 18px;
+  }
+
+  .stock-producto-nombre {
+    font-size: 1.1rem;
+  }
+
+  .stock-producto-actual {
+    font-size: 0.9rem;
+  }
+}

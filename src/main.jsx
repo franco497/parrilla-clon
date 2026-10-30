@@ -1,33 +1,48 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-// ITCSS — orden: settings → tools → generic → elements → objects → components → utilities
-import "./styles/01-settings/_colors.css";
-import "./styles/01-settings/_typography.css";
-import "./styles/01-settings/_breakpoints.css";
-import "./styles/02-tools/_animations.css";
-import "./styles/03-generic/_reset.css";
-import "./styles/04-elements/_headings.css";
-import "./styles/05-objects/_container.css";
-import "./styles/06-components/_buttons.css";
-import "./styles/06-components/_badges.css";
-import "./styles/06-components/_modal.css";
-import "./styles/06-components/_table.css";
-import "./styles/06-components/_card.css";
-import "./styles/06-components/_gestion.css";
-import "./styles/06-components/_dashboard.css"; // ← NUEVO
-import "./styles/06-components/_grilla-mesas.css"; // ← NUEVO
-import "./styles/06-components/_mesa-card.css"; // ← NUEVO
-import "./styles/07-utilities/_spacing.css";
-import "./styles/06-components/_menu-principal.css";
-import "./styles/06-components/_select-custom.css";
-import "./styles/06-components/_mesa-view.css";
-import "./styles/06-components/_formulario-reserva-simple.css";
-import "./styles/06-components/_selector-mozo.css";
-import "./styles/06-components/_login.css";
-import "./styles/06-components/_auth-callback.css";
-import "./styles/06-components/_navbar.css";
+// ============================================
+// ITCSS ATÓMICO - Imports en orden
+// ============================================
 
+// Base: reset, variables, tipografía, layout
+import "./styles/base/reset.css";
+import "./styles/base/variables.css";
+import "./styles/base/typography.css";
+import "./styles/base/breakpoints.css";
+import "./styles/base/headings.css";
+import "./styles/base/container.css";
+
+// Components: genéricos compartidos + componentes específicos
+import "./styles/components/buttons.css";
+import "./styles/components/badges.css";
+import "./styles/components/modal.css";
+import "./styles/components/table.css";
+import "./styles/components/card.css";
+import "./styles/components/navbar.css";
+import "./styles/components/menu-principal.css";
+import "./styles/components/select-custom.css";
+import "./styles/components/mesa-card.css";
+import "./styles/components/grilla-mesas.css";
+import "./styles/components/selector-mozo.css";
+import "./styles/components/formulario-reserva-simple.css";
+import "./styles/components/formulario-stock.css";
+
+// Pages: estilos específicos de cada pantalla
+import "./styles/pages/dashboard.css";
+import "./styles/pages/mesa-view.css";
+import "./styles/pages/login.css";
+import "./styles/pages/auth-callback.css";
+import "./styles/pages/gestion-comun.css";
+import "./styles/pages/gestion-mozos.css";
+
+// Utilities: helpers (siempre al final)
+import "./styles/utilities/animations.css";
+import "./styles/utilities/spacing.css";
+
+// ============================================
+// App
+// ============================================
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(

@@ -1,0 +1,371 @@
+/* ==========================================================================
+   COMPONENT: GestionMozos (vista tabla)
+   Solo clases específicas de mozos. Las compartidas están en _gestion.css.
+   ========================================================================== */
+
+/* Contenedor específico de mozos */
+.gestion-mozos {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  color: var(--white);
+}
+
+/* Botón "Nuevo mozo" */
+.btn-nuevo {
+  background: var(--success-color);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-nuevo:hover:not(:disabled) {
+  background: #1b5e20;
+  transform: translateY(-2px);
+}
+
+.btn-nuevo:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Wrapper de la tabla */
+.gestion-tabla-wrapper {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Tabla */
+.gestion-tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.gestion-tabla thead {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.gestion-tabla th {
+  padding: 14px 16px;
+  text-align: left;
+  color: var(--primary-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 69, 0, 0.3);
+}
+
+.gestion-tabla td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.92rem;
+}
+
+.gestion-tabla tbody tr {
+  transition: background 0.2s;
+}
+
+.gestion-tabla tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.fila-inactiva {
+  opacity: 0.55;
+}
+
+.fila-inactiva .col-nombre {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Columnas */
+.col-nombre {
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.gestion-tabla th.col-estado,
+.gestion-tabla td.col-estado {
+  text-align: center;
+}
+
+.gestion-tabla th.col-acciones,
+.gestion-tabla td.col-acciones {
+  text-align: left;
+  white-space: nowrap;
+  width: 1%;
+}
+
+/* Badges de estado */
+.badge-activo,
+.badge-inactivo {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-activo {
+  background: rgba(45, 106, 79, 0.2);
+  color: #4caf50;
+  border: 1px solid rgba(45, 106, 79, 0.4);
+}
+
+.badge-inactivo {
+  background: rgba(198, 40, 40, 0.2);
+  color: #ef5350;
+  border: 1px solid rgba(198, 40, 40, 0.4);
+}
+
+/* Botones de acción (tabla desktop) */
+.btn-editar,
+.btn-eliminar,
+.btn-restaurar {
+  border: none;
+  color: #fff;
+  padding: 6px 14px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-left: 6px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.btn-editar {
+  background: #f59e0b;
+}
+.btn-editar:hover:not(:disabled) {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.btn-eliminar {
+  background: #c62828;
+}
+.btn-eliminar:hover:not(:disabled) {
+  background: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
+}
+
+.btn-restaurar {
+  background: var(--success-color);
+}
+.btn-restaurar:hover:not(:disabled) {
+  background: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+}
+
+.btn-editar:disabled,
+.btn-eliminar:disabled,
+.btn-restaurar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   VISTA DE TARJETAS EN MÓVIL (≤ 768px)
+   La tabla se "desarma" y cada fila se convierte en una card.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Ocultar el thead */
+  .gestion-tabla thead {
+    display: none;
+  }
+
+  /* Tabla, tbody, tr y td como bloques */
+  .gestion-tabla,
+  .gestion-tabla tbody,
+  .gestion-tabla tr,
+  .gestion-tabla td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  /* Cada fila = card */
+  .gestion-tabla tbody tr {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    transition: background 0.2s;
+    box-sizing: border-box;
+  }
+
+  .gestion-tabla tbody tr:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Cada celda = fila etiqueta + valor */
+  .gestion-tabla td {
+    padding: 6px 0;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    text-align: right;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Etiqueta a la izquierda (data-label) */
+  .gestion-tabla td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  /* Nombre del mozo destacado */
+  .gestion-tabla td.col-nombre {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    padding-bottom: 10px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    justify-content: flex-start;
+  }
+
+  .gestion-tabla td.col-nombre::before {
+    display: none;
+  }
+
+  /* Estado: badge a la derecha */
+  .gestion-tabla td.col-estado {
+    justify-content: space-between;
+  }
+
+  /* Acciones: columna, ancho completo */
+  .gestion-tabla td.col-acciones {
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: stretch;
+    align-items: stretch;
+    white-space: normal;
+  }
+
+  .gestion-tabla td.col-acciones::before {
+    display: none;
+  }
+
+  /* Botones de acción: ancho completo, apilados */
+  .gestion-tabla td.col-acciones .btn-editar,
+  .gestion-tabla td.col-acciones .btn-eliminar,
+  .gestion-tabla td.col-acciones .btn-restaurar {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin-left: 0;
+    margin-top: 6px;
+  }
+
+  .gestion-tabla td.col-acciones .btn-editar {
+    background: #f59e0b;
+  }
+  .gestion-tabla td.col-acciones .btn-editar:hover:not(:disabled) {
+    background: #d97706;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  }
+
+  .gestion-tabla td.col-acciones .btn-eliminar {
+    background: #c62828;
+  }
+  .gestion-tabla td.col-acciones .btn-eliminar:hover:not(:disabled) {
+    background: #b71c1c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(198, 40, 40, 0.3);
+  }
+
+  .gestion-tabla td.col-acciones .btn-restaurar {
+    background: var(--success-color);
+  }
+  .gestion-tabla td.col-acciones .btn-restaurar:hover:not(:disabled) {
+    background: #1b5e20;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
+  }
+
+  .gestion-tabla td.col-acciones .btn-editar:disabled,
+  .gestion-tabla td.col-acciones .btn-eliminar:disabled,
+  .gestion-tabla td.col-acciones .btn-restaurar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Wrapper: sin scroll horizontal */
+  .gestion-tabla-wrapper {
+    overflow-x: hidden;
+    background: transparent;
+    border: none;
+    padding: 0 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Fila inactiva */
+  .fila-inactiva {
+    opacity: 0.55;
+  }
+  .fila-inactiva .col-nombre {
+    text-decoration: line-through;
+    color: #888;
+  }
+
+  .gestion-mozos {
+    padding: 5px;
+  }
+}
