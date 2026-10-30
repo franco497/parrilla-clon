@@ -190,6 +190,10 @@
    ========================================================================== */
 
 @media (max-width: 768px) {
+  .gestion-mozos__btn-nuevo {
+    margin-left: auto;
+  }
+
   .gestion-mozos {
     padding: 5px;
   }
@@ -382,5 +386,15 @@
   .gestion-mozos__fila-inactiva .gestion-mozos__col-nombre {
     text-decoration: line-through;
     color: #888;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE (desktop ≥ 769px)
+   ========================================================================== */
+
+@media (min-width: 769px) {
+  .gestion-mozos__btn-nuevo {
+    margin-left: auto;
   }
 }
