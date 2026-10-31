@@ -1,0 +1,453 @@
+/* ==========================================================================
+   PAGE: GestionStock (mobile-first)
+   Base: cards (mobile) | Desktop (≥ 769px): tabla
+   Clases específicas de la página. Prefijo: .gestion-stock__
+   Las compartidas (.gestion-header, .gestion-filtros, .mensaje, etc.)
+   están en gestion-comun.css.
+   ========================================================================== */
+
+.gestion-stock {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5px;
+  color: var(--white);
+}
+
+/* ----- BADGES DE RESUMEN (header) ----- */
+.gestion-stock__stock-resumen {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gestion-stock__badge-resumen {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.gestion-stock__badge-resumen--ok {
+  background: rgba(45, 106, 79, 0.2);
+  color: #4caf50;
+  border: 1px solid rgba(45, 106, 79, 0.4);
+}
+
+.gestion-stock__badge-resumen--bajo {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.gestion-stock__badge-resumen--agotado {
+  background: rgba(198, 40, 40, 0.2);
+  color: #ef5350;
+  border: 1px solid rgba(198, 40, 40, 0.4);
+}
+
+/* ----- BADGES DE ESTADO (tabla) ----- */
+.gestion-stock__badge--ok {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(45, 106, 79, 0.2);
+  color: #4caf50;
+  border: 1px solid rgba(45, 106, 79, 0.4);
+}
+
+.gestion-stock__badge--bajo {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.gestion-stock__badge--agotado {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(198, 40, 40, 0.2);
+  color: #ef5350;
+  border: 1px solid rgba(198, 40, 40, 0.4);
+}
+
+/* ----- BOTÓN "Ajustar" ----- */
+.gestion-stock__btn-ajustar {
+  border: none;
+  color: #fff;
+  background: #f59e0b;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.gestion-stock__btn-ajustar:hover:not(:disabled) {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.gestion-stock__btn-ajustar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ----- COLUMNA NOMBRE ----- */
+.gestion-stock__col-nombre {
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+/* ----- COLORES DE STOCK (número) ----- */
+.gestion-stock__stock--ok {
+  color: #4caf50;
+  font-weight: 700;
+}
+
+.gestion-stock__stock--bajo {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.gestion-stock__stock--agotado {
+  color: #ef5350;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   BASE MÓVIL: TABLA → CARDS
+   ========================================================================== */
+
+.gestion-stock__tabla-wrapper {
+  overflow-x: hidden;
+  background: transparent;
+  border: none;
+  padding: 0 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gestion-stock__tabla,
+.gestion-stock__tabla tbody,
+.gestion-stock__tabla tr,
+.gestion-stock__tabla td {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.gestion-stock__tabla thead {
+  display: none;
+}
+
+.gestion-stock__tabla tbody tr {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  transition: background 0.2s;
+  box-sizing: border-box;
+}
+
+.gestion-stock__tabla tbody tr:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.gestion-stock__tabla td {
+  padding: 6px 0;
+  border-bottom: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  text-align: right;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.gestion-stock__tabla td::before {
+  content: attr(data-label);
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.gestion-stock__tabla td.gestion-stock__col-nombre {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: flex-start;
+}
+
+.gestion-stock__tabla td.gestion-stock__col-nombre::before {
+  display: none;
+}
+
+.gestion-stock__tabla td.gestion-stock__col-estado {
+  justify-content: space-between;
+}
+
+.gestion-stock__tabla td.gestion-stock__col-acciones {
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: stretch;
+  align-items: stretch;
+  white-space: normal;
+}
+
+.gestion-stock__tabla td.gestion-stock__col-acciones::before {
+  display: none;
+}
+
+.gestion-stock__tabla td.gestion-stock__col-acciones .gestion-stock__btn-ajustar {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  margin-top: 6px;
+}
+
+/* ==========================================================================
+   DESKTOP (≥ 769px): CARDS → TABLA
+   ========================================================================== */
+
+@media (min-width: 769px) {
+  /* --- FIX: box-sizing en toda la tabla --- */
+  .gestion-stock__tabla,
+  .gestion-stock__tabla *,
+  .gestion-stock__tabla *::before,
+  .gestion-stock__tabla *::after {
+    box-sizing: border-box;
+  }
+
+  .gestion-stock {
+    padding: 20px;
+  }
+
+  .gestion-stock__tabla-wrapper {
+    overflow-x: auto;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0;
+  }
+
+  /* RESET: display nativo de tabla */
+  .gestion-stock__tabla {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+
+  .gestion-stock__tabla thead {
+    display: table-header-group;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .gestion-stock__tabla tbody {
+    display: table-row-group;
+  }
+
+  .gestion-stock__tabla tr {
+    display: table-row;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 0;
+  }
+
+  .gestion-stock__tabla th {
+    display: table-cell;
+    padding: 14px 16px;
+    text-align: left;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(255, 69, 0, 0.3);
+    background: transparent;
+  }
+
+  .gestion-stock__tabla td {
+    display: table-cell;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.92rem;
+    text-align: left;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    gap: 0;
+    justify-content: initial;
+    align-items: initial;
+    background: transparent;
+  }
+
+  .gestion-stock__tabla td::before {
+    display: none;
+    content: none;
+  }
+
+  /* ========================================================================
+     ANCHOS DE COLUMNA (th + td) — 30 / 15 / 10 / 8 / 17 / 20 = 100%
+     ======================================================================== */
+
+  /* TH "Producto" - 30% */
+  .gestion-stock__tabla th:nth-child(1) {
+    width: 30%;
+    text-align: left;
+  }
+
+  /* TH "Categoría" - 15% */
+  .gestion-stock__tabla th:nth-child(2) {
+    width: 15%;
+    text-align: left;
+  }
+
+  /* TH "Stock" - 10% */
+  .gestion-stock__tabla th.gestion-stock__col-stock {
+    width: 10%;
+    text-align: center;
+  }
+
+  /* TH "Mín." - 8% */
+  .gestion-stock__tabla th.gestion-stock__col-stock-min {
+    width: 8%;
+    text-align: center;
+  }
+
+  /* TH "Estado" - 17% */
+  .gestion-stock__tabla th.gestion-stock__col-estado {
+    width: 17%;
+    text-align: center;
+  }
+
+  /* TH "Acciones" - 20% */
+  .gestion-stock__tabla th.gestion-stock__col-acciones {
+    width: 20%;
+    min-width: 120px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* TD "Producto" - 30% */
+  .gestion-stock__tabla td.gestion-stock__col-nombre {
+    display: table-cell;
+    width: 30%;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 12px 16px;
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    justify-content: initial;
+    text-decoration: none;
+    color: #e0e0e0;
+    text-align: left;
+  }
+
+  /* TD "Categoría" - 15% */
+  .gestion-stock__tabla td:nth-child(2) {
+    width: 15%;
+    text-align: left;
+  }
+
+  /* TD "Stock" - 10% */
+  .gestion-stock__tabla td.gestion-stock__col-stock {
+    width: 10%;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  /* TD "Mín." - 8% */
+  .gestion-stock__tabla td.gestion-stock__col-stock-min {
+    width: 8%;
+    text-align: center;
+    color: #888;
+  }
+
+  /* TD "Estado" - 17% */
+  .gestion-stock__tabla td.gestion-stock__col-estado {
+    width: 17%;
+    text-align: center;
+  }
+
+  /* TD "Acciones" - 20% */
+  .gestion-stock__tabla td.gestion-stock__col-acciones {
+    display: table-cell;
+    width: 20%;
+    min-width: 120px;
+    flex-direction: initial;
+    padding: 12px 16px;
+    margin-top: 0;
+    border-top: none;
+    justify-content: initial;
+    align-items: initial;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* ----- BOTÓN "Ajustar" en desktop ----- */
+  .gestion-stock__tabla td.gestion-stock__col-acciones .gestion-stock__btn-ajustar {
+    width: auto;
+    max-width: none;
+    min-height: auto;
+    height: 32px;
+    padding: 6px 14px;
+    margin-left: 0;
+    margin-top: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-flex;
+  }
+
+  .gestion-stock__tabla tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}

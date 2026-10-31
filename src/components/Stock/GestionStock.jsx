@@ -15,18 +15,15 @@ const GestionStock = ({ onVolver }) => {
   const [mensaje, setMensaje] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Productos filtrados
   const productosFiltrados = useMemo(() => {
     let filtrados = productos.filter((p) => p.activo !== false);
 
-    // Filtro por categoría
     if (filtroCategoria) {
       filtrados = filtrados.filter(
         (p) => p.id_categoria === parseInt(filtroCategoria),
       );
     }
 
-    // Filtro por estado de stock
     if (filtroEstado === "con-stock") {
       filtrados = filtrados.filter(
         (p) => (p.stock || 0) > (p.stock_minimo || 5),
@@ -39,7 +36,6 @@ const GestionStock = ({ onVolver }) => {
       filtrados = filtrados.filter((p) => (p.stock || 0) === 0);
     }
 
-    // Búsqueda
     if (busqueda.trim()) {
       const term = busqueda.toLowerCase().trim();
       filtrados = filtrados.filter((p) =>
@@ -94,7 +90,6 @@ const GestionStock = ({ onVolver }) => {
     setProductoEditando(null);
   };
 
-  // Contadores para los badges
   const contadores = useMemo(() => {
     const activos = productos.filter((p) => p.activo !== false);
     return {
@@ -108,28 +103,30 @@ const GestionStock = ({ onVolver }) => {
 
   return (
     <div className="gestion-stock">
-      {/* Header */}
+      {/* Header (compartido con gestion-comun.css) */}
       <div className="gestion-header">
         <button className="btn-volver" onClick={onVolver}>
           ⬅ Volver al Menú
         </button>
         <h2>📊 Control de Stock</h2>
-        <div className="stock-resumen">
+        <div className="gestion-stock__stock-resumen">
           {contadores.agotados > 0 && (
-            <span className="badge-resumen agotado">
+            <span className="gestion-stock__badge-resumen gestion-stock__badge-resumen--agotado">
               {contadores.agotados} agotados
             </span>
           )}
           {contadores.bajoStock > 0 && (
-            <span className="badge-resumen bajo">
+            <span className="gestion-stock__badge-resumen gestion-stock__badge-resumen--bajo">
               {contadores.bajoStock} bajo stock
             </span>
           )}
-          <span className="badge-resumen ok">{contadores.total} productos</span>
+          <span className="gestion-stock__badge-resumen gestion-stock__badge-resumen--ok">
+            {contadores.total} productos
+          </span>
         </div>
       </div>
 
-      {/* Mensaje */}
+      {/* Mensaje (compartido) */}
       {mensaje && (
         <div
           className={`mensaje ${mensaje.includes("❌") ? "error" : "success"}`}
@@ -138,8 +135,7 @@ const GestionStock = ({ onVolver }) => {
         </div>
       )}
 
-      {/* Filtros */}
-      {/* Filtros */}
+      {/* Filtros (compartido) */}
       <div className="gestion-filtros">
         <input
           type="text"
@@ -175,13 +171,13 @@ const GestionStock = ({ onVolver }) => {
         />
       </div>
 
-      {/* Contador */}
+      {/* Contador (compartido) */}
       <div className="gestion-contador">
         Mostrando {productosFiltrados.length} de {contadores.total} productos
       </div>
 
-      {/* Tabla */}
-      <div className="gestion-tabla-wrapper">
+      {/* Tabla (específica) */}
+      <div className="gestion-stock__tabla-wrapper">
         {productosFiltrados.length === 0 ? (
           <p className="sin-productos">
             {busqueda || filtroCategoria || filtroEstado !== "todos"
@@ -189,15 +185,15 @@ const GestionStock = ({ onVolver }) => {
               : "No hay productos para mostrar"}
           </p>
         ) : (
-          <table className="gestion-tabla">
+          <table className="gestion-stock__tabla">
             <thead>
               <tr>
                 <th>Producto</th>
                 <th>Categoría</th>
-                <th className="col-stock">Stock</th>
-                <th className="col-stock-min">Mín.</th>
-                <th className="col-estado">Estado</th>
-                <th className="col-acciones">Acciones</th>
+                <th className="gestion-stock__col-stock">Stock</th>
+                <th className="gestion-stock__col-stock-min">Mín.</th>
+                <th className="gestion-stock__col-estado">Estado</th>
+                <th className="gestion-stock__col-acciones">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -205,29 +201,43 @@ const GestionStock = ({ onVolver }) => {
                 const estado = getEstadoStock(producto);
                 return (
                   <tr key={producto.id_producto}>
-                    <td className="col-nombre" data-label="Producto">
+                    <td
+                      className="gestion-stock__col-nombre"
+                      data-label="Producto"
+                    >
                       {producto.nombre}
                     </td>
                     <td data-label="Categoría">
                       {getNombreCategoria(producto.id_categoria)}
                     </td>
                     <td
-                      className={`col-stock stock-${estado.clase}`}
+                      className={`gestion-stock__col-stock gestion-stock__stock--${estado.clase}`}
                       data-label="Stock"
                     >
                       {producto.stock || 0}
                     </td>
-                    <td className="col-stock-min" data-label="Mínimo">
+                    <td
+                      className="gestion-stock__col-stock-min"
+                      data-label="Mínimo"
+                    >
                       {producto.stock_minimo || 5}
                     </td>
-                    <td className="col-estado" data-label="Estado">
-                      <span className={`badge-${estado.clase}`}>
+                    <td
+                      className="gestion-stock__col-estado"
+                      data-label="Estado"
+                    >
+                      <span
+                        className={`gestion-stock__badge--${estado.clase}`}
+                      >
                         {estado.texto}
                       </span>
                     </td>
-                    <td className="col-acciones" data-label="Acciones">
+                    <td
+                      className="gestion-stock__col-acciones"
+                      data-label="Acciones"
+                    >
                       <button
-                        className="btn-editar"
+                        className="gestion-stock__btn-ajustar"
                         onClick={() => handleAjustar(producto)}
                         disabled={loading}
                       >
@@ -242,7 +252,6 @@ const GestionStock = ({ onVolver }) => {
         )}
       </div>
 
-      {/* Formulario modal */}
       {mostrarFormulario && (
         <FormularioStock
           producto={productoEditando}

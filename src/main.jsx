@@ -36,6 +36,7 @@ import "./styles/pages/auth-callback.css";
 import "./styles/pages/gestion-comun.css";
 import "./styles/pages/gestion-mozos.css";
 import "./styles/pages/gestion-productos.css";
+import "./styles/pages/gestion-stock.css";
 
 // Utilities: helpers (siempre al final)
 import "./styles/utilities/animations.css";
