@@ -22,25 +22,21 @@ const GestionProductos = ({ onVolver }) => {
   const [mensaje, setMensaje] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Productos filtrados
   const productosFiltrados = useMemo(() => {
     let filtrados = [...productos];
 
-    // Filtro por estado
     if (filtroEstado === "activos") {
       filtrados = filtrados.filter((p) => p.activo !== false);
     } else if (filtroEstado === "inactivos") {
       filtrados = filtrados.filter((p) => p.activo === false);
     }
 
-    // Filtro por categoría
     if (filtroCategoria) {
       filtrados = filtrados.filter(
         (p) => p.id_categoria === parseInt(filtroCategoria),
       );
     }
 
-    // Búsqueda por nombre
     if (busqueda.trim()) {
       const term = busqueda.toLowerCase().trim();
       filtrados = filtrados.filter((p) =>
@@ -126,14 +122,14 @@ const GestionProductos = ({ onVolver }) => {
 
   return (
     <div className="gestion-productos">
-      {/* Header */}
+      {/* Header (compartido con gestion-comun.css) */}
       <div className="gestion-header">
         <button className="btn-volver" onClick={onVolver}>
           ⬅ Volver al Menú
         </button>
         <h2>📦 Gestión de Productos</h2>
         <button
-          className="btn-nuevo"
+          className="gestion-productos__btn-nuevo"
           onClick={handleNuevoProducto}
           disabled={loading}
         >
@@ -141,7 +137,7 @@ const GestionProductos = ({ onVolver }) => {
         </button>
       </div>
 
-      {/* Mensaje */}
+      {/* Mensaje (compartido) */}
       {mensaje && (
         <div
           className={`mensaje ${mensaje.includes("❌") ? "error" : "success"}`}
@@ -150,7 +146,7 @@ const GestionProductos = ({ onVolver }) => {
         </div>
       )}
 
-      {/* Filtros */}
+      {/* Filtros (compartido) */}
       <div className="gestion-filtros">
         <input
           type="text"
@@ -185,13 +181,13 @@ const GestionProductos = ({ onVolver }) => {
         />
       </div>
 
-      {/* Contador */}
+      {/* Contador (compartido) */}
       <div className="gestion-contador">
         Mostrando {productosFiltrados.length} de {productos.length} productos
       </div>
 
-      {/* Tabla */}
-      <div className="gestion-tabla-wrapper">
+      {/* Tabla (específica) */}
+      <div className="gestion-productos__tabla-wrapper">
         {productosFiltrados.length === 0 ? (
           <p className="sin-productos">
             {busqueda || filtroCategoria
@@ -199,41 +195,61 @@ const GestionProductos = ({ onVolver }) => {
               : "No hay productos para mostrar"}
           </p>
         ) : (
-          <table className="gestion-tabla">
+          <table className="gestion-productos__tabla">
             <thead>
               <tr>
                 <th>Nombre</th>
                 <th>Categoría</th>
-                <th className="col-precio">Precio</th>
-                <th className="col-estado">Estado</th>
-                <th className="col-acciones">Acciones</th>
+                <th className="gestion-productos__col-precio">Precio</th>
+                <th className="gestion-productos__col-estado">Estado</th>
+                <th className="gestion-productos__col-acciones">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {productosFiltrados.map((producto) => (
                 <tr
                   key={producto.id_producto}
-                  className={producto.activo === false ? "fila-inactiva" : ""}
+                  className={
+                    producto.activo === false
+                      ? "gestion-productos__fila-inactiva"
+                      : ""
+                  }
                 >
-                  <td className="col-nombre" data-label="Producto">
+                  <td
+                    className="gestion-productos__col-nombre"
+                    data-label="Producto"
+                  >
                     {producto.nombre}
                   </td>
                   <td data-label="Categoría">
                     {getNombreCategoria(producto.id_categoria)}
                   </td>
-                  <td className="col-precio" data-label="Precio">
+                  <td
+                    className="gestion-productos__col-precio"
+                    data-label="Precio"
+                  >
                     ${parseFloat(producto.precio).toLocaleString("es-AR")}
                   </td>
-                  <td className="col-estado" data-label="Estado">
+                  <td
+                    className="gestion-productos__col-estado"
+                    data-label="Estado"
+                  >
                     {producto.activo === false ? (
-                      <span className="badge-inactivo">❌ Inactivo</span>
+                      <span className="gestion-productos__badge-inactivo">
+                        ❌ Inactivo
+                      </span>
                     ) : (
-                      <span className="badge-activo">✅ Activo</span>
+                      <span className="gestion-productos__badge-activo">
+                        ✅ Activo
+                      </span>
                     )}
                   </td>
-                  <td className="col-acciones" data-label="Acciones">
+                  <td
+                    className="gestion-productos__col-acciones"
+                    data-label="Acciones"
+                  >
                     <button
-                      className="btn-editar"
+                      className="gestion-productos__btn-editar"
                       onClick={() => handleEditarProducto(producto)}
                       disabled={loading || producto.activo === false}
                       title="Editar"
@@ -242,7 +258,7 @@ const GestionProductos = ({ onVolver }) => {
                     </button>
                     {producto.activo === false ? (
                       <button
-                        className="btn-restaurar"
+                        className="gestion-productos__btn-restaurar"
                         onClick={() => handleRestaurarProducto(producto)}
                         disabled={loading}
                         title="Restaurar"
@@ -251,7 +267,7 @@ const GestionProductos = ({ onVolver }) => {
                       </button>
                     ) : (
                       <button
-                        className="btn-eliminar"
+                        className="gestion-productos__btn-eliminar"
                         onClick={() => handleEliminarProducto(producto)}
                         disabled={loading}
                         title="Eliminar"
@@ -267,7 +283,6 @@ const GestionProductos = ({ onVolver }) => {
         )}
       </div>
 
-      {/* Formulario modal */}
       {mostrarFormulario && (
         <FormularioProducto
           producto={productoEditando}

@@ -1,0 +1,467 @@
+/* ==========================================================================
+   PAGE: GestionProductos (mobile-first)
+   Base: cards (mobile) | Desktop (≥ 769px): tabla
+   Clases específicas de la página. Prefijo: .gestion-productos__
+   Las compartidas (.gestion-header, .gestion-filtros, .mensaje, etc.)
+   están en gestion-comun.css.
+   ========================================================================== */
+
+.gestion-productos {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5px;
+  color: var(--white);
+}
+
+/* Botón "Nuevo producto" */
+.gestion-productos__btn-nuevo {
+  background: var(--success-color);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.gestion-productos__btn-nuevo:hover:not(:disabled) {
+  background: #1b5e20;
+  transform: translateY(-2px);
+}
+
+.gestion-productos__btn-nuevo:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ----- BADGES (base) ----- */
+.gestion-productos__badge-activo,
+.gestion-productos__badge-inactivo {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.gestion-productos__badge-activo {
+  background: rgba(45, 106, 79, 0.2);
+  color: #4caf50;
+  border: 1px solid rgba(45, 106, 79, 0.4);
+}
+
+.gestion-productos__badge-inactivo {
+  background: rgba(198, 40, 40, 0.2);
+  color: #ef5350;
+  border: 1px solid rgba(198, 40, 40, 0.4);
+}
+
+/* ----- BOTONES DE ACCIÓN (base) ----- */
+.gestion-productos__btn-editar,
+.gestion-productos__btn-eliminar,
+.gestion-productos__btn-restaurar {
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.gestion-productos__btn-editar {
+  background: #f59e0b;
+}
+.gestion-productos__btn-editar:hover:not(:disabled) {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.gestion-productos__btn-eliminar {
+  background: #c62828;
+}
+.gestion-productos__btn-eliminar:hover:not(:disabled) {
+  background: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
+}
+
+.gestion-productos__btn-restaurar {
+  background: var(--success-color);
+}
+.gestion-productos__btn-restaurar:hover:not(:disabled) {
+  background: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+}
+
+.gestion-productos__btn-editar:disabled,
+.gestion-productos__btn-eliminar:disabled,
+.gestion-productos__btn-restaurar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ----- FILA INACTIVA ----- */
+.gestion-productos__fila-inactiva {
+  opacity: 0.55;
+}
+
+.gestion-productos__fila-inactiva .gestion-productos__col-nombre {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* ----- COLUMNA NOMBRE ----- */
+.gestion-productos__col-nombre {
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+/* ==========================================================================
+   BASE MÓVIL: TABLA → CARDS
+   ========================================================================== */
+
+.gestion-productos__tabla-wrapper {
+  overflow-x: hidden;
+  background: transparent;
+  border: none;
+  padding: 0 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gestion-productos__tabla,
+.gestion-productos__tabla tbody,
+.gestion-productos__tabla tr,
+.gestion-productos__tabla td {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.gestion-productos__tabla thead {
+  display: none;
+}
+
+.gestion-productos__tabla tbody tr {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  transition: background 0.2s;
+  box-sizing: border-box;
+}
+
+.gestion-productos__tabla tbody tr:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.gestion-productos__tabla td {
+  padding: 6px 0;
+  border-bottom: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  text-align: right;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.gestion-productos__tabla td::before {
+  content: attr(data-label);
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.gestion-productos__tabla td.gestion-productos__col-nombre {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: flex-start;
+}
+
+.gestion-productos__tabla td.gestion-productos__col-nombre::before {
+  display: none;
+}
+
+.gestion-productos__tabla td.gestion-productos__col-precio {
+  font-weight: 700;
+  color: #4caf50;
+}
+
+.gestion-productos__tabla td.gestion-productos__col-estado {
+  justify-content: space-between;
+}
+
+.gestion-productos__tabla td.gestion-productos__col-acciones {
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: stretch;
+  align-items: stretch;
+  white-space: normal;
+}
+
+.gestion-productos__tabla td.gestion-productos__col-acciones::before {
+  display: none;
+}
+
+.gestion-productos__tabla
+  td.gestion-productos__col-acciones
+  .gestion-productos__btn-editar,
+.gestion-productos__tabla
+  td.gestion-productos__col-acciones
+  .gestion-productos__btn-eliminar,
+.gestion-productos__tabla
+  td.gestion-productos__col-acciones
+  .gestion-productos__btn-restaurar {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  margin-left: 0;
+  margin-top: 6px;
+}
+
+/* ==========================================================================
+   DESKTOP (≥ 769px): CARDS → TABLA
+   ========================================================================== */
+
+@media (min-width: 769px) {
+  /* --- FIX: box-sizing en toda la tabla --- */
+  .gestion-productos__tabla,
+  .gestion-productos__tabla *,
+  .gestion-productos__tabla *::before,
+  .gestion-productos__tabla *::after {
+    box-sizing: border-box;
+  }
+
+  .gestion-productos {
+    padding: 20px;
+  }
+
+  .gestion-productos__btn-nuevo {
+    margin-left: auto;
+  }
+
+  .gestion-productos__tabla-wrapper {
+    overflow-x: auto;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0;
+  }
+
+  /* RESET: display nativo de tabla */
+  .gestion-productos__tabla {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+
+  .gestion-productos__tabla thead {
+    display: table-header-group;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .gestion-productos__tabla tbody {
+    display: table-row-group;
+  }
+
+  .gestion-productos__tabla tr {
+    display: table-row;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 0;
+  }
+
+  .gestion-productos__tabla th {
+    display: table-cell;
+    padding: 14px 16px;
+    text-align: left;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(255, 69, 0, 0.3);
+    background: transparent;
+  }
+
+  .gestion-productos__tabla td {
+    display: table-cell;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.92rem;
+    text-align: left;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    gap: 0;
+    justify-content: initial;
+    align-items: initial;
+    background: transparent;
+  }
+
+  .gestion-productos__tabla td::before {
+    display: none;
+    content: none;
+  }
+
+  /* ----- ANCHOS DE COLUMNA (5 columnas) ----- */
+
+  /* TH "Nombre" */
+  .gestion-productos__tabla th:nth-child(1) {
+    width: 25%;
+    text-align: left;
+  }
+
+  /* TH "Categoría" */
+  .gestion-productos__tabla th:nth-child(2) {
+    width: 15%;
+    text-align: left;
+  }
+
+  /* TH "Precio" */
+  .gestion-productos__tabla th.gestion-productos__col-precio {
+    width: 10%;
+    text-align: right;
+  }
+
+  /* TH "Estado" */
+  .gestion-productos__tabla th.gestion-productos__col-estado {
+    width: 15%;
+    text-align: center;
+  }
+
+  /* TH "Acciones" */
+  .gestion-productos__tabla th.gestion-productos__col-acciones {
+    width: 35%;
+    min-width: 250px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  /* TD "Nombre" */
+  .gestion-productos__tabla td.gestion-productos__col-nombre {
+    display: table-cell;
+    width: 25%;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 12px 16px;
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    justify-content: initial;
+    text-decoration: none;
+    color: #e0e0e0;
+    text-align: left;
+  }
+
+  /* TD "Categoría" */
+  .gestion-productos__tabla td:nth-child(2) {
+    width: 15%;
+    text-align: left;
+  }
+
+  /* TD "Precio" */
+  .gestion-productos__tabla td.gestion-productos__col-precio {
+    width: 10%;
+    text-align: right;
+    font-weight: 700;
+    color: #4caf50;
+  }
+
+  /* TD "Estado" */
+  .gestion-productos__tabla td.gestion-productos__col-estado {
+    width: 15%;
+    text-align: center;
+  }
+
+  /* TD "Acciones" */
+  .gestion-productos__tabla td.gestion-productos__col-acciones {
+    display: table-cell;
+    width: 35%;
+    min-width: 250px;
+    flex-direction: initial;
+    padding: 12px 16px;
+    margin-top: 0;
+    border-top: none;
+    justify-content: initial;
+    align-items: initial;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ----- BOTONES dentro de TD "Acciones" ----- */
+  .gestion-productos__tabla
+    td.gestion-productos__col-acciones
+    .gestion-productos__btn-editar,
+  .gestion-productos__tabla
+    td.gestion-productos__col-acciones
+    .gestion-productos__btn-eliminar,
+  .gestion-productos__tabla
+    td.gestion-productos__col-acciones
+    .gestion-productos__btn-restaurar {
+    width: auto;
+    max-width: none;
+    min-height: auto;
+    height: 32px;
+    padding: 6px 14px;
+    margin-left: 6px;
+    margin-top: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-flex;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    text-shadow: none;
+    border: none;
+  }
+
+  .gestion-productos__tabla tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
