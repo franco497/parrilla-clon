@@ -164,7 +164,7 @@ const GestionMozos = ({ onVolver }) => {
         ) : (
           <table className="gestion-mozos__tabla">
             <thead>
-              <tr>
+              <tr className="gestion-mozos__fila-header">
                 <th>Nombre</th>
                 <th className="gestion-mozos__col-estado">Estado</th>
                 <th className="gestion-mozos__col-acciones">Acciones</th>

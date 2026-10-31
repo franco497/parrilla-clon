@@ -257,6 +257,14 @@
   margin-top: 6px;
 }
 
+/* ==========================================================================
+   DESKTOP
+   ========================================================================== */
+
+/* ==========================================================================
+   DESKTOP (≥ 769px): CARDS → TABLA
+   ========================================================================== */
+
 @media (min-width: 769px) {
   /* --- FIX: box-sizing en toda la tabla --- */
   .gestion-mozos__tabla,
@@ -282,33 +290,32 @@
     padding: 0;
   }
 
+  /* ========================================================================
+     RESET: tabla, thead, tbody, tr, td → display nativo de tabla
+     ======================================================================== */
+
   .gestion-mozos__tabla {
-    display: table;
+    display: table;             /* ← antes block (mobile) */
     width: 100%;
     border-collapse: collapse;
-    /* table-layout: auto (por defecto) → min-width funciona */
+    table-layout: auto;
   }
 
   .gestion-mozos__tabla thead {
-    display: table-header-group;
+    display: table-header-group;   /* ← antes none (mobile) */
     background: rgba(255, 255, 255, 0.05);
   }
 
   .gestion-mozos__tabla tbody {
-    display: table-row-group;
+    display: table-row-group;      /* ← antes block (mobile) */
   }
 
-  .gestion-mozos__tabla tbody tr {
-    display: table-row;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    margin-bottom: 0;
-    padding: 0;
+  .gestion-mozos__tabla tr {
+    display: table-row;            /* ← antes block (mobile) */
   }
 
   .gestion-mozos__tabla th {
-    display: table-cell;
+    display: table-cell;           /* ← antes (no definido en mobile) */
     padding: 14px 16px;
     text-align: left;
     color: var(--primary-color);
@@ -321,7 +328,7 @@
   }
 
   .gestion-mozos__tabla td {
-    display: table-cell;
+    display: table-cell;           /* ← antes block (mobile) */
     padding: 12px 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     font-size: 0.92rem;
@@ -340,40 +347,34 @@
     content: none;
   }
 
-  /* ----- ANCHOS DE COLUMNA ----- */
-  /* Nombre: 50% */
-  .gestion-mozos__tabla th.gestion-mozos__col-nombre,
-  .gestion-mozos__tabla td.gestion-mozos__col-nombre {
+  /* ========================================================================
+     ANCHOS DE COLUMNA (th y td separados)
+     ======================================================================== */
+
+  /* TH "Nombre" */
+  .gestion-mozos__tabla th.gestion-mozos__col-nombre {
     width: 50%;
     text-align: left;
   }
 
-  /* Estado: 20% */
-  .gestion-mozos__tabla th.gestion-mozos__col-estado,
-  .gestion-mozos__tabla td.gestion-mozos__col-estado {
+  /* TH "Estado" */
+  .gestion-mozos__tabla th.gestion-mozos__col-estado {
     width: 20%;
     text-align: center;
   }
 
-  /* Acciones: 30% - header a la izquierda, botones a la derecha */
+  /* TH "Acciones" */
   .gestion-mozos__tabla th.gestion-mozos__col-acciones {
     width: 30%;
-    min-width: 140px;      /* ← AHORA SÍ funciona (sin table-layout: fixed) */
+    min-width: 250px;
     text-align: left;
-    white-space: normal;
-    word-break: break-word;
-  }
-
-  .gestion-mozos__tabla td.gestion-mozos__col-acciones {
-    width: 30%;
-    min-width: 140px;
-    text-align: right;
     white-space: nowrap;
   }
 
-  /* Columna nombre: resetear estilos mobile */
+  /* TD "Nombre" */
   .gestion-mozos__tabla td.gestion-mozos__col-nombre {
     display: table-cell;
+    width: 50%;
     font-size: 0.92rem;
     font-weight: 600;
     padding: 12px 16px;
@@ -382,20 +383,34 @@
     justify-content: initial;
     text-decoration: none;
     color: #e0e0e0;
+    text-align: left;
   }
 
-  /* Columna acciones: resetear flex mobile */
+  /* TD "Estado" */
+  .gestion-mozos__tabla td.gestion-mozos__col-estado {
+    width: 20%;
+    text-align: center;
+  }
+
+  /* TD "Acciones" */
   .gestion-mozos__tabla td.gestion-mozos__col-acciones {
     display: table-cell;
+    width: 30%;
+    min-width: 250px;
     flex-direction: initial;
     padding: 12px 16px;
     margin-top: 0;
     border-top: none;
     justify-content: initial;
     align-items: initial;
+    text-align: right;
+    white-space: nowrap;
   }
 
-  /* Botones: resetear width/padding mobile */
+  /* ========================================================================
+     BOTONES dentro de TD "Acciones"
+     ======================================================================== */
+
   .gestion-mozos__tabla td.gestion-mozos__col-acciones .gestion-mozos__btn-editar,
   .gestion-mozos__tabla td.gestion-mozos__col-acciones .gestion-mozos__btn-eliminar,
   .gestion-mozos__tabla td.gestion-mozos__col-acciones .gestion-mozos__btn-restaurar {
