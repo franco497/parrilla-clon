@@ -266,6 +266,9 @@
 /* ==========================================================================
    DESKTOP (≥ 769px): CARDS → TABLA
    ========================================================================== */
+/* ==========================================================================
+   DESKTOP (≥ 769px): CARDS → TABLA
+   ========================================================================== */
 
 @media (min-width: 769px) {
   /* --- FIX: box-sizing en toda la tabla --- */
@@ -351,44 +354,47 @@
     content: none;
   }
 
-  /* ----- ANCHOS DE COLUMNA (5 columnas) ----- */
+  /* ========================================================================
+     ANCHOS DE COLUMNA (th + td) — 40 / 15 / 10 / 15 / 20 = 100%
+     ======================================================================== */
 
-  /* TH "Nombre" */
+  /* TH "Nombre" - 40% */
   .gestion-productos__tabla th:nth-child(1) {
-    width: 25%;
+    width: 40%;
     text-align: left;
   }
 
-  /* TH "Categoría" */
+  /* TH "Categoría" - 15% */
   .gestion-productos__tabla th:nth-child(2) {
     width: 15%;
     text-align: left;
   }
 
-  /* TH "Precio" */
+  /* TH "Precio" - 10% */
   .gestion-productos__tabla th.gestion-productos__col-precio {
     width: 10%;
     text-align: right;
   }
 
-  /* TH "Estado" */
+  /* TH "Estado" - 15% */
   .gestion-productos__tabla th.gestion-productos__col-estado {
     width: 15%;
     text-align: center;
   }
 
-  /* TH "Acciones" */
+  /* TH "Acciones" - 20% */
   .gestion-productos__tabla th.gestion-productos__col-acciones {
-    width: 35%;
-    min-width: 250px;
-    text-align: left;
+    width: 20%;
+    min-width: 180px;
+    text-align: center;
     white-space: nowrap;
+    padding-left: 70px;
   }
 
-  /* TD "Nombre" */
+  /* TD "Nombre" - 40% */
   .gestion-productos__tabla td.gestion-productos__col-nombre {
     display: table-cell;
-    width: 25%;
+    width: 40%;
     font-size: 0.92rem;
     font-weight: 600;
     padding: 12px 16px;
@@ -400,13 +406,13 @@
     text-align: left;
   }
 
-  /* TD "Categoría" */
+  /* TD "Categoría" - 15% */
   .gestion-productos__tabla td:nth-child(2) {
     width: 15%;
     text-align: left;
   }
 
-  /* TD "Precio" */
+  /* TD "Precio" - 10% */
   .gestion-productos__tabla td.gestion-productos__col-precio {
     width: 10%;
     text-align: right;
@@ -414,17 +420,17 @@
     color: #4caf50;
   }
 
-  /* TD "Estado" */
+  /* TD "Estado" - 15% */
   .gestion-productos__tabla td.gestion-productos__col-estado {
     width: 15%;
     text-align: center;
   }
 
-  /* TD "Acciones" */
+  /* TD "Acciones" - 20% */
   .gestion-productos__tabla td.gestion-productos__col-acciones {
     display: table-cell;
-    width: 35%;
-    min-width: 250px;
+    width: 20%;
+    min-width: 180px;
     flex-direction: initial;
     padding: 12px 16px;
     margin-top: 0;
@@ -449,10 +455,10 @@
     max-width: none;
     min-height: auto;
     height: 32px;
-    padding: 6px 14px;
-    margin-left: 6px;
+    padding: 6px 12px;
+    margin-left: 4px;
     margin-top: 0;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
     display: inline-flex;
     backdrop-filter: none;
