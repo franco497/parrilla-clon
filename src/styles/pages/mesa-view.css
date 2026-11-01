@@ -2,6 +2,23 @@
    COMPONENT: MesaView
    ========================================================================== */
 
+/* Box-sizing global para MesaView (evita colapso de márgenes) */
+.mesa-view-container,
+.mesa-view-container *,
+.mesa-view-container *::before,
+.mesa-view-container *::after {
+  box-sizing: border-box;
+}
+
+/* Contenedor principal */
+.mesa-view-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 15px;
+  padding-bottom: 100px;
+  color: #fff;
+}
+
 /* Contenedor principal */
 .mesa-view-container {
   min-height: 100vh;
@@ -850,6 +867,78 @@
   .personas-grupo {
     flex-direction: row;
     gap: 20px;
+  }
+
+  /* ============================================
+     PRODUCTO ITEM EN DESKTOP
+     Ocupa todo el ancho, info a la izquierda, botones a la derecha
+     ============================================ */
+  .producto-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .producto-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+
+  .producto-nombre {
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .producto-precio {
+    color: #4caf50;
+    font-weight: bold;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .producto-stock {
+    font-size: 0.75rem;
+    color: #4caf50;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .producto-stock.agotado {
+    color: #ef5350;
+  }
+
+  .producto-accion {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    width: auto;
+    margin-left: auto;
+  }
+
+  .cantidad-control {
+    flex: none;
+    max-width: none;
+  }
+
+  .btn-agregar {
+    flex: none;
+    min-width: auto;
   }
 }
 
