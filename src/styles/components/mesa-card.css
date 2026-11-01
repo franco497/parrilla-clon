@@ -5,7 +5,7 @@
 .mesa {
   background-color: #262626;
   border-radius: 8px;
-  padding: 20px 15px;
+  /* padding: 20px 15px; */
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
