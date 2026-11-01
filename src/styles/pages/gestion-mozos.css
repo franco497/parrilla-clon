@@ -367,8 +367,9 @@
   .gestion-mozos__tabla th.gestion-mozos__col-acciones {
     width: 30%;
     min-width: 250px;
-    text-align: left;
+    text-align: center;
     white-space: nowrap;
+    padding-left: 120px;
   }
 
   /* TD "Nombre" */
