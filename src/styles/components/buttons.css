@@ -1,0 +1,162 @@
+/* ============================================
+   COMPONENTS - BOTONES
+   ============================================ */
+
+/* Botón volver */
+.btn-volver {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-volver:hover {
+  background: #555;
+  transform: translateY(-2px);
+}
+
+/* Botón nuevo */
+.btn-nuevo {
+  background: var(--success-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-nuevo:hover:not(:disabled) {
+  background: #1b5e20;
+  transform: translateY(-2px);
+}
+
+.btn-nuevo:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Botón editar */
+.btn-editar {
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  margin-left: 6px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  white-space: nowrap;
+  background: #f59e0b;
+}
+
+.btn-editar:hover:not(:disabled) {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.btn-editar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  margin-left: 6px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  white-space: nowrap;
+  background: #c62828;
+}
+
+.btn-eliminar:hover:not(:disabled) {
+  background: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
+}
+
+.btn-eliminar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Botón restaurar */
+.btn-restaurar {
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  margin-left: 6px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  white-space: nowrap;
+  background: var(--success-color);
+}
+
+.btn-restaurar:hover:not(:disabled) {
+  background: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+}
+
+.btn-restaurar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Botón cancelar (modales) */
+.btn-cancelar {
+  background: #444;
+  color: white;
+}
+
+.btn-cancelar:hover:not(:disabled) {
+  background: #555;
+}
+
+/* Botón guardar (modales) */
+.btn-guardar {
+  background: var(--success-color);
+  color: white;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  background: #1b5e20;
+  transform: translateY(-2px);
+}

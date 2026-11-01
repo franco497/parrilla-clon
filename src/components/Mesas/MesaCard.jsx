@@ -1,6 +1,5 @@
 // src/components/Mesas/MesaCard.jsx
 import React from "react";
-import "./MesaCard.css";
 
 const MesaCard = ({ mesaId, mesa, onAbrir }) => {
   const getEstadoClase = () => {

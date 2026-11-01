@@ -1,8 +1,11 @@
-/* src/components/Mesas/MesaCard.css */
+/* ==========================================================================
+   COMPONENT: MesaCard
+   ========================================================================== */
+
 .mesa {
   background-color: #262626;
   border-radius: 8px;
-  padding: 20px 15px;
+  /* padding: 20px 15px; */
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -38,14 +41,6 @@
 }
 
 /* Estados */
-.mesa.disponible {
-  border-color: #2e7d32;
-}
-
-.mesa.ocupada {
-  border-color: #c62828;
-}
-
-.mesa.reservada {
-  border-color: #f59e0b;
-}
+.mesa.disponible { border-color: #2e7d32; }
+.mesa.ocupada    { border-color: #c62828; }
+.mesa.reservada  { border-color: #f59e0b; }

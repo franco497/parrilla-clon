@@ -1,6 +1,5 @@
 // src/components/Mozos/FormularioMozo.jsx
 import React, { useState, useEffect } from "react";
-import "./FormularioMozo.css";
 
 const FormularioMozo = ({ mozo, onGuardar, onCancelar, loading }) => {
   const [datos, setDatos] = useState({ nombre: "" });
@@ -62,11 +61,7 @@ const FormularioMozo = ({ mozo, onGuardar, onCancelar, loading }) => {
             >
               ❌ Cancelar
             </button>
-            <button
-              type="submit"
-              className="btn-guardar"
-              disabled={loading}
-            >
+            <button type="submit" className="btn-guardar" disabled={loading}>
               {loading
                 ? "⏳ Guardando..."
                 : mozo

@@ -1,9 +1,8 @@
 // src/components/Mesas/GrillaMesas.jsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRestaurante } from '../../context/RestauranteContext';
-import MesaCard from './MesaCard';
-import './GrillaMesas.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useRestaurante } from "../../context/RestauranteContext";
+import MesaCard from "./MesaCard";
 
 const GrillaMesas = ({ onVolver }) => {
   const { mesas } = useRestaurante();

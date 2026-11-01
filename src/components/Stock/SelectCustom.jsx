@@ -1,8 +1,12 @@
 // src/components/Stock/SelectCustom.jsx
 import React, { useState, useRef, useEffect } from "react";
-import "./SelectCustom.css";
 
-const SelectCustom = ({ value, onChange, options, placeholder = "Seleccionar..." }) => {
+const SelectCustom = ({
+  value,
+  onChange,
+  options,
+  placeholder = "Seleccionar...",
+}) => {
   const [abierto, setAbierto] = useState(false);
   const ref = useRef(null);
 

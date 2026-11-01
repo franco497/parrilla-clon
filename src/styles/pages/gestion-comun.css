@@ -1,0 +1,179 @@
+/* ============================================
+   COMPONENTS - GESTIÓN (compartido por las 3 pantallas)
+   ============================================ */
+
+/* Contenedor principal - BASE MÓVIL */
+.gestion-productos,
+.gestion-mozos,
+.gestion-stock {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5px;
+  color: var(--white);
+}
+
+/* Header - BASE MÓVIL: en columna */
+.gestion-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gestion-header h2 {
+  margin: 0;
+  font-size: var(--text-2xl);
+  color: var(--primary-color);
+  text-align: center;
+  order: -1;
+}
+
+/* Mensaje */
+.mensaje {
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  text-align: center;
+  animation: slideDown 0.3s ease;
+}
+
+.mensaje.success {
+  background: rgba(45, 106, 79, 0.2);
+  border: 1px solid rgba(45, 106, 79, 0.3);
+  color: #4caf50;
+}
+
+.mensaje.error {
+  background: rgba(198, 40, 40, 0.2);
+  border: 1px solid rgba(198, 40, 40, 0.3);
+  color: #ef5350;
+}
+
+/* Filtros - BASE MÓVIL: 1 columna */
+.gestion-filtros {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.input-busqueda,
+.select-filtro {
+  padding: 10px 14px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.input-busqueda:focus,
+.select-filtro:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.input-busqueda::placeholder {
+  color: #888;
+}
+
+.select-filtro option {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  padding: 8px;
+}
+
+.select-filtro option:hover,
+.select-filtro option:checked {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+/* Contador */
+.gestion-contador {
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+
+/* Sin resultados */
+.sin-productos,
+.sin-mozos {
+  padding: 60px 20px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
+
+/* Badges de resumen (stock) */
+.stock-resumen {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.badge-resumen {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.badge-resumen.ok {
+  background: rgba(45, 106, 79, 0.2);
+  color: #4caf50;
+  border: 1px solid rgba(45, 106, 79, 0.4);
+}
+
+.badge-resumen.bajo {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.badge-resumen.agotado {
+  background: rgba(198, 40, 40, 0.2);
+  color: #ef5350;
+  border: 1px solid rgba(198, 40, 40, 0.4);
+}
+
+/* ==========================================
+   DESKTOP (≥ 769px)
+   ========================================== */
+
+@media (min-width: 769px) {
+  .gestion-productos,
+  .gestion-mozos,
+  .gestion-stock {
+    padding: 20px;
+  }
+
+  .gestion-header {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .gestion-header h2 {
+    text-align: left;
+    order: 0;
+  }
+
+  .stock-resumen {
+    justify-content: flex-end;
+  }
+
+  .gestion-filtros {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}

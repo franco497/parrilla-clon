@@ -1,15 +1,14 @@
 // src/components/Mesas/SelectorMozo.jsx
 import React, { useState } from "react";
-import "./SelectorMozo.css";
 
 // ✅ Asegurar que todos los props están correctos
 const SelectorMozo = ({
-  mesaId,           // ID de la mesa
-  mozos,            // Lista de mozos disponibles
-  mozoActual,       // Nombre del mozo asignado (string o null)
-  onAsignar,        // Función para asignar mozo
-  onRemover,        // Función para remover mozo
-  loading,          // Estado de carga
+  mesaId, // ID de la mesa
+  mozos, // Lista de mozos disponibles
+  mozoActual, // Nombre del mozo asignado (string o null)
+  onAsignar, // Función para asignar mozo
+  onRemover, // Función para remover mozo
+  loading, // Estado de carga
 }) => {
   const [mostrarSelector, setMostrarSelector] = useState(false);
 
@@ -25,8 +24,8 @@ const SelectorMozo = ({
     }
   };
 
-  console.log('🔍 SelectorMozo - mozoActual:', mozoActual);
-  console.log('🔍 SelectorMozo - mesaId:', mesaId);
+  console.log("🔍 SelectorMozo - mozoActual:", mozoActual);
+  console.log("🔍 SelectorMozo - mesaId:", mesaId);
 
   return (
     <div className="selector-mozo">
@@ -72,9 +71,7 @@ const SelectorMozo = ({
                 onClick={() => handleAsignarMozo(mozo.id_mozo)}
                 disabled={loading}
               >
-                <span className="mozo-opcion-nombre">
-                  {mozo.nombre}
-                </span>
+                <span className="mozo-opcion-nombre">{mozo.nombre}</span>
               </button>
             ))
           )}

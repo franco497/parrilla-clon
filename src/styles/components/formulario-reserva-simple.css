@@ -1,0 +1,180 @@
+/* ==========================================================================
+   COMPONENT: FormularioReservaSimple
+   ========================================================================== */
+
+.formulario-reserva-simple {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+}
+
+/* Header */
+.reserva-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #f59e0b;
+  text-align: center;
+}
+
+/* Campo de formulario */
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.campo-form label .obligatorio {
+  color: #ef5350;
+  font-weight: 700;
+}
+
+.campo-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.campo-form input::placeholder {
+  color: #888;
+}
+
+.campo-form input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.campo-form input.error {
+  border-color: #ef5350;
+  background: rgba(239, 83, 80, 0.05);
+}
+
+.campo-form input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mensaje-error {
+  font-size: 0.8rem;
+  color: #ef5350;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Info de la reserva */
+.info-reserva {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-item span {
+  color: #b0b0b0;
+}
+
+.info-item strong {
+  color: #fff;
+  font-weight: 600;
+  text-align: right;
+}
+
+.info-nota {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: #888;
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.info-nota small {
+  font-size: inherit;
+}
+
+/* Acciones */
+.acciones-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-guardar-reserva {
+  background: var(--success-color);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.btn-guardar-reserva:hover:not(:disabled) {
+  background: #1b5e20;
+  transform: translateY(-2px);
+}
+
+.btn-guardar-reserva:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ⚠️ .btn-cancelar-reserva ya está en _mesa-view.css
+   (botón rojo "❌"). Acá no la redefinimos para no romperlo.
+   El botón del formulario hereda esos estilos. */
+
+/* ==========================================================================
+   RESPONSIVE (mobile-first → desktop)
+   ========================================================================== */
+
+@media (min-width: 601px) {
+  .formulario-reserva-simple {
+    padding: 15px;
+    gap: 14px;
+  }
+
+  .reserva-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .acciones-formulario {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .acciones-formulario button {
+    flex: 1;
+  }
+}

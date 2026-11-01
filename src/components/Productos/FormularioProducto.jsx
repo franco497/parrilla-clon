@@ -1,6 +1,5 @@
 // src/components/Productos/FormularioProducto.jsx
 import React, { useState, useEffect } from "react";
-import "./FormularioProducto.css";
 
 const FormularioProducto = ({
   producto,

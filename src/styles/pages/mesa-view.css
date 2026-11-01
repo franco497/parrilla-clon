@@ -1,0 +1,1014 @@
+/* ==========================================================================
+   COMPONENT: MesaView
+   ========================================================================== */
+
+/* Box-sizing global para MesaView (evita colapso de márgenes) */
+.mesa-view-container,
+.mesa-view-container *,
+.mesa-view-container *::before,
+.mesa-view-container *::after {
+  box-sizing: border-box;
+}
+
+/* Contenedor principal */
+.mesa-view-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 15px;
+  padding-bottom: 100px;
+  color: #fff;
+}
+
+/* Contenedor principal */
+.mesa-view-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 15px;
+  padding-bottom: 100px; 
+  color: #fff;
+}
+
+.mesa-view-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff;
+}
+
+/* HEADER - base móvil: columna */
+.mesa-view-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.mesa-view-header h1 {
+  margin: 0;
+  font-size: 1.4rem; 
+}
+
+.btn-volver-mesa {
+  background: #444;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-volver-mesa:hover {
+  background: #555;
+  transform: translateY(-2px);
+}
+
+.header-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.badge-pedido,
+.badge-ocupada,
+.badge-reservada,
+.badge-mozo {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.badge-pedido {
+  background: var(--success-color);
+}
+.badge-ocupada {
+  background: #c62828;
+}
+.badge-reservada {
+  background: #f59e0b;
+}
+.badge-mozo {
+  background: var(--success-color);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+/* MENSAJE DE ESTADO */
+.mensaje-estado {
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  text-align: center;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mensaje-estado.success {
+  background: rgba(45, 106, 79, 0.2);
+  border: 1px solid rgba(45, 106, 79, 0.3);
+  color: #4caf50;
+}
+
+.mensaje-estado.error {
+  background: rgba(198, 40, 40, 0.2);
+  border: 1px solid rgba(198, 40, 40, 0.3);
+  color: #ef5350;
+}
+
+/* CONTENIDO - base móvil: 1 columna */
+.mesa-view-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.columna-menu,
+.columna-pedido {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.columna-menu {
+  max-height: none;
+  overflow-y: visible;
+}
+
+.columna-pedido {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: none;
+  overflow-y: visible;
+}
+
+.columna-menu h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.menu-productos {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.categoria-menu h5 {
+  color: var(--primary-color);
+  margin: 0 0 8px 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 5px;
+}
+
+.productos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Producto item - base móvil: columna */
+.producto-item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.producto-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.producto-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 100px;
+}
+
+.producto-nombre {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+.producto-precio {
+  color: #4caf50;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.producto-stock {
+  font-size: 0.75rem;
+  color: #4caf50;
+  font-weight: 600;
+  margin-left: auto;
+  padding-left: 8px;
+}
+
+.producto-stock.agotado {
+  color: #ef5350;
+}
+
+.producto-accion {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* Control de cantidad */
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border: 1px solid #444;
+  overflow: hidden;
+  flex: 1;
+  max-width: 120px;
+}
+
+.btn-cantidad {
+  background: transparent;
+  color: #fff;
+  border: none;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-weight: bold;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.btn-cantidad:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+.btn-cantidad:active:not(:disabled) {
+  transform: scale(0.9);
+}
+.btn-cantidad:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-cantidad-menos {
+  color: #ff6b6b;
+}
+.btn-cantidad-menos:hover:not(:disabled) {
+  background: rgba(255, 107, 107, 0.15);
+}
+.btn-cantidad-mas {
+  color: #4caf50;
+}
+.btn-cantidad-mas:hover:not(:disabled) {
+  background: rgba(76, 175, 80, 0.15);
+}
+
+.cantidad-valor {
+  min-width: 24px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #fff;
+  padding: 0 4px;
+}
+
+.btn-agregar {
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: all 0.2s;
+  white-space: nowrap;
+  min-height: 30px;
+  flex: 1;
+  min-width: 80px;
+  text-align: center;
+}
+
+.btn-agregar:hover:not(:disabled) {
+  background: #e03e00;
+  transform: scale(1.02);
+}
+.btn-agregar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Reserva */
+.reserva-section {
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.reserva-activa {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reserva-icono {
+  font-size: 1.5rem;
+}
+.reserva-info {
+  flex: 1;
+}
+.reserva-cliente {
+  margin: 0;
+  font-size: 0.95rem;
+}
+.reserva-cliente strong {
+  color: #f59e0b;
+}
+
+.reserva-detalle {
+  margin: 2px 0 0 0;
+  font-size: 0.75rem;
+  color: #b0b0b0;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-cancelar-reserva {
+  background: #c62828;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.sin-reserva {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sin-reserva p {
+  margin: 0;
+  color: #b0b0b0;
+}
+
+.btn-reservar {
+  background: #f59e0b;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Personas */
+.personas-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.personas-grupo label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.personas-grupo input {
+  width: 50px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #1a1a1a;
+  color: #fff;
+  text-align: center;
+}
+
+/* Items del pedido */
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.items-header h4 {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.btn-editar-pedido {
+  background: #f59e0b;
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-editar-pedido:hover {
+  background: #d97706;
+  transform: scale(1.02);
+}
+
+.acciones-edicion {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-guardar-edicion {
+  background: var(--success-color);
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-guardar-edicion:hover {
+  background: #1b5e20;
+}
+
+.btn-cancelar-edicion {
+  background: #c62828;
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-cancelar-edicion:hover {
+  background: #b71c1c;
+}
+
+.sin-items {
+  color: #666;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.items-pedido,
+.items-pedido-edicion {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.item-pedido {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
+}
+
+.item-pedido:last-child {
+  border-bottom: none;
+}
+
+.item-cantidad {
+  color: var(--primary-color);
+  font-weight: bold;
+  min-width: 30px;
+}
+
+.item-nombre {
+  flex: 1;
+  padding: 0 10px;
+}
+
+.item-subtotal {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* Modo edición - base móvil: columna */
+.item-pedido-edit {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
+}
+
+.item-pedido-edit:last-child {
+  border-bottom: none;
+}
+
+.item-pedido-edit .item-nombre {
+  width: 100%;
+  flex: none;
+  color: #e0e0e0;
+}
+
+.item-edit-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.btn-edit-cantidad {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-edit-cantidad:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+}
+.btn-edit-cantidad:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.cantidad-edit-valor {
+  min-width: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+}
+
+.item-subtotal-edit {
+  min-width: 70px;
+  text-align: right;
+  color: #4caf50;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Mozo */
+.mozo-section {
+  background: rgba(76, 175, 80, 0.05);
+  border: 1px solid rgba(76, 175, 80, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* Total */
+.total-display {
+  background: var(--success-color);
+  padding: 15px 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.total-monto {
+  font-size: 1.4rem;
+  color: #ffd700;
+}
+
+/* Botones de acción */
+.acciones-pedido {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.acciones-pedido button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.acciones-pedido button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-calcular {
+  background: #444;
+  color: #fff;
+}
+
+.btn-calcular:hover:not(:disabled) {
+  background: #555;
+}
+
+.btn-guardar {
+  background: #2e7d32;
+  color: #fff;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  background: #1b5e20;
+  transform: translateY(-2px);
+}
+
+.btn-cobrar {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.btn-cobrar:hover:not(:disabled) {
+  background: #e03e00;
+  transform: translateY(-2px);
+}
+
+.btn-cancelar-pedido {
+  background: #c62828;
+  color: #fff;
+}
+
+.btn-cancelar-pedido:hover:not(:disabled) {
+  background: #b71c1c;
+  transform: translateY(-2px);
+}
+
+/* Botón flotante "ir al pedido" */
+.btn-ir-al-pedido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 100;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #e03e00 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(255, 69, 0, 0.4);
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: slideUpBoton 0.4s ease;
+}
+
+.btn-ir-al-pedido:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(255, 69, 0, 0.5);
+}
+
+.btn-ir-al-pedido:active {
+  transform: scale(0.98);
+}
+
+.btn-ir-al-pedido-icono {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.btn-ir-al-pedido-texto {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-ir-al-pedido-total {
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+@keyframes slideUpBoton {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE (mobile-first → desktop)
+   ========================================================================== */
+
+/* Tablet: 2 columnas (menú + pedido) */
+@media (min-width: 601px) {
+  .mesa-view-header {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    padding: 15px 20px;
+  }
+
+  .header-badges {
+    justify-content: flex-start;
+  }
+
+  .producto-item {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .producto-info {
+    justify-content: flex-start;
+    width: auto;
+  }
+
+  .producto-accion {
+    justify-content: flex-start;
+    width: auto;
+  }
+
+  .cantidad-control {
+    flex: none;
+    max-width: none;
+  }
+
+  .btn-agregar {
+    flex: none;
+    min-width: auto;
+  }
+
+  .items-header {
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+
+  .acciones-edicion {
+    flex-wrap: nowrap;
+  }
+}
+
+  /* ============================================
+     querie 993px
+     ============================================ */
+
+/* Desktop: layout de 2 columnas (menú | pedido) */
+@media (min-width: 993px) {
+  .mesa-view-container {
+    padding: 20px;
+    padding-bottom: 20px; 
+  }
+
+  .mesa-view-content {
+    grid-template-columns: 1fr 400px;
+    gap: 20px;
+  }
+
+  .columna-menu {
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+  }
+
+  .columna-pedido {
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+  }
+
+  .mesa-view-header h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Ocultar botón flotante en desktop */
+  .btn-ir-al-pedido {
+    display: none;
+  }
+
+  /* Modo edición vuelve a fila en desktop */
+  .item-pedido-edit {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .item-pedido-edit .item-nombre {
+    flex: 1;
+    width: auto;
+  }
+
+  .item-edit-control {
+    width: auto;
+    justify-content: flex-start;
+  }
+
+  /* Personas en fila */
+  .personas-grupo {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  /* ============================================
+     PRODUCTO ITEM EN DESKTOP
+     Ocupa todo el ancho, info a la izquierda, botones a la derecha
+     ============================================ */
+  .producto-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .producto-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+
+  .producto-nombre {
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .producto-precio {
+    color: #4caf50;
+    font-weight: bold;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .producto-stock {
+    font-size: 0.75rem;
+    color: #4caf50;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .producto-stock.agotado {
+    color: #ef5350;
+  }
+
+  .producto-accion {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    width: auto;
+    margin-left: auto;
+  }
+
+  .cantidad-control {
+    flex: none;
+    max-width: none;
+  }
+
+  .btn-agregar {
+    flex: none;
+    min-width: auto;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 992px) {
+  /* El botón flotante se mantiene visible (es tablet) */
+  .mesa-view-container {
+    padding-bottom: 100px;
+  }
+
+  /* ============================================
+     PRODUCTO ITEM EN TABLET
+     Ocupa todo el ancho, info a la izquierda, botones a la derecha
+     ============================================ */
+  .producto-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .producto-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+
+  .producto-nombre {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .producto-precio {
+    flex-shrink: 0;
+  }
+
+  .producto-stock {
+    flex-shrink: 0;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .producto-accion {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    width: auto;
+    margin-left: auto;
+  }
+
+  .cantidad-control {
+    flex: none;
+    max-width: none;
+  }
+
+  .btn-agregar {
+    flex: none;
+    min-width: auto;
+  }
+}
