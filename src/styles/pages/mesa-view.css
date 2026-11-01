@@ -24,7 +24,7 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   padding: 15px;
-  padding-bottom: 100px; /* espacio para botón flotante en móvil */
+  padding-bottom: 100px; 
   color: #fff;
 }
 
@@ -51,7 +51,7 @@
 
 .mesa-view-header h1 {
   margin: 0;
-  font-size: 1.4rem; /* mobile-first */
+  font-size: 1.4rem; 
 }
 
 .btn-volver-mesa {
@@ -816,11 +816,15 @@
   }
 }
 
+  /* ============================================
+     querie 993px
+     ============================================ */
+
 /* Desktop: layout de 2 columnas (menú | pedido) */
 @media (min-width: 993px) {
   .mesa-view-container {
     padding: 20px;
-    padding-bottom: 20px; /* sin botón flotante en desktop */
+    padding-bottom: 20px; 
   }
 
   .mesa-view-content {
@@ -942,10 +946,69 @@
   }
 }
 
-/* Desktop chico (600-992): ajustes finos */
 @media (min-width: 601px) and (max-width: 992px) {
   /* El botón flotante se mantiene visible (es tablet) */
   .mesa-view-container {
     padding-bottom: 100px;
+  }
+
+  /* ============================================
+     PRODUCTO ITEM EN TABLET
+     Ocupa todo el ancho, info a la izquierda, botones a la derecha
+     ============================================ */
+  .producto-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .producto-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+
+  .producto-nombre {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .producto-precio {
+    flex-shrink: 0;
+  }
+
+  .producto-stock {
+    flex-shrink: 0;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .producto-accion {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    width: auto;
+    margin-left: auto;
+  }
+
+  .cantidad-control {
+    flex: none;
+    max-width: none;
+  }
+
+  .btn-agregar {
+    flex: none;
+    min-width: auto;
   }
 }
