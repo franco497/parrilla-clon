@@ -1,0 +1,96 @@
+/* ==========================================================================
+   COMPONENT: Pagination
+   ========================================================================== */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 12px;
+  margin-top: 20px;
+  border-top: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+}
+
+.pagination__btn {
+  padding: 10px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-size: 0.9rem;
+  font-weight: 500;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.pagination__btn:hover:not(:disabled) {
+  background: rgba(233, 196, 106, 0.2);
+  border-color: var(--warning-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(233, 196, 106, 0.15);
+}
+
+.pagination__btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.pagination__btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pagination__info {
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  min-width: 120px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   RESPONSIVE (mobile-first → desktop)
+   ========================================================================== */
+
+@media (min-width: 601px) {
+  .pagination {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .pagination__btn {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+
+  .pagination__info {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}
+
+@media (min-width: 993px) {
+  .pagination__btn {
+    padding: 12px 28px;
+    font-size: 1rem;
+  }
+
+  .pagination__info {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+  }
+}

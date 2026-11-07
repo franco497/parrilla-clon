@@ -1,8 +1,11 @@
 // src/components/Productos/GestionProductos.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useRestaurante } from "../../context/RestauranteContext";
 import FormularioProducto from "./FormularioProducto";
 import SelectCustom from "../Stock/SelectCustom";
+import Pagination from "../Pagination";
+import { usePagination } from "../../hooks/usePagination";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 const GestionProductos = ({ onVolver }) => {
   const {
@@ -46,6 +49,20 @@ const GestionProductos = ({ onVolver }) => {
 
     return filtrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
   }, [productos, busqueda, filtroCategoria, filtroEstado]);
+
+  // ==========================================
+  // PAGINACIÓN
+  // ==========================================
+  const breakpoint = useBreakpoint();
+  const itemsPerPage = breakpoint === "mobile" ? 6 : 10;
+
+  const { currentPage, totalPages, paginatedItems, setCurrentPage } =
+    usePagination(productosFiltrados, { itemsPerPage });
+
+  // Resetear a página 1 cuando cambian los filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [busqueda, filtroCategoria, filtroEstado]);
 
   const getNombreCategoria = (idCategoria) => {
     const cat = categorias.find((c) => c.id_categoria === idCategoria);
@@ -183,12 +200,13 @@ const GestionProductos = ({ onVolver }) => {
 
       {/* Contador (compartido) */}
       <div className="gestion-contador">
-        Mostrando {productosFiltrados.length} de {productos.length} productos
+        Mostrando {paginatedItems.length} de {productosFiltrados.length}{" "}
+        productos filtrados (total: {productos.length})
       </div>
 
       {/* Tabla (específica) */}
       <div className="gestion-productos__tabla-wrapper">
-        {productosFiltrados.length === 0 ? (
+        {paginatedItems.length === 0 ? (
           <p className="sin-productos">
             {busqueda || filtroCategoria
               ? "No se encontraron productos con esos filtros"
@@ -206,7 +224,7 @@ const GestionProductos = ({ onVolver }) => {
               </tr>
             </thead>
             <tbody>
-              {productosFiltrados.map((producto) => (
+              {paginatedItems.map((producto) => (
                 <tr
                   key={producto.id_producto}
                   className={
@@ -282,6 +300,13 @@ const GestionProductos = ({ onVolver }) => {
           </table>
         )}
       </div>
+
+      {/* Paginación */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
 
       {mostrarFormulario && (
         <FormularioProducto
