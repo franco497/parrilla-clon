@@ -22,6 +22,8 @@ Sistema web de gestión integral para parrillas y restaurantes, desarrollado con
 * 📱 **Mobile First** – Diseño optimizado para tablets y móviles, ideal para uso en salón.
 * 🎨 **UI con glassmorphism** – Interfaz moderna con efectos de vidrio, gradientes y animaciones fluidas.
 * ⚡ **Enrutamiento completo** – Navegación fluida con React Router DOM y HashRouter.
+* 📄 **Paginado responsive** – 6 items en mobile, 10 en tablet/desktop en las pantallas de gestión.
+* 👤 **Footer con info del autor** – Avatar, GitHub, LinkedIn y contacto en el Dashboard.
 
 ---
 
@@ -129,27 +131,41 @@ Redirección automática al dashboard
 ```text
 /
 ├── src/
+│   ├── assets/
+│   │   └── footer/              # Imagen del autor
 │   ├── components/
-│   │   ├── MenuPrincipal/     # Menú de módulos
-│   │   ├── Mesas/             # Componentes de mesas
+│   │   ├── MenuPrincipal/       # Menú de módulos
+│   │   ├── Mesas/               # Componentes de mesas
 │   │   │   ├── GrillaMesas.jsx
 │   │   │   ├── MesaCard.jsx
 │   │   │   ├── FormularioReservaSimple.jsx
 │   │   │   └── SelectorMozo.jsx
-│   │   └── LogoutButton.jsx
-│   ├── context/               # Contexto global (RestauranteContext)
-│   ├── pages/                 # Páginas de la aplicación
+│   │   ├── Productos/           # Gestión de productos
+│   │   ├── Mozos/               # Gestión de mozos
+│   │   ├── Stock/               # Gestión de stock
+│   │   ├── Navbar.jsx           # Barra de navegación
+│   │   ├── Footer.jsx           # Footer con info del autor
+│   │   └── Pagination.jsx       # Componente de paginado
+│   ├── context/                 # Contexto global (RestauranteContext)
+│   ├── hooks/                   # Custom hooks
+│   │   ├── useBreakpoint.js     # Detecta mobile/tablet/desktop
+│   │   └── usePagination.js     # Lógica de paginado
+│   ├── pages/                   # Páginas de la aplicación
 │   │   ├── Dashboard.jsx
 │   │   ├── MesaView.jsx
 │   │   ├── login.jsx
 │   │   └── AuthCallback.jsx
-│   ├── services/              # Lógica de PDFs y servicios
+│   ├── services/                # Lógica de PDFs y servicios
 │   │   └── pdfService.js
-│   ├── lib/                   # Cliente de Supabase
-│   ├── styles/                # Arquitectura CSS
+│   ├── lib/                     # Cliente de Supabase
+│   ├── styles/                  # Arquitectura CSS (ITCSS atómico)
+│   │   ├── base/                # reset, variables, typography
+│   │   ├── components/          # navbar, footer, modal, pagination, etc.
+│   │   ├── pages/               # dashboard, mesa-view, login, gestion-*
+│   │   └── utilities/           # animations, spacing
 │   └── App.jsx
 ├── public/
-│   └── _redirects             # Redirecciones para Netlify
+│   └── _redirects               # Redirecciones para Netlify
 ├── package.json
 └── netlify.toml
 ```
@@ -175,6 +191,7 @@ Redirección automática al dashboard
 * Listado de mozos activos.
 * Asignación y cambio de mozo por mesa.
 * Visualización en el header y en el ticket.
+* Paginado: 6 mozos en mobile, 10 en tablet/desktop.
 
 ### 4. 🍽️ Módulo de Pedidos
 
@@ -194,6 +211,23 @@ Redirección automática al dashboard
 * Base de datos de productos editable.
 * Categorización por tipo.
 * Actualización de precios.
+* Paginado: 6 productos en mobile, 10 en tablet/desktop.
+
+### 7. 👤 Módulo de Footer
+
+* Avatar del autor.
+* Links a GitHub y LinkedIn.
+* Email de contacto.
+* Copyright.
+* Layout flex que lo mantiene al fondo de la pantalla.
+
+### 8. 📄 Módulo de Paginado
+
+* Componente reutilizable Pagination.jsx.
+* Hook usePagination.js para la lógica.
+* Hook useBreakpoint.js para detectar mobile/tablet/desktop.
+* 6 items en mobile, 10 en tablet/desktop.
+* Reset automático a página 1 al cambiar filtros.
 
 ---
 
