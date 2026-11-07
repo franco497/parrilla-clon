@@ -1,8 +1,11 @@
 // src/components/Mozos/GestionMozos.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useRestaurante } from "../../context/RestauranteContext";
 import FormularioMozo from "./FormularioMozo";
 import SelectCustom from "../Stock/SelectCustom";
+import Pagination from "../Pagination";
+import { usePagination } from "../../hooks/usePagination";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 const GestionMozos = ({ onVolver }) => {
   const { mozos, crearMozo, actualizarMozo, eliminarMozo, restaurarMozo } =
@@ -33,6 +36,20 @@ const GestionMozos = ({ onVolver }) => {
 
     return filtrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
   }, [mozos, busqueda, filtroEstado]);
+
+  // ==========================================
+  // PAGINACIÓN
+  // ==========================================
+  const breakpoint = useBreakpoint();
+  const itemsPerPage = breakpoint === "mobile" ? 6 : 10;
+
+  const { currentPage, totalPages, paginatedItems, setCurrentPage } =
+    usePagination(mozosFiltrados, { itemsPerPage });
+
+  // Resetear a página 1 cuando cambian los filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [busqueda, filtroEstado]);
 
   const handleNuevoMozo = () => {
     setMozoEditando(null);
@@ -150,12 +167,13 @@ const GestionMozos = ({ onVolver }) => {
 
       {/* Contador (compartido) */}
       <div className="gestion-contador">
-        Mostrando {mozosFiltrados.length} de {mozos.length} mozos
+        Mostrando {paginatedItems.length} de {mozosFiltrados.length} mozos
+        filtrados (total: {mozos.length})
       </div>
 
       {/* Tabla (específica) */}
       <div className="gestion-mozos__tabla-wrapper">
-        {mozosFiltrados.length === 0 ? (
+        {paginatedItems.length === 0 ? (
           <p className="sin-mozos">
             {busqueda
               ? "No se encontraron mozos con ese filtro"
@@ -171,7 +189,7 @@ const GestionMozos = ({ onVolver }) => {
               </tr>
             </thead>
             <tbody>
-              {mozosFiltrados.map((mozo) => (
+              {paginatedItems.map((mozo) => (
                 <tr
                   key={mozo.id_mozo}
                   className={
@@ -230,6 +248,13 @@ const GestionMozos = ({ onVolver }) => {
           </table>
         )}
       </div>
+
+      {/* Paginación */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
 
       {mostrarFormulario && (
         <FormularioMozo

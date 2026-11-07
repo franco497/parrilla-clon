@@ -1,8 +1,11 @@
 // src/components/Stock/GestionStock.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useRestaurante } from "../../context/RestauranteContext";
 import FormularioStock from "./FormularioStock";
 import SelectCustom from "./SelectCustom";
+import Pagination from "../Pagination";
+import { usePagination } from "../../hooks/usePagination";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 const GestionStock = ({ onVolver }) => {
   const { productos, categorias, ajustarStock } = useRestaurante();
@@ -45,6 +48,20 @@ const GestionStock = ({ onVolver }) => {
 
     return filtrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
   }, [productos, busqueda, filtroCategoria, filtroEstado]);
+
+  // ==========================================
+  // PAGINACIÓN
+  // ==========================================
+  const breakpoint = useBreakpoint();
+  const itemsPerPage = breakpoint === "mobile" ? 6 : 10;
+
+  const { currentPage, totalPages, paginatedItems, setCurrentPage } =
+    usePagination(productosFiltrados, { itemsPerPage });
+
+  // Resetear a página 1 cuando cambian los filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [busqueda, filtroCategoria, filtroEstado]);
 
   const getNombreCategoria = (idCategoria) => {
     const cat = categorias.find((c) => c.id_categoria === idCategoria);
@@ -173,12 +190,13 @@ const GestionStock = ({ onVolver }) => {
 
       {/* Contador (compartido) */}
       <div className="gestion-contador">
-        Mostrando {productosFiltrados.length} de {contadores.total} productos
+        Mostrando {paginatedItems.length} de {productosFiltrados.length}{" "}
+        productos filtrados (total: {contadores.total})
       </div>
 
       {/* Tabla (específica) */}
       <div className="gestion-stock__tabla-wrapper">
-        {productosFiltrados.length === 0 ? (
+        {paginatedItems.length === 0 ? (
           <p className="sin-productos">
             {busqueda || filtroCategoria || filtroEstado !== "todos"
               ? "No se encontraron productos con esos filtros"
@@ -197,7 +215,7 @@ const GestionStock = ({ onVolver }) => {
               </tr>
             </thead>
             <tbody>
-              {productosFiltrados.map((producto) => {
+              {paginatedItems.map((producto) => {
                 const estado = getEstadoStock(producto);
                 return (
                   <tr key={producto.id_producto}>
@@ -226,9 +244,7 @@ const GestionStock = ({ onVolver }) => {
                       className="gestion-stock__col-estado"
                       data-label="Estado"
                     >
-                      <span
-                        className={`gestion-stock__badge--${estado.clase}`}
-                      >
+                      <span className={`gestion-stock__badge--${estado.clase}`}>
                         {estado.texto}
                       </span>
                     </td>
@@ -251,6 +267,13 @@ const GestionStock = ({ onVolver }) => {
           </table>
         )}
       </div>
+
+      {/* Paginación */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
 
       {mostrarFormulario && (
         <FormularioStock

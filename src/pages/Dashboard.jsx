@@ -5,6 +5,7 @@ import { useRestaurante } from "../context/RestauranteContext";
 import MenuPrincipal from "../components/MenuPrincipal/MenuPrincipal";
 import GrillaMesas from "../components/Mesas/GrillaMesas";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";   
 import GestionProductos from "../components/Productos/GestionProductos";
 import GestionMozos from "../components/Mozos/GestionMozos";
 import GestionStock from "../components/Stock/GestionStock";
@@ -41,9 +42,9 @@ const Dashboard = () => {
   ).length;
 
   return (
-    <>
-      <Navbar /> {/* ← CAMBIAR */}
-      <div className="dashboard-container">
+    <div className="dashboard-layout">
+      <Navbar />
+      <main className="dashboard-main">
         {vistaActual === "principal" && (
           <MenuPrincipal
             onSeleccionarModulo={handleSeleccionarModulo}
@@ -63,8 +64,9 @@ const Dashboard = () => {
         {vistaActual === "mozos" && (
           <GestionMozos onVolver={handleVolverMenu} />
         )}
-      </div>
-    </>
+      </main>
+      <Footer />
+    </div>
   );
 };
 

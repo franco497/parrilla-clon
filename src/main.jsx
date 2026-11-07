@@ -27,6 +27,8 @@ import "./styles/components/grilla-mesas.css";
 import "./styles/components/selector-mozo.css";
 import "./styles/components/formulario-reserva-simple.css";
 import "./styles/components/formulario-stock.css";
+import "./styles/components/footer.css";
+import "./styles/components/pagination.css";
 
 // Pages: estilos específicos de cada pantalla
 import "./styles/pages/dashboard.css";

@@ -1,14 +1,24 @@
 /* ==========================================================================
-   COMPONENT: Dashboard
+   PAGE: Dashboard
    ========================================================================== */
 
-.dashboard-container {
+/* Layout principal: navbar + main + footer (con main flexible) */
+.dashboard-layout {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  padding: 20px;
-  padding-top: 90px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--primary-gradient);
 }
 
+/* Main: ocupa el espacio disponible (empuja el footer al fondo) */
+.dashboard-main {
+  flex: 1;
+  padding: 20px;
+  padding-top: 90px; /* espacio para la navbar fija (70px + 20px) */
+}
+
+/* Loading (mientras carga el contexto) */
 .loading-container {
   display: flex;
   justify-content: center;
@@ -17,6 +27,7 @@
   color: #fff;
 }
 
+/* Sección en construcción (por si se usa) */
 .seccion-en-construccion {
   max-width: 1200px;
   margin: 0 auto;
