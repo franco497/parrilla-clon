@@ -254,10 +254,10 @@
 }
 
 /* ==========================================================================
-   DESKTOP (≥ 769px): CARDS → TABLA
+   DESKTOP (≥ 700px): CARDS → TABLA
    ========================================================================== */
 
-@media (min-width: 769px) {
+@media (min-width: 700px) {
   /* --- FIX: box-sizing en toda la tabla --- */
   .gestion-stock__tabla,
   .gestion-stock__tabla *,
