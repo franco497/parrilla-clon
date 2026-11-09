@@ -139,7 +139,43 @@ const MesaView = () => {
       );
       if (result.success) {
         setMensaje(`✅ ${cantidad}x agregado`);
-        await cargarItemsPedido();
+
+        // ✅ ACTUALIZACIÓN OPTIMISTA
+        const producto = productos.find((p) => p.id_producto === productoId);
+        if (producto) {
+          setItemsPedido((prev) => {
+            const existing = prev.find(
+              (item) => item.id_producto === productoId,
+            );
+            if (existing) {
+              return prev.map((item) =>
+                item.id_producto === productoId
+                  ? {
+                      ...item,
+                      cantidad: item.cantidad + cantidad,
+                      subtotal: (item.cantidad + cantidad) * producto.precio,
+                    }
+                  : item,
+              );
+            }
+            return [
+              ...prev,
+              {
+                id_producto: productoId,
+                cantidad,
+                productos: { nombre: producto.nombre },
+                precio_unitario: producto.precio,
+                subtotal: producto.precio * cantidad,
+              },
+            ];
+          });
+
+          setTotal((prevTotal) => prevTotal + producto.precio * cantidad);
+        }
+
+        // ❌ NO llamar cargarItemsPedido acá (el useEffect de [pedidoId] se encarga)
+        // await cargarItemsPedido();
+
         setCantidades((prev) => ({ ...prev, [productoId]: 0 }));
         setTimeout(() => setMensaje(""), 2000);
       }
