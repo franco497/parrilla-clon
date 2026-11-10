@@ -6,8 +6,11 @@ import SelectCustom from "./SelectCustom";
 import Pagination from "../Pagination";
 import { usePagination } from "../../hooks/usePagination";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { useOrientation } from "../../hooks/useOrientation";
 
 const GestionStock = ({ onVolver }) => {
+  useOrientation();
+
   const { productos, categorias, ajustarStock } = useRestaurante();
 
   const [busqueda, setBusqueda] = useState("");
