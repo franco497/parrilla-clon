@@ -6,10 +6,13 @@ import FormularioReservaSimple from "../components/Mesas/FormularioReservaSimple
 import { generarFacturaPDF, generarTicketPDF } from "../services/pdfService";
 import { supabase } from "../lib/supabase";
 import SelectorMozo from "../components/Mesas/SelectorMozo";
+import { useOrientation } from "../hooks/useOrientation";
 
 const MesaView = () => {
   const { mesaId } = useParams();
   const navigate = useNavigate();
+
+  useOrientation();
 
   const {
     mesas,

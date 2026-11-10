@@ -5,15 +5,18 @@ import { useRestaurante } from "../context/RestauranteContext";
 import MenuPrincipal from "../components/MenuPrincipal/MenuPrincipal";
 import GrillaMesas from "../components/Mesas/GrillaMesas";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";   
+import Footer from "../components/Footer";
 import GestionProductos from "../components/Productos/GestionProductos";
 import GestionMozos from "../components/Mozos/GestionMozos";
 import GestionStock from "../components/Stock/GestionStock";
+import { useOrientation } from "../hooks/useOrientation";
 
 const Dashboard = () => {
   const { loading, productos } = useRestaurante();
   const location = useLocation();
   const [vistaActual, setVistaActual] = useState("principal");
+
+  useOrientation();
 
   useEffect(() => {
     if (location.state?.mostrarMesas) {

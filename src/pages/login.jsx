@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { supabase, getRedirectUrl } from "../lib/supabase";
+import { useOrientation } from "../hooks/useOrientation";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  useOrientation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +19,7 @@ function Login() {
     try {
       // ✅ Usar getRedirectUrl()
       const redirectUrl = getRedirectUrl();
-      
+
       console.log("📧 Enviando magic link a:", email);
       console.log("🔗 Redirect URL:", redirectUrl);
 
@@ -42,7 +45,9 @@ function Login() {
 
   return (
     <div className="login-container">
-      <h2 className="login-title">Inicia Sesion con Magic Link, solo ingresa tu E-mail:</h2>
+      <h2 className="login-title">
+        Inicia Sesion con Magic Link, solo ingresa tu E-mail:
+      </h2>
       <form onSubmit={handleSubmit} className="login-form">
         <div>
           <input

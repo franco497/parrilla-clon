@@ -6,8 +6,11 @@ import SelectCustom from "../Stock/SelectCustom";
 import Pagination from "../Pagination";
 import { usePagination } from "../../hooks/usePagination";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { useOrientation } from "../../hooks/useOrientation";
 
 const GestionMozos = ({ onVolver }) => {
+  useOrientation();
+
   const { mozos, crearMozo, actualizarMozo, eliminarMozo, restaurarMozo } =
     useRestaurante();
 
