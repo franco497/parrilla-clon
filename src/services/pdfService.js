@@ -213,7 +213,7 @@ export const generarFacturaPDF = (
   yPos += 5;
   doc.setFontSize(8);
   doc.text(
-    "Parrilla Milver - Todos los derechos reservados",
+    "Administracion Parrilla - Todos los derechos reservados",
     pageWidth / 2,
     yPos,
     { align: "center" },
@@ -253,7 +253,7 @@ export const generarTicketPDF = (
   // Título principal (centrado)
   doc.setFontSize(12);
   doc.setTextColor(0, 0, 0);
-  doc.text("Parrilla Milver", pageWidth / 2, yPos, { align: "center" });
+  doc.text("Administracion Parrilla", pageWidth / 2, yPos, { align: "center" });
 
   yPos += 5;
 
@@ -422,7 +422,7 @@ export const generarTicketPDF = (
   doc.setFontSize(6);
   doc.setTextColor(150);
   doc.text(
-    "Parrilla Milver - Todos los derechos reservados",
+    "Administracion Parrilla - Todos los derechos reservados",
     pageWidth / 2,
     yPos,
     { align: "center" },

@@ -1,7 +1,8 @@
 // src/components/Mesas/SelectorMozo.jsx
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 
-// ✅ Asegurar que todos los props están correctos
+// Asegurar que todos los props están correctos
 const SelectorMozo = ({
   mesaId, // ID de la mesa
   mozos, // Lista de mozos disponibles
@@ -17,8 +18,19 @@ const SelectorMozo = ({
     setMostrarSelector(false);
   };
 
-  const handleRemoverMozo = () => {
-    if (confirm("¿Quitar mozo asignado a esta mesa?")) {
+  const handleRemoverMozo = async () => {
+    const result = await Swal.fire({
+      title: "¿Quitar mozo?",
+      text: "¿Quitar el mozo asignado a esta mesa?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#c62828",
+      cancelButtonColor: "#444",
+      confirmButtonText: "Sí, quitar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (result.isConfirmed) {
       onRemover(mesaId);
       setMostrarSelector(false);
     }

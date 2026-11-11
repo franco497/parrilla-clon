@@ -7,6 +7,7 @@ import Pagination from "../Pagination";
 import { usePagination } from "../../hooks/usePagination";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 import { useOrientation } from "../../hooks/useOrientation";
+import Swal from "sweetalert2";
 
 const GestionMozos = ({ onVolver }) => {
   useOrientation();
@@ -65,31 +66,51 @@ const GestionMozos = ({ onVolver }) => {
   };
 
   const handleEliminarMozo = async (mozo) => {
-    const confirmar = window.confirm(
-      `¿Eliminar al mozo "${mozo.nombre}"?\n\n` +
-        `Se marcará como inactivo y podrá restaurarse después.`,
-    );
-    if (!confirmar) return;
+    const result = await Swal.fire({
+      title: "¿Eliminar mozo?",
+      html: `¿Eliminar al mozo <strong>"${mozo.nombre}"</strong>?<br><br>Se marcará como inactivo y podrá restaurarse después.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#c62828",
+      cancelButtonColor: "#444",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
 
     setLoading(true);
-    const result = await eliminarMozo(mozo.id_mozo);
-    if (result.success) {
+    const resultDelete = await eliminarMozo(mozo.id_mozo);
+    if (resultDelete.success) {
       setMensaje(`✅ "${mozo.nombre}" eliminado`);
       setTimeout(() => setMensaje(""), 2500);
     } else {
-      setMensaje(`❌ Error: ${result.error}`);
+      setMensaje(`❌ Error: ${resultDelete.error}`);
     }
     setLoading(false);
   };
 
   const handleRestaurarMozo = async (mozo) => {
+    const result = await Swal.fire({
+      title: "¿Restaurar mozo?",
+      html: `¿Restaurar al mozo <strong>"${mozo.nombre}"</strong>?<br><br>Volverá a estar activo.`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#2d6a4f",
+      cancelButtonColor: "#444",
+      confirmButtonText: "Sí, restaurar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
+
     setLoading(true);
-    const result = await restaurarMozo(mozo.id_mozo);
-    if (result.success) {
+    const resultRestore = await restaurarMozo(mozo.id_mozo);
+    if (resultRestore.success) {
       setMensaje(`✅ "${mozo.nombre}" restaurado`);
       setTimeout(() => setMensaje(""), 2500);
     } else {
-      setMensaje(`❌ Error: ${result.error}`);
+      setMensaje(`❌ Error: ${resultRestore.error}`);
     }
     setLoading(false);
   };
