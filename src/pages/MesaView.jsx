@@ -7,6 +7,7 @@ import { generarFacturaPDF, generarTicketPDF } from "../services/pdfService";
 import { supabase } from "../lib/supabase";
 import SelectorMozo from "../components/Mesas/SelectorMozo";
 import { useOrientation } from "../hooks/useOrientation";
+import Swal from "sweetalert2";
 
 const MesaView = () => {
   const { mesaId } = useParams();
@@ -218,22 +219,29 @@ const MesaView = () => {
     }
 
     const nombreCliente = nombreReservaLocal || "Consumidor Final";
-    const confirmar = confirm(
-      `¿Cobrar $${total.toLocaleString()} de la Mesa ${mesaId}?\n\n` +
-        `Cliente: ${nombreCliente}`,
-    );
 
-    if (!confirmar) return;
+    const result = await Swal.fire({
+      title: "¿Cobrar pedido?",
+      html: `¿Cobrar <strong>$${total.toLocaleString()}</strong> de la Mesa ${mesaId}?<br><br>Cliente: <strong>${nombreCliente}</strong>`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#ff4500",
+      cancelButtonColor: "#444",
+      confirmButtonText: "Sí, cobrar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
 
     setLoading(true);
     setMensaje("🔄 Procesando cobro...");
 
     try {
-      const result = await cobrarPedido(parseInt(mesaId));
-      if (result.success) {
+      const resultCobro = await cobrarPedido(parseInt(mesaId));
+      if (resultCobro.success) {
         const pedidoCompleto = {
-          id_pedido: result.pedidoId,
-          total: result.total,
+          id_pedido: resultCobro.pedidoId,
+          total: resultCobro.total,
           estado: "pagado",
           created_at: new Date().toISOString(),
         };
@@ -243,25 +251,24 @@ const MesaView = () => {
             pedidoCompleto,
             itemsPedido,
             parseInt(mesaId),
-            { nombre: nombreCliente }, // ← Cliente (igual que antes)
-            mozoActual, // ← MOZO (NUEVO)
+            { nombre: nombreCliente },
+            mozoActual,
           );
           console.log("✅ Ticket generado correctamente");
         } catch (pdfError) {
           console.error("Error generando PDF:", pdfError);
         }
 
-        setMensaje(`✅ Cobrado: $${result.total.toLocaleString()}`);
+        setMensaje(`✅ Cobrado: $${resultCobro.total.toLocaleString()}`);
         setItemsPedido([]);
         setTotal(0);
 
-        // ✅ Redirigir a la grilla de mesas después de cobrar
         setTimeout(() => {
           setMensaje("");
           navigate("/dashboard", { state: { mostrarMesas: true } });
         }, 1500);
       } else {
-        setMensaje(`❌ Error al cobrar: ${result.error}`);
+        setMensaje(`❌ Error al cobrar: ${resultCobro.error}`);
       }
     } catch (error) {
       console.error("Error cobrando:", error);
@@ -278,25 +285,34 @@ const MesaView = () => {
       return;
     }
 
-    const confirmar = confirm(`¿Cancelar el pedido de la Mesa ${mesaId}?`);
-    if (!confirmar) return;
+    const result = await Swal.fire({
+      title: "¿Cancelar pedido?",
+      html: `¿Cancelar el pedido de la <strong>Mesa ${mesaId}</strong>?<br><br>Esta acción no se puede deshacer.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#c62828",
+      cancelButtonColor: "#444",
+      confirmButtonText: "Sí, cancelar",
+      cancelButtonText: "Volver",
+    });
+
+    if (!result.isConfirmed) return;
 
     setLoading(true);
     setMensaje("🔄 Cancelando pedido...");
 
     try {
-      const result = await cancelarPedido(parseInt(mesaId));
-      if (result.success) {
+      const resultCancel = await cancelarPedido(parseInt(mesaId));
+      if (resultCancel.success) {
         setMensaje("✅ Pedido cancelado");
         setItemsPedido([]);
         setTotal(0);
 
-        // ✅ PERMANECER EN LA VISTA
         setTimeout(() => {
           setMensaje("");
         }, 2000);
       } else {
-        setMensaje(`❌ Error: ${result.error}`);
+        setMensaje(`❌ Error: ${resultCancel.error}`);
       }
     } catch (error) {
       console.error("Error cancelando:", error);
@@ -312,20 +328,28 @@ const MesaView = () => {
       return;
     }
 
-    const confirmar = confirm(
-      `¿Cancelar reserva de ${reservaExistente.nombre_cliente}?`,
-    );
-    if (!confirmar) return;
+    const result = await Swal.fire({
+      title: "¿Cancelar reserva?",
+      html: `¿Cancelar la reserva de <strong>${reservaExistente.nombre_cliente}</strong>?<br><br>La mesa volverá a estar disponible.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#c62828",
+      cancelButtonColor: "#444",
+      confirmButtonText: "Sí, cancelar",
+      cancelButtonText: "Volver",
+    });
+
+    if (!result.isConfirmed) return;
 
     setLoading(true);
     setMensaje("🔄 Cancelando reserva...");
 
     try {
-      const result = await cancelarReserva(
+      const resultCancel = await cancelarReserva(
         parseInt(mesaId),
         reservaExistente.id_reserva,
       );
-      if (result.success) {
+      if (resultCancel.success) {
         setMensaje("✅ Reserva cancelada");
         setNombreReservaLocal("");
         setMostrarFormularioReserva(false);
