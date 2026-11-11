@@ -7,6 +7,7 @@ import Pagination from "../Pagination";
 import { usePagination } from "../../hooks/usePagination";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 import { useOrientation } from "../../hooks/useOrientation";
+import Swal from "sweetalert2";
 
 const GestionProductos = ({ onVolver }) => {
   useOrientation();
@@ -83,31 +84,52 @@ const GestionProductos = ({ onVolver }) => {
   };
 
   const handleEliminarProducto = async (producto) => {
-    const confirmar = window.confirm(
-      `¿Eliminar el producto "${producto.nombre}"?\n\n` +
-        `Se marcará como inactivo y podrá restaurarse después.`,
-    );
-    if (!confirmar) return;
+    // ✅ SweetAlert2 en lugar de window.confirm
+    const result = await Swal.fire({
+      title: "¿Eliminar producto?",
+      html: `¿Eliminar el producto <strong>"${producto.nombre}"</strong>?<br><br>Se marcará como inactivo y podrá restaurarse después.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#c62828",
+      cancelButtonColor: "#444",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
 
     setLoading(true);
-    const result = await eliminarProducto(producto.id_producto);
-    if (result.success) {
+    const resultDelete = await eliminarProducto(producto.id_producto);
+    if (resultDelete.success) {
       setMensaje(`✅ "${producto.nombre}" eliminado`);
       setTimeout(() => setMensaje(""), 2500);
     } else {
-      setMensaje(`❌ Error: ${result.error}`);
+      setMensaje(`❌ Error: ${resultDelete.error}`);
     }
     setLoading(false);
   };
 
   const handleRestaurarProducto = async (producto) => {
+    const result = await Swal.fire({
+      title: "¿Restaurar producto?",
+      html: `¿Restaurar el producto <strong>"${producto.nombre}"</strong>?<br><br>Volverá a estar activo.`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#2d6a4f",
+      cancelButtonColor: "#444",
+      confirmButtonText: "Sí, restaurar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
+
     setLoading(true);
-    const result = await restaurarProducto(producto.id_producto);
-    if (result.success) {
+    const resultRestore = await restaurarProducto(producto.id_producto);
+    if (resultRestore.success) {
       setMensaje(`✅ "${producto.nombre}" restaurado`);
       setTimeout(() => setMensaje(""), 2500);
     } else {
-      setMensaje(`❌ Error: ${result.error}`);
+      setMensaje(`❌ Error: ${resultRestore.error}`);
     }
     setLoading(false);
   };
