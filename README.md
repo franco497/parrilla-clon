@@ -233,7 +233,32 @@ Redirección automática al dashboard
 
 ## 📱 Capturas de Pantalla
 
-> *(Próximamente)*
+### 🏠 Dashboard
+![Dashboard](./screenshots/dashboard.png)
+
+### 🪑 Vista de mesas
+![Vista de mesas](./screenshots/vista-mesas.png)
+
+### 🍽️ Detalle del pedido
+![Detalle del pedido](./screenshots/detalle-pedido.png)
+
+### 👨‍🍳 Módulo de Mozos
+
+| Desktop | Mobile |
+| :---: | :---: |
+| ![Mozos - Desktop](./screenshots/mozos-desktop.png) | ![Mozos - Mobile](./screenshots/mozos-mobile.png) |
+
+### 📦 Módulo de Stock
+
+| Desktop | Mobile |
+| :---: | :---: |
+| ![Stock - Desktop](./screenshots/stock-desktop.png) | ![Stock - Mobile](./screenshots/stock-mobile.png) |
+
+### 📋 Gestión de Productos
+
+| Desktop | Mobile |
+| :---: | :---: |
+| ![Productos - Desktop](./screenshots/productos-desktop.png) | ![Productos - Mobile](./screenshots/productos-mobile.png) |
 
 ---
 
