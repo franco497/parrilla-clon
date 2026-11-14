@@ -4,6 +4,8 @@ Sistema web de gestión integral para parrillas y restaurantes, desarrollado con
 
 🔗 **Demo:** (próximamente)
 
+> 🧪 **Desarrollo local:** Para desarrollo y pruebas utilizo **Docker** junto con **Supabase CLI**, trabajando sobre una **base de datos clonada** que me permite probar en un entorno controlado y aislado. Todo el trabajo se organiza en **ramas** para mantener el flujo ordenado y evitar romper la versión estable.
+
 ---
 
 ## ✨ Características principales
@@ -206,7 +208,7 @@ Redirección automática al dashboard
 * Factura A4 completa.
 * Datos del cliente, mozo y detalle de productos.
 
-### 6. 📦 Módulo de Stock (en desarrollo)
+### 6. 📦 Módulo de Stock 
 
 * Base de datos de productos editable.
 * Categorización por tipo.
@@ -240,7 +242,10 @@ Redirección automática al dashboard
 ![Vista de mesas](./screenshots/vista-mesas.png)
 
 ### 🍽️ Detalle del pedido
-![Detalle del pedido](./screenshots/detalle-pedido.png)
+
+| Desktop | Mobile |
+| :---: | :---: |
+| ![Detalle del pedido - Desktop](./screenshots/detalle-pedido-desktop.png) | ![Detalle del pedido - Mobile](./screenshots/detalle-pedido-mobile.png) |
 
 ### 👨‍🍳 Módulo de Mozos
 
