@@ -245,7 +245,7 @@ Redirección automática al dashboard
 
 | Desktop | Mobile |
 | :---: | :---: |
-| ![Detalle del pedido - Desktop](./screenshots/detalle-pedido-desktop.png) | ![Detalle del pedido - Mobile](./screenshots/detalle-pedido-mobile.png) |
+| ![Detalle del pedido - Desktop](./screenshots/detalle-pedido.png) | ![Detalle del pedido - Mobile](./screenshots/detalle-pedido-mobile.png) |
 
 ### 👨‍🍳 Módulo de Mozos
 
