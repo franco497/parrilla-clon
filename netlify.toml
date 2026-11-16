@@ -12,3 +12,6 @@
   for = "/*"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
+
+[functions]
+  node_bundler = "esbuild"
