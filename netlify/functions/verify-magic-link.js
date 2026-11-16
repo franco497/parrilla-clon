@@ -1,0 +1,263 @@
+// netlify/functions/verify-magic-link.js
+import { createClient } from "@supabase/supabase-js";
+import jwt from "jsonwebtoken";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SECRET_KEY,
+);
+
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error("❌ ERROR: JWT_SECRET no configurado");
+  throw new Error("JWT_SECRET es requerido");
+}
+
+// LISTA NEGRA EN MEMORIA (se reinicia al reiniciar la función)
+// En Netlify Functions, esto se mantiene mientras la función está activa
+const usedTokens = new Set();
+
+// Limpiar tokens expirados cada hora
+setInterval(
+  () => {
+    console.log(`🧹 Limpiando lista negra: ${usedTokens.size} tokens`);
+    usedTokens.clear();
+  },
+  60 * 60 * 1000,
+); // 1 hora
+
+// VERIFICAR JWT
+function verifyJWT(token) {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (decoded.purpose !== "magic-link") {
+      return { valid: false, error: "Propósito inválido" };
+    }
+    return { valid: true, email: decoded.email, decoded, jti: decoded.jti };
+  } catch (error) {
+    return { valid: false, error: error.message };
+  }
+}
+
+// FUNCIÓN PARA INICIAR SESIÓN CON REINTENTOS
+const loginWithRetry = async (
+  email,
+  password,
+  maxRetries = 5,
+  delay = 2000,
+) => {
+  console.log(`🔐 Intentando iniciar sesión para: ${email}`);
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (!error && data?.session) {
+        console.log(`✅ Sesión iniciada en intento ${attempt}`);
+        return { data, error: null };
+      }
+
+      if (error) {
+        console.warn(`⚠️ Intento ${attempt} falló: ${error.message}`);
+        if (
+          error.message?.includes("Invalid login credentials") &&
+          attempt < maxRetries
+        ) {
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          continue;
+        }
+        return { data: null, error };
+      }
+    } catch (err) {
+      console.warn(`⚠️ Intento ${attempt} falló:`, err);
+      if (attempt < maxRetries) {
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      } else {
+        return { data: null, error: err };
+      }
+    }
+  }
+  return { data: null, error: new Error("Máximo de reintentos") };
+};
+
+export const handler = async (event) => {
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
+      body: "",
+    };
+  }
+
+  try {
+    const { token } = JSON.parse(event.body);
+
+    if (!token) {
+      console.error("❌ Token vacío");
+      return {
+        statusCode: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: "Token es requerido" }),
+      };
+    }
+
+    // VERIFICAR JWT
+    const { valid, email, decoded, jti, error } = verifyJWT(token);
+
+    if (!valid) {
+      console.error("❌ JWT inválido:", error);
+      return {
+        statusCode: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: "Token inválido o expirado" }),
+      };
+    }
+
+    // VERIFICAR SI EL TOKEN YA FUE USADO (lista negra en memoria)
+    if (jti && usedTokens.has(jti)) {
+      console.error(`❌ Token ya usado (jti: ${jti})`);
+      return {
+        statusCode: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: "Token inválido o expirado" }),
+      };
+    }
+
+    console.log(`✅ JWT válido para: ${email}`);
+
+    // MARCAR EL TOKEN COMO USADO (guardar en lista negra)
+    if (jti) {
+      usedTokens.add(jti);
+      console.log(`✅ Token marcado como usado (jti: ${jti})`);
+    }
+
+    // GENERAR CONTRASEÑA TEMPORAL CORTA
+    const temporaryPassword =
+      "Temp_" + token.substring(0, 20) + "_" + Date.now().toString().slice(-6);
+    console.warn(
+      `🔐 Contraseña temporal generada (${temporaryPassword.length} caracteres)`,
+    );
+
+    // VERIFICAR SI EL USUARIO YA EXISTE
+    const { data: users, error: listError } =
+      await supabase.auth.admin.listUsers();
+
+    if (listError) {
+      console.error("❌ Error listando usuarios:", listError);
+      return {
+        statusCode: 500,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: "Error verificando usuario" }),
+      };
+    }
+
+    const existingUser = users?.users?.find((user) => user.email === email);
+
+    // SI EL USUARIO NO EXISTE, CREARLO
+    if (!existingUser) {
+      console.log("🆕 Usuario no existe, creando...");
+      const { error: signUpError } = await supabase.auth.admin.createUser({
+        email: email,
+        password: temporaryPassword,
+        email_confirm: true,
+      });
+
+      if (signUpError) {
+        console.error("❌ Error creando usuario:", signUpError);
+        return {
+          statusCode: 500,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({ error: "Error creando usuario" }),
+        };
+      }
+      console.log(`✅ Usuario creado: ${email}`);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } else {
+      console.log("👤 Usuario ya existe, actualizando contraseña...");
+      const { error: updateError } = await supabase.auth.admin.updateUserById(
+        existingUser.id,
+        { password: temporaryPassword },
+      );
+
+      if (updateError) {
+        console.error("❌ Error actualizando contraseña:", updateError);
+        return {
+          statusCode: 500,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({ error: "Error actualizando contraseña" }),
+        };
+      }
+      console.log("✅ Contraseña actualizada");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+
+    // INICIAR SESIÓN CON REINTENTOS
+    const { data: session, error: loginError } = await loginWithRetry(
+      email,
+      temporaryPassword,
+      5,
+      2000,
+    );
+
+    if (loginError || !session?.session) {
+      console.error("❌ Error iniciando sesión:", loginError);
+      return {
+        statusCode: 500,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: "Error iniciando sesión" }),
+      };
+    }
+
+    console.log(`✅ Sesión iniciada: ${session.session.user.email}`);
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ success: true, session: session.session }),
+    };
+  } catch (error) {
+    console.error("❌ Error en handler:", error);
+    return {
+      statusCode: 500,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        error: "Error interno del servidor",
+        details: error.message,
+      }),
+    };
+  }
+};

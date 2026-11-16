@@ -1,103 +1,186 @@
+// src/pages/AuthCallback.jsx
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
 function AuthCallback() {
-  const [status, setStatus] = useState("Verificando tu login...");
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState("Verificando tu enlace...");
+  const [processed, setProcessed] = useState(false);
+
+  // FUNCIÓN PARA EXTRAER TOKEN
+  const extractTokenFromUrl = () => {
+    const currentUrl = window.location.href;
+    const currentSearch = window.location.search;
+
+    let token = null;
+
+    // MÉTODO 1: URLSearchParams
+    const params = new URLSearchParams(currentSearch);
+    token = params.get("token");
+
+    // MÉTODO 2: Regex en URL completa
+    if (!token) {
+      const match = currentUrl.match(/[?&]token=([^&]+)/);
+      if (match) {
+        token = match[1];
+      }
+    }
+
+    return token;
+  };
+
+  // VERIFICAR SI EL USUARIO YA TIENE SESIÓN ACTIVA
+  const hasActiveSession = () => {
+    const stored = localStorage.getItem("supabaseSession");
+    if (!stored) return false;
+    try {
+      const session = JSON.parse(stored);
+      return !!session?.user;
+    } catch (e) {
+      return false;
+    }
+  };
 
   useEffect(() => {
-    const handleAuthCallback = async () => {
+    // Si no hay token en la URL, forzar recarga
+    if (!window.location.search.includes("token")) {
+      console.warn("⚠️ No hay token en la URL, forzando recarga...");
+      window.location.reload();
+      return;
+    }
+
+    const verifyToken = async () => {
+      if (processed) {
+        return;
+      }
+      setProcessed(true);
+
       try {
-        console.log("📍 AuthCallback - URL completa:", window.location.href);
-        console.log("📍 AuthCallback - Hash:", window.location.hash);
+        const token = extractTokenFromUrl();
 
-        // ✅ Obtener tokens del hash CORRECTAMENTE
-        const hash = window.location.hash;
-        const hashParams = new URLSearchParams(hash.substring(1));
-        const accessToken = hashParams.get("access_token");
-        const refreshToken = hashParams.get("refresh_token");
-        const type = hashParams.get("type");
+        if (!token) {
+          console.error("❌ TOKEN NO ENCONTRADO");
+          setStatus("❌ Token no encontrado en la URL");
+          setTimeout(() => {
+            window.location.replace("/");
+          }, 3000);
+          return;
+        }
 
-        console.log("🔍 Tokens encontrados:", {
-          accessToken: !!accessToken,
-          refreshToken: !!refreshToken,
-          type,
-          hash: hash,
-        });
+        const isLocal =
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1" ||
+          window.location.port === "5175";
 
-        // ✅ Si hay tokens, establecer sesión
-        if (accessToken) {
-          setStatus("✅ Estableciendo sesión...");
+        let data;
+        let responseOk;
 
-          console.log(
-            "🔄 Estableciendo sesión con token:",
-            accessToken.substring(0, 20) + "...",
-          );
+        if (isLocal) {
+          // En local, usar la sesión existente (o simular)
+          const {
+            data: { session },
+            error,
+          } = await supabase.auth.getSession();
+          if (error) throw error;
+          if (!session) throw new Error("No hay sesión");
 
-          const { data, error } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken || "",
-          });
+          data = { success: true, session };
+          responseOk = true;
+          localStorage.setItem("supabaseSession", JSON.stringify(session));
+        } else {
+          // En producción, llamar a la Netlify Function
+          let response;
+          let retryCount = 0;
+          const maxRetries = 2;
 
-          if (error) {
-            console.error("❌ Error al establecer sesión:", error);
-            throw error;
+          while (retryCount <= maxRetries) {
+            try {
+              response = await fetch(
+                "/.netlify/functions/verify-magic-link",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                  },
+                  body: JSON.stringify({ token }),
+                },
+              );
+              break;
+            } catch (err) {
+              retryCount++;
+              console.warn(`⚠️ Intento ${retryCount} falló:`, err);
+              if (retryCount <= maxRetries) {
+                await new Promise((resolve) =>
+                  setTimeout(resolve, 1000 * retryCount),
+                );
+              } else {
+                throw err;
+              }
+            }
           }
 
-          console.log("✅ Sesión establecida:", data);
-          setStatus("✅ ¡Login exitoso! Redirigiendo...");
+          const responseText = await response.text();
 
-          setTimeout(() => {
-            window.location.href = "/#/dashboard";
-          }, 1500);
+          try {
+            data = JSON.parse(responseText);
+          } catch (parseError) {
+            console.error("❌ Error parseando respuesta:", parseError);
+            throw new Error("El servidor no respondió correctamente");
+          }
 
+          responseOk = response.ok;
+
+          if (responseOk && data.session) {
+            localStorage.setItem(
+              "supabaseSession",
+              JSON.stringify(data.session),
+            );
+
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+          }
+        }
+
+        if (!responseOk || !data.success) {
+          console.error("❌ Error en la verificación:", data.error);
+          throw new Error(data.error || "Token inválido o expirado");
+        }
+
+        if (data.session) {
+          window.location.replace("/#/dashboard");
+        } else {
+          throw new Error("No se recibió sesión del servidor");
+        }
+      } catch (error) {
+        console.error("❌ Error en AuthCallback:", error);
+
+        // Verificar sesión activa
+        if (hasActiveSession()) {
+          window.location.replace("/#/dashboard");
           return;
         }
 
-        // ✅ Si no hay tokens, obtener sesión existente
-        const {
-          data: { session },
-          error: sessionError,
-        } = await supabase.auth.getSession();
-
-        if (sessionError) {
-          console.error("❌ Error al obtener sesión:", sessionError);
-          throw sessionError;
-        }
-
-        if (session) {
-          console.log("✅ Sesión existente encontrada:", session);
-          setStatus("✅ ¡Sesión activa! Redirigiendo...");
-          setTimeout(() => {
-            window.location.href = "/#/dashboard";
-          }, 1500);
-          return;
-        }
-
-        // ✅ No hay sesión
-        console.warn("⚠️ No se encontró sesión ni tokens");
-        setStatus("❌ No se pudo autenticar. Redirigiendo al login...");
+        // Solo redirigir a login si NO hay sesión
+        setStatus(`❌ ${error.message || "Error de autenticación"}`);
         setTimeout(() => {
-          window.location.href = "/#/";
-        }, 2000);
-      } catch (err) {
-        console.error("❌ Error en callback:", err);
-        setError(err.message);
-        setStatus("❌ Error de autenticación");
-        setTimeout(() => {
-          window.location.href = "/#/";
+          window.location.replace("/#/");
         }, 3000);
       }
     };
 
-    handleAuthCallback();
-  }, []);
+    const timer = setTimeout(() => {
+      verifyToken();
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [processed]);
 
   return (
     <div className="auth-callback-container">
       <div className="auth-callback-spinner" />
 
-      <h2 className={`auth-callback-title ${error ? "error" : ""}`}>
+      <h2 className="auth-callback-title">
         {status}
       </h2>
 

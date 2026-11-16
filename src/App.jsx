@@ -1,5 +1,5 @@
 // src/App.jsx
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabase";
 import { RestauranteProvider } from "./context/RestauranteContext";
@@ -38,7 +38,6 @@ function App() {
 
   return (
     <RestauranteProvider>
-      <HashRouter>
         <Routes>
           <Route
             path="/"
@@ -49,14 +48,13 @@ function App() {
             path="/dashboard"
             element={session ? <Dashboard /> : <Navigate to="/" />}
           />
-          {/* ✅ NUEVA RUTA: Vista de mesa */}
+          {/*  NUEVA RUTA: Vista de mesa */}
           <Route
             path="/mesa/:mesaId"
             element={session ? <MesaView /> : <Navigate to="/" />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </HashRouter>
     </RestauranteProvider>
   );
 }

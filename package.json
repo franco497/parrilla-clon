@@ -11,9 +11,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.108.2",
+    "@supabase/supabase-js": "^2.119.0",
+    "googleapis": "^190.0.0",
+    "jsonwebtoken": "^9.0.3",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
+    "nodemailer": "^10.6.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router": "^8.0.1",

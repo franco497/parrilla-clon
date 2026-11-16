@@ -1,5 +1,5 @@
+// src/pages/login.jsx
 import { useState } from "react";
-import { supabase, getRedirectUrl } from "../lib/supabase";
 import { useOrientation } from "../hooks/useOrientation";
 
 function Login() {
@@ -17,22 +17,18 @@ function Login() {
     setError("");
 
     try {
-      // ✅ Usar getRedirectUrl()
-      const redirectUrl = getRedirectUrl();
-
-      console.log("📧 Enviando magic link a:", email);
-      console.log("🔗 Redirect URL:", redirectUrl);
-
-      const { data, error } = await supabase.auth.signInWithOtp({
-        email: email,
-        options: {
-          emailRedirectTo: redirectUrl,
-        },
+      const response = await fetch("/.netlify/functions/send-magic-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
 
-      if (error) throw error;
+      const data = await response.json();
 
-      console.log("📦 Respuesta de Supabase:", data);
+      if (!response.ok) {
+        throw new Error(data.error || "Error al enviar el enlace");
+      }
+
       setMessage(`✨ ¡Magic link enviado a ${email}! Revisa tu correo.`);
       setEmail("");
     } catch (err) {
@@ -45,9 +41,7 @@ function Login() {
 
   return (
     <div className="login-container">
-      <h2 className="login-title">
-        Inicia Sesion con Magic Link, solo ingresa tu E-mail:
-      </h2>
+      <h2 className="login-title">Inicia Sesion con Magic Link, solo ingresa tu E-mail:</h2>
       <form onSubmit={handleSubmit} className="login-form">
         <div>
           <input
