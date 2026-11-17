@@ -102,7 +102,7 @@ async function sendMagicLinkEmail(email, token) {
     const textContent = `
 Hola,
 
-Has solicitado un enlace de acceso para tu cuenta en App de Tareas.
+Has solicitado un enlace de acceso para tu cuenta en Sistema-administracion-parrilla-clon.
 
 🔐 Inicia sesión aquí: ${magicLinkUrl}
 
@@ -113,7 +113,7 @@ Si el enlace no funciona, cópialo y pégalo en tu navegador.
 
 Si no solicitaste este enlace, ignora este correo.
 
-© 2026 - App Tareas - Sistema de Gestión y Recordatorios
+© 2026 - Sistema-administracion-parrilla-clon
 `;
 
     const htmlContent = `
@@ -198,7 +198,7 @@ Si no solicitaste este enlace, ignora este correo.
       </p>
     </div>
     <div class="footer">
-      <p>© 2026 - App Tareas - Sistema de Gestión y Recordatorios</p>
+      <p>© 2026 - Sistema-administracion-parrilla-clon</p>
     </div>
   </div>
 </body>
@@ -208,7 +208,7 @@ Si no solicitaste este enlace, ignora este correo.
     await transporter.sendMail({
       from: `"Franco De Vincentis - App Tareas" <${FROM_EMAIL}>`,
       to: email,
-      subject: "🔐 Tu enlace de acceso a App de Tareas",
+      subject: "🔐 Tu enlace para Sistema-administracion-parrilla-clon",
       text: textContent,
       html: htmlContent,
     });
