@@ -95,7 +95,7 @@ function AuthCallback() {
           while (retryCount <= maxRetries) {
             try {
               response = await fetch(
-                "https://sistema-administracion-parrilla-clon.netlify.app/.netlify/functions/verify-magic-link",
+                "/.netlify/functions/verify-magic-link",
                 {
                   method: "POST",
                   headers: {
