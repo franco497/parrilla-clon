@@ -7,6 +7,7 @@ import AuthCallback from "./pages/AuthCallback";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import { RestauranteProvider } from "./context/RestauranteContext";
+import MesaView from "./pages/MesaView";
 
 function App() {
   const [session, setSession] = useState(null);
@@ -75,10 +76,8 @@ function App() {
     );
   }
 
-  return (
+ return (
     <RestauranteProvider initialSession={session}>
-      {" "}
-      {/* ← PASAR LA SESIÓN */}
       <Routes>
         <Route
           path="/"
@@ -88,6 +87,10 @@ function App() {
         <Route
           path="/dashboard"
           element={session ? <Dashboard /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/mesa/:mesaId"
+          element={session ? <MesaView /> : <Navigate to="/" />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
