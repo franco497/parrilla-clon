@@ -2,27 +2,49 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabase";
-import { RestauranteProvider } from "./context/RestauranteContext";
 import Login from "./pages/login";
 import AuthCallback from "./pages/AuthCallback";
 import Dashboard from "./pages/Dashboard";
-import MesaView from "./pages/MesaView";  
 import NotFound from "./pages/NotFound";
+import { RestauranteProvider } from "./context/RestauranteContext";
 
 function App() {
-  const [authLoading, setAuthLoading] = useState(true);
   const [session, setSession] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setAuthLoading(false);
-    });
+    const restoreSession = async () => {
+      try {
+        const stored = localStorage.getItem("supabaseSession");
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            setSession(parsed);
+            console.log("✅ Sesión restaurada:", parsed.user?.email);
+          } catch (e) {
+            console.error("❌ Error parseando sesión:", e);
+            localStorage.removeItem("supabaseSession");
+          }
+        }
+      } catch (error) {
+        console.error("❌ Error en restoreSession:", error);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+
+    restoreSession();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        localStorage.setItem("supabaseSession", JSON.stringify(session));
+        setSession(session);
+      } else if (event === "SIGNED_OUT") {
+        localStorage.removeItem("supabaseSession");
+        setSession(null);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -30,31 +52,26 @@ function App() {
 
   if (authLoading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <h2 style={{ color: "white" }}>Cargando...</h2>
+      <div className="loading-container">
+        <h2>Cargando...</h2>
       </div>
     );
   }
 
   return (
-    <RestauranteProvider>
-        <Routes>
-          <Route
-            path="/"
-            element={!session ? <Login /> : <Navigate to="/dashboard" />}
-          />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route
-            path="/dashboard"
-            element={session ? <Dashboard /> : <Navigate to="/" />}
-          />
-          {/*  NUEVA RUTA: Vista de mesa */}
-          <Route
-            path="/mesa/:mesaId"
-            element={session ? <MesaView /> : <Navigate to="/" />}
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+    <RestauranteProvider initialSession={session}>   {/* ← PASAR LA SESIÓN */}
+      <Routes>
+        <Route
+          path="/"
+          element={!session ? <Login /> : <Navigate to="/dashboard" />}
+        />
+        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route
+          path="/dashboard"
+          element={session ? <Dashboard /> : <Navigate to="/" />}
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </RestauranteProvider>
   );
 }

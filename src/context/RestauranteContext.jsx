@@ -32,19 +32,22 @@ const crearEstadoInicialMesas = () => {
   return mesas;
 };
 
-export const RestauranteProvider = ({ children }) => {
+export const RestauranteProvider = ({ children, initialSession }) => {
   const [mesas, setMesas] = useState(crearEstadoInicialMesas);
   const [reservas, setReservas] = useState([]);
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [pedidosActivos, setPedidosActivos] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [session, setSession] = useState(null);
+  //const [loading, setLoading] = useState(false);
+  //const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(!initialSession);
+  const [session, setSession] = useState(initialSession || null);
   const [mozos, setMozos] = useState([]);
   const [mozosActivos, setMozosActivos] = useState({});
+  
 
   // Obtener sesión del usuario
-  useEffect(() => {
+/*   useEffect(() => {
     const getSession = async () => {
       const {
         data: { session },
@@ -52,7 +55,13 @@ export const RestauranteProvider = ({ children }) => {
       setSession(session);
     };
     getSession();
-  }, []);
+  }, []); */
+
+   useEffect(() => {
+    if (initialSession) {
+      setSession(initialSession);
+    }
+  }, [initialSession]);
 
   // Cargar datos al iniciar
   useEffect(() => {
