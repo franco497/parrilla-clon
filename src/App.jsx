@@ -5,13 +5,14 @@ import { supabase } from "./lib/supabase";
 import Login from "./pages/login";
 import AuthCallback from "./pages/AuthCallback";
 import Dashboard from "./pages/Dashboard";
+import MesaView from "./pages/MesaView";
 import NotFound from "./pages/NotFound";
 import { RestauranteProvider } from "./context/RestauranteContext";
-import MesaView from "./pages/MesaView";
 
 function App() {
   const [session, setSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [authInitialized, setAuthInitialized] = useState(false);
 
   useEffect(() => {
     const restoreSession = async () => {
@@ -20,23 +21,17 @@ function App() {
         if (stored) {
           try {
             const parsed = JSON.parse(stored);
-
-            // ✅ CLAVE: Restaurar la sesión en el cliente de Supabase
             const { data, error } = await supabase.auth.setSession({
-              access_token: parsed.access_token,
-              refresh_token: parsed.refresh_token,
+              access_token: parsed.session?.access_token || parsed.access_token,
+              refresh_token:
+                parsed.session?.refresh_token || parsed.refresh_token,
             });
-
             if (error) {
-              console.error("❌ Error restaurando sesión en Supabase:", error);
+              console.error("❌ Error restaurando sesión:", error);
               localStorage.removeItem("supabaseSession");
               setSession(null);
             } else {
               setSession(data.session || parsed);
-              console.log(
-                "✅ Sesión restaurada en Supabase:",
-                data.session?.user?.email,
-              );
             }
           } catch (e) {
             console.error("❌ Error parseando sesión:", e);
@@ -44,10 +39,12 @@ function App() {
             setSession(null);
           }
         }
+        setAuthLoading(false);
+        setAuthInitialized(true);
       } catch (error) {
         console.error("❌ Error en restoreSession:", error);
-      } finally {
         setAuthLoading(false);
+        setAuthInitialized(true);
       }
     };
 
@@ -65,7 +62,9 @@ function App() {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   if (authLoading) {
@@ -76,7 +75,7 @@ function App() {
     );
   }
 
- return (
+  return (
     <RestauranteProvider initialSession={session}>
       <Routes>
         <Route
