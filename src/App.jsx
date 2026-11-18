@@ -19,11 +19,28 @@ function App() {
         if (stored) {
           try {
             const parsed = JSON.parse(stored);
-            setSession(parsed);
-            console.log("✅ Sesión restaurada:", parsed.user?.email);
+
+            // ✅ CLAVE: Restaurar la sesión en el cliente de Supabase
+            const { data, error } = await supabase.auth.setSession({
+              access_token: parsed.access_token,
+              refresh_token: parsed.refresh_token,
+            });
+
+            if (error) {
+              console.error("❌ Error restaurando sesión en Supabase:", error);
+              localStorage.removeItem("supabaseSession");
+              setSession(null);
+            } else {
+              setSession(data.session || parsed);
+              console.log(
+                "✅ Sesión restaurada en Supabase:",
+                data.session?.user?.email,
+              );
+            }
           } catch (e) {
             console.error("❌ Error parseando sesión:", e);
             localStorage.removeItem("supabaseSession");
+            setSession(null);
           }
         }
       } catch (error) {
@@ -59,7 +76,9 @@ function App() {
   }
 
   return (
-    <RestauranteProvider initialSession={session}>   {/* ← PASAR LA SESIÓN */}
+    <RestauranteProvider initialSession={session}>
+      {" "}
+      {/* ← PASAR LA SESIÓN */}
       <Routes>
         <Route
           path="/"
