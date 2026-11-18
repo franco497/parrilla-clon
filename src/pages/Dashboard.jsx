@@ -32,13 +32,13 @@ const Dashboard = () => {
     setVistaActual("principal");
   };
 
-  if (loading) {
+/*   if (loading) {
     return (
       <div className="loading-container">
         <h2>Cargando sistema...</h2>
       </div>
     );
-  }
+  } */
 
   const productosBajoStock = productos.filter(
     (p) => p.activo !== false && (p.stock || 0) <= (p.stock_minimo || 5),
