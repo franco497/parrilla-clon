@@ -4,6 +4,7 @@ import { supabase } from "../lib/supabase";
 
 function AuthCallback() {
   const [status, setStatus] = useState("Verificando tu enlace...");
+  const [error, setError] = useState(null);
   const [processed, setProcessed] = useState(false);
 
   // FUNCIÓN PARA EXTRAER TOKEN
