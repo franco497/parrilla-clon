@@ -146,7 +146,7 @@ function AuthCallback() {
         }
 
         if (data.session) {
-          window.location.replace("/#/dashboard");
+          window.location.replace("/dashboard");
         } else {
           throw new Error("No se recibió sesión del servidor");
         }
@@ -155,7 +155,7 @@ function AuthCallback() {
 
         // Verificar sesión activa
         if (hasActiveSession()) {
-          window.location.replace("/#/dashboard");
+          window.location.replace("/dashboard");
           return;
         }
 
