@@ -57,9 +57,17 @@ export const RestauranteProvider = ({ children, initialSession }) => {
     getSession();
   }, []); */
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (initialSession) {
       setSession(initialSession);
+    }
+  }, [initialSession]); */
+
+  useEffect(() => {
+    if (initialSession && !datosCargados.current) {
+      datosCargados.current = true;
+      setSession(initialSession);
+      cargarDatosIniciales();
     }
   }, [initialSession]);
 

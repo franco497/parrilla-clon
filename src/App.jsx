@@ -54,8 +54,14 @@ function App() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        localStorage.setItem("supabaseSession", JSON.stringify(session));
-        setSession(session);
+        //  Solo setear si el usuario es distinto al actual
+        setSession((prev) => {
+          if (prev?.user?.email === session.user?.email) {
+            return prev; // ← mismo usuario, no re-renderizar
+          }
+          localStorage.setItem("supabaseSession", JSON.stringify(session));
+          return session;
+        });
       } else if (event === "SIGNED_OUT") {
         localStorage.removeItem("supabaseSession");
         setSession(null);
