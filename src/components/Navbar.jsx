@@ -1,20 +1,60 @@
 // src/components/Navbar.jsx
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const confirmar = window.confirm("¿Seguro que quieres cerrar sesión?");
-    if (!confirmar) return;
+    // ✅ SweetAlert de confirmación
+    const result = await Swal.fire({
+      title: "¿Cerrar sesión?",
+      text: "¿Estás seguro de que quieres cerrar sesión?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#e76f51",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, cerrar sesión",
+      cancelButtonText: "Cancelar",
+      background: "#ffffff",
+      color: "#1a1a2e",
+      iconColor: "#e9c46a",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       await supabase.auth.signOut();
+
+      // ✅ SweetAlert de éxito
+      await Swal.fire({
+        title: "✅ Sesión cerrada",
+        text: "Has cerrado sesión correctamente.",
+        icon: "success",
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        background: "#ffffff",
+        color: "#1a1a2e",
+        iconColor: "#2d6a4f",
+      });
+
       navigate("/");
     } catch (error) {
       console.error("❌ Error al cerrar sesión:", error);
-      alert("No se pudo cerrar la sesión. Intenta nuevamente.");
+
+      // ✅ SweetAlert de error
+      await Swal.fire({
+        title: "❌ Error",
+        text: "No se pudo cerrar la sesión. Intenta nuevamente.",
+        icon: "error",
+        confirmButtonColor: "#e76f51",
+        confirmButtonText: "Entendido",
+        background: "#ffffff",
+        color: "#1a1a2e",
+        iconColor: "#e76f51",
+      });
     }
   };
 
