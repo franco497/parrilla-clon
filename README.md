@@ -265,6 +265,9 @@ Redirección automática al dashboard
 | :---: | :---: |
 | ![Productos - Desktop](./screenshots/productos-desktop.png) | ![Productos - Mobile](./screenshots/productos-mobile.png) |
 
+### 🗄️ Base de Datos
+![Base de datos](./screenshots/base-de-datos.png)
+
 ---
 
 ## 🚧 Roadmap
