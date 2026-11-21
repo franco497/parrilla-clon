@@ -141,47 +141,29 @@ const MesaView = () => {
         productoId,
         cantidad,
       );
+
       if (result.success) {
         setMensaje(`✅ ${cantidad}x agregado`);
 
-        // ✅ ACTUALIZACIÓN OPTIMISTA
-        const producto = productos.find((p) => p.id_producto === productoId);
-        if (producto) {
-          setItemsPedido((prev) => {
-            const existing = prev.find(
-              (item) => item.id_producto === productoId,
-            );
-            if (existing) {
-              return prev.map((item) =>
-                item.id_producto === productoId
-                  ? {
-                      ...item,
-                      cantidad: item.cantidad + cantidad,
-                      subtotal: (item.cantidad + cantidad) * producto.precio,
-                    }
-                  : item,
-              );
-            }
-            return [
-              ...prev,
-              {
-                id_producto: productoId,
-                cantidad,
-                productos: { nombre: producto.nombre },
-                precio_unitario: producto.precio,
-                subtotal: producto.precio * cantidad,
-              },
-            ];
-          });
+        // 👇 CLAVE: usar el pedidoId que devuelve el contexto
+        //    (siempre es el correcto, aunque sea el primer item)
+        const itemsResult = await obtenerItemsPedido(
+          parseInt(mesaId),
+          result.pedidoId, // ← id fresco, no el del render
+        );
 
-          setTotal((prevTotal) => prevTotal + producto.precio * cantidad);
+        if (itemsResult.success) {
+          const items = itemsResult.data || [];
+          setItemsPedido(items);
+          setTotal(
+            items.reduce((s, i) => s + (parseFloat(i.subtotal) || 0), 0),
+          );
         }
-
-        // ❌ NO llamar cargarItemsPedido acá (el useEffect de [pedidoId] se encarga)
-        // await cargarItemsPedido();
 
         setCantidades((prev) => ({ ...prev, [productoId]: 0 }));
         setTimeout(() => setMensaje(""), 2000);
+      } else {
+        setMensaje(`❌ Error: ${result.error}`);
       }
     } catch (error) {
       console.error("Error agregando item:", error);
